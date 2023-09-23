@@ -52,7 +52,7 @@ public class LoginViewController {
      * Exits the application.
      */
     @FXML
-    private void menuItemCloseOnAction() {
+    private void menuItemExitOnAction() {
         System.exit(0);
     }
 }
