@@ -33,17 +33,18 @@ public class LoginViewController {
             badCredentialsLabel.setText("Username and password are required.");
             badCredentialsLabel.setVisible(true);
         }
-        else if (username.equals("user") && password.equals("pass")){
+        else if ((username.equals("user") || (username.equals("admin"))) && password.equals("pass")){
             //TODO update this to actually query the DB and check user credentials
+            //If the user logging in is flagged as having admin status, set the flag accordingly.
+            if (username.equals("admin")){
+                BuySellSwapApp.setAdmin(true);
+            }
+            //Switch to the user view.
             try {
                 BuySellSwapApp.setRoot("user-view");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
-        else if (username.equals("admin") && password.equals("pass")){
-            //TODO add admin view and handle admin login
-            System.out.println("Show admin view if credentials match those of an admin.");
         }
         else {
             badCredentialsLabel.setText("Username or password incorrect.");

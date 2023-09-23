@@ -8,12 +8,11 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.suljo.csc490buysellswap.UserViewController">
    <center>
       <TabPane prefHeight="645.0" prefWidth="960.0">
          <tabs>
-            <Tab text="Buy">
+            <Tab closable="false" text="Buy">
                <content>
                   <BorderPane>
                      <center>
@@ -22,11 +21,20 @@
                   </BorderPane>
                </content>
             </Tab>
-            <Tab text="Sell">
+            <Tab closable="false" text="Sell">
               <content>
                   <BorderPane>
                      <center>
                         <Pane />
+                     </center>
+                  </BorderPane>
+              </content>
+            </Tab>
+            <Tab fx:id="adminTab" closable="false" text="Admin">
+              <content>
+                  <BorderPane>
+                     <center>
+                        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                      </center>
                   </BorderPane>
               </content>
