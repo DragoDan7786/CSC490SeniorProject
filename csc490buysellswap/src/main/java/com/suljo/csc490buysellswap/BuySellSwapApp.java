@@ -13,7 +13,7 @@ public class BuySellSwapApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("start-view"), 960, 645);
+        scene = new Scene(loadFXML("login-view"), 960, 645);
         stage.setTitle("CSC 490 Buy-Sell-Swap");
         stage.setScene(scene);
         stage.show();

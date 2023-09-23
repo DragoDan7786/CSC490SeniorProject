@@ -3,7 +3,7 @@ package com.suljo.csc490buysellswap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class StartController {
+public class LoginController {
     @FXML
     private Label welcomeText;
 
