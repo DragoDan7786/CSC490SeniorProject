@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 
 import java.io.IOException;
 
+/**
+ * Controller for user-view.fxml
+ */
 public class UserViewController {
     /**
      * Returns the user to the login page, effectively logging them out.

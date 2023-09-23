@@ -5,6 +5,9 @@ import javafx.scene.control.*;
 
 import java.io.IOException;
 
+/**
+ * Controller for login-view.fxml
+ */
 public class LoginViewController {
     @FXML
     private TextField usernameField;
