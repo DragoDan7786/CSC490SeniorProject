@@ -53,6 +53,18 @@ public class LoginViewController {
     }
 
     /**
+     * Switch to the registration view to create a new user.
+     */
+    @FXML
+    private void buttonRegisterOnAction(){
+        try {
+            BuySellSwapApp.setRoot("registration-view");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Exits the application.
      */
     @FXML
