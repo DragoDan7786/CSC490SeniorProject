@@ -21,7 +21,7 @@ CREATE TABLE poc_connectivity.[user](
 	,city VARCHAR(250)
 	,[state] CHAR(2)
 	,zip CHAR(5)
-	,phone VARCHAR(20)
+	,phone_num VARCHAR(20)
 	,[hash] VARCHAR(250)
 	,isAdmin BIT NOT NULL DEFAULT 0
 	,CONSTRAINT user_pk PRIMARY KEY(userID)

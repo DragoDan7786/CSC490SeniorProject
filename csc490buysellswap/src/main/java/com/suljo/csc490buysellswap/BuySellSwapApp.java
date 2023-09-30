@@ -10,6 +10,7 @@ import java.io.IOException;
 public class BuySellSwapApp extends Application {
     private static Scene scene;
     private static boolean isAdmin = false;
+    private static User currentUser;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -34,6 +35,14 @@ public class BuySellSwapApp extends Application {
 
     static boolean getAdminStatus(){
         return  isAdmin;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        BuySellSwapApp.currentUser = currentUser;
     }
 
     public static void main(String[] args) {
