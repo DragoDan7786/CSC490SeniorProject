@@ -5,6 +5,7 @@ module com.suljo.csc490buysellswap {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires org.kordamp.ikonli.javafx;
+    requires java.sql;
 
     opens com.suljo.csc490buysellswap to javafx.fxml;
     exports com.suljo.csc490buysellswap;
