@@ -2,7 +2,6 @@ package com.suljo.csc490buysellswap;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import java.io.IOException;
 
 /**
