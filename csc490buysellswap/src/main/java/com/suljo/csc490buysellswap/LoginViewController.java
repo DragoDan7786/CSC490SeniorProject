@@ -28,6 +28,7 @@ public class LoginViewController {
         String username = usernameField.getText();
         String password = pwField.getText();
         pwField.clear();
+        DbOperations.login(username, password);
         if (username.isEmpty() || password.isEmpty()){
             badCredentialsLabel.setText("Username and password are required.");
             badCredentialsLabel.setVisible(true);
