@@ -2,6 +2,7 @@ package com.suljo.csc490buysellswap;
 
 public class User {
     private int userID;
+    private String userName;
     private String password;
     private String firstName;
     private String middleName;
@@ -22,6 +23,14 @@ public class User {
      */
     public User(){
 
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getUserID() {
