@@ -25,30 +25,28 @@ public class LoginViewController {
      */
     @FXML
     private void loginButtonOnAction(){
+        //Get the user input.
         String username = usernameField.getText();
         String password = pwField.getText();
         pwField.clear();
-        DbOperations.login(username, password);
+        //If something not entered, warn the user.
         if (username.isEmpty() || password.isEmpty()){
             badCredentialsLabel.setText("Username and password are required.");
             badCredentialsLabel.setVisible(true);
         }
-        else if ((username.equals("user") || (username.equals("admin"))) && password.equals("pass")){
-            //TODO update this to actually query the DB and check user credentials
-            //If the user logging in is flagged as having admin status, set the flag accordingly.
-            if (username.equals("admin")){
-                BuySellSwapApp.setAdmin(true);
-            }
-            //Switch to the user view.
-            try {
-                BuySellSwapApp.setRoot("user-view");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }
         else {
-            badCredentialsLabel.setText("Username or password incorrect.");
-            badCredentialsLabel.setVisible(true);
+            //Run the login operation. Returns true if user was found and set, in which case, switch the view.
+            if (DbOperations.login(username, password)){
+                try {
+                    BuySellSwapApp.setRoot("user-view");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            else{
+                badCredentialsLabel.setText("Username or password incorrect.");
+                badCredentialsLabel.setVisible(true);
+            }
         }
     }
 

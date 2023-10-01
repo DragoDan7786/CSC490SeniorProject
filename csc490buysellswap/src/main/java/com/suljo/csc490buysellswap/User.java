@@ -25,6 +25,25 @@ public class User {
 
     }
 
+    public User(int userID, String userName, String password, String firstName, String middleName,
+                String lastName, String dateOfBirth, String street, String city, String state,
+                String zip, String phoneNum, String hash, Boolean isAdmin) {
+        this.userID = userID;
+        this.userName = userName;
+        this.password = password;
+        this.firstName = firstName;
+        this.middleName = middleName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.phoneNum = phoneNum;
+        this.hash = hash;
+        this.isAdmin = isAdmin;
+    }
+
     public String getUserName() {
         return userName;
     }

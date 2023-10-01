@@ -12,8 +12,8 @@ public class UserViewController {
     private Tab adminTab;
     public void initialize(){
         //TODO complete this stub (there will probably be more to do here as the app develops)
-        //Disable or enable the Admin tab based on the isAdmin flag, which is set during login.
-        adminTab.setDisable(!BuySellSwapApp.getAdminStatus());
+        //If the currentUser isn't an admin, disable the admin tab.
+        adminTab.setDisable(!BuySellSwapApp.getCurrentUser().isAdmin());
     }
 
     /**
@@ -23,7 +23,7 @@ public class UserViewController {
     @FXML
     private void menuItemLogoutOnAction(){
         //TODO this may need to be updated to do more, such as disconnect from the database
-        BuySellSwapApp.setAdmin(false);
+        BuySellSwapApp.setCurrentUser(null);
         try {
             BuySellSwapApp.setRoot("login-view");
         } catch (IOException e) {

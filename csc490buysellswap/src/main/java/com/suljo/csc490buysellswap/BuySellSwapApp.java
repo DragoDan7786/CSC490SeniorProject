@@ -9,7 +9,6 @@ import java.io.IOException;
 
 public class BuySellSwapApp extends Application {
     private static Scene scene;
-    private static boolean isAdmin = false;
     private static User currentUser;
 
     @Override
@@ -27,14 +26,6 @@ public class BuySellSwapApp extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(BuySellSwapApp.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
-    }
-
-    static void setAdmin(boolean value){
-        isAdmin = value;
-    }
-
-    static boolean getAdminStatus(){
-        return  isAdmin;
     }
 
     public static User getCurrentUser() {
