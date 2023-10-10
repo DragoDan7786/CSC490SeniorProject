@@ -5,14 +5,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Properties;
 
 public class BuySellSwapApp extends Application {
     private static Scene scene;
     private static User currentUser;
+    protected static Properties dbProperties;
 
     @Override
     public void start(Stage stage) throws IOException {
+        dbProperties = new Properties();
+        dbProperties.load(new FileInputStream("src/main/java/com/suljo/csc490buysellswap/db.properties"));
         scene = new Scene(loadFXML("login-view"), 960, 645);
         stage.setTitle("CSC 490 Buy-Sell-Swap");
         stage.setScene(scene);

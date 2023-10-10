@@ -5,6 +5,7 @@ target/
 
 ### Manual Additions ###
 dbParameters.java
+db.properties
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
