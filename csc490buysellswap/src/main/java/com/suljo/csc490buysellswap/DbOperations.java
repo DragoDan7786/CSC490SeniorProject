@@ -9,6 +9,7 @@ public class DbOperations {
      * @return the Connection.
      */
     private static Connection connectToDb() throws SQLException {
+        /*
         String connectionURL = "jdbc:sqlserver://"
                 + DbParameters.DB_ENDPOINT + ":"
                 + DbParameters.DB_PORT + ";"
@@ -20,6 +21,8 @@ public class DbOperations {
                 + "loginTimeout=30;";
             //Establish the connection and return it if successful. If not, return null.
             return DriverManager.getConnection(connectionURL);
+            */
+         return DriverManager.getConnection(BuySellSwapApp.getDbProperties().getProperty("connectionStringPabloContained"));
 
     }
 

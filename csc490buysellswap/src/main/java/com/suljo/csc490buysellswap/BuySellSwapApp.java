@@ -13,7 +13,7 @@ import java.util.Properties;
 public class BuySellSwapApp extends Application {
     private static Scene scene;
     private static User currentUser;
-    protected static Properties dbProperties;
+    private static Properties dbProperties;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -40,6 +40,10 @@ public class BuySellSwapApp extends Application {
 
     public static void setCurrentUser(User currentUser) {
         BuySellSwapApp.currentUser = currentUser;
+    }
+
+    public static Properties getDbProperties() {
+        return dbProperties;
     }
 
     public static void main(String[] args) {
