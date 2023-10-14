@@ -21,9 +21,9 @@
                      <children>
                         <Accordion prefHeight="593.0" prefWidth="960.0">
                           <panes>
-                            <TitledPane animated="false" text="untitled 1">
+                            <TitledPane animated="false" text="Browse">
                               <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                    <BorderPane />
                               </content>
                             </TitledPane>
                             <TitledPane animated="false" text="untitled 2">
@@ -44,20 +44,56 @@
             </Tab>
             <Tab closable="false" text="Sell">
               <content>
-                  <BorderPane>
-                     <center>
-                        <Pane />
-                     </center>
-                  </BorderPane>
+                  <Pane>
+                     <children>
+                        <Accordion prefHeight="594.0" prefWidth="960.0">
+                          <panes>
+                            <TitledPane animated="false" text="Messages">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="My Items">
+                              <content>
+                                    <BorderPane />
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="List an Item">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                          </panes>
+                        </Accordion>
+                     </children>
+                  </Pane>
               </content>
             </Tab>
             <Tab fx:id="adminTab" closable="false" text="Admin">
               <content>
-                  <BorderPane>
-                     <center>
-                        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-                     </center>
-                  </BorderPane>
+                  <Pane>
+                     <children>
+                        <Accordion prefHeight="593.0" prefWidth="960.0">
+                          <panes>
+                            <TitledPane animated="false" text="untitled 1">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="untitled 2">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="untitled 3">
+                              <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                              </content>
+                            </TitledPane>
+                          </panes>
+                        </Accordion>
+                     </children>
+                  </Pane>
               </content>
             </Tab>
          </tabs>
