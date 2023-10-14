@@ -9,21 +9,7 @@ public class DbOperations {
      * @return the Connection.
      */
     private static Connection connectToDb() throws SQLException {
-        /*
-        String connectionURL = "jdbc:sqlserver://"
-                + DbParameters.DB_ENDPOINT + ":"
-                + DbParameters.DB_PORT + ";"
-                + "database=" + DbParameters.DB_NAME + ";"
-                + "user=" + DbParameters.USER_NAME + ";"
-                + "password=" + DbParameters.PASSWORD + ";"
-                + "encrypt=true;"
-                + "trustServerCertificate=true;"
-                + "loginTimeout=30;";
-            //Establish the connection and return it if successful. If not, return null.
-            return DriverManager.getConnection(connectionURL);
-            */
-         return DriverManager.getConnection(BuySellSwapApp.getDbProperties().getProperty("connectionStringPabloContained"));
-
+        return DriverManager.getConnection(BuySellSwapApp.getDbProperties().getProperty("connectionStringPabloContained"));
     }
 
     /**
