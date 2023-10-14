@@ -19,47 +19,51 @@ public class DbOperations {
      * @param pWord
      * @return
      */
-    public static boolean login(String userName, String pWord){
+    public static int login(String userName, String pWord){
         //Get connection to database.
         Connection conn = null;
-        boolean userExists = false;
         try {
             //Connect to the DB.
             conn = connectToDb();
-            //Query for a user with matching credentials.
-            PreparedStatement prepStmt = conn.prepareStatement(DbQueries.loginQuery);
-            prepStmt.setString(1, userName);
-            prepStmt.setString(2, pWord);
-            ResultSet result = prepStmt.executeQuery();
-            //Iterate through the results.
-            //If a matching user is found, create and set the currentUser accordingly.
-            while (result.next()){
-                String rowUserName = result.getString("userName");
-                String rowPassWord = result.getString("pWord");
-                if (userName.equals(rowUserName) && pWord.equals(rowPassWord)){
-                    int userID = result.getInt("userID");
-                    String firstName = result.getString("firstName");
-                    String middleName = result.getString("middleName");
-                    String lastName = result.getString("lastName");
-                    String dateOfBirth = result.getString("dateOfBirth");
-                    String street = result.getString("street");
-                    String city = result.getString("city");
-                    String state = result.getString("state");
-                    String zip = result.getString("zip");
-                    String phoneNum = result.getString("phoneNum");
-                    String hash = result.getString("hash");
-                    boolean isAdmin = result.getBoolean("isAdmin");
-                    BuySellSwapApp.setCurrentUser(new User(userID, userName, pWord, firstName, middleName, lastName,
-                            dateOfBirth, street, city, state, zip, phoneNum, hash, isAdmin));
-                    return true;
+            if (conn != null){
+                //Query for a user with matching credentials.
+                PreparedStatement prepStmt = conn.prepareStatement(DbQueries.loginQuery);
+                prepStmt.setString(1, userName);
+                prepStmt.setString(2, pWord);
+                ResultSet result = prepStmt.executeQuery();
+                //Iterate through the results.
+                //If a matching user is found, create and set the currentUser accordingly.
+                while (result.next()){
+                    String rowUserName = result.getString("userName");
+                    String rowPassWord = result.getString("pWord");
+                    if (userName.equals(rowUserName) && pWord.equals(rowPassWord)){
+                        int userID = result.getInt("userID");
+                        String firstName = result.getString("firstName");
+                        String middleName = result.getString("middleName");
+                        String lastName = result.getString("lastName");
+                        String dateOfBirth = result.getString("dateOfBirth");
+                        String street = result.getString("street");
+                        String city = result.getString("city");
+                        String state = result.getString("state");
+                        String zip = result.getString("zip");
+                        String phoneNum = result.getString("phoneNum");
+                        String hash = result.getString("hash");
+                        boolean isAdmin = result.getBoolean("isAdmin");
+                        BuySellSwapApp.setCurrentUser(new User(userID, userName, pWord, firstName, middleName, lastName,
+                                dateOfBirth, street, city, state, zip, phoneNum, hash, isAdmin));
+                        return 0;
+                    }
+                    conn.close();
                 }
-                conn.close();
+            } else {
+                //Indicate that connection could not be established.
+                return -1;
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return false;
+        //Indicate that connection was successful but the username/password combo was not found.
+        return -2;
     }
 
 

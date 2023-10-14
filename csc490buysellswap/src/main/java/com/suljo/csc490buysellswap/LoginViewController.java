@@ -13,11 +13,11 @@ public class LoginViewController {
     @FXML
     private PasswordField pwField;
     @FXML
-    private Label badCredentialsLabel;
+    private Label loginErrorLabel;
 
 
     public void initialize(){
-        badCredentialsLabel.setVisible(false);
+        loginErrorLabel.setVisible(false);
     }
 
     /**
@@ -31,21 +31,26 @@ public class LoginViewController {
         pwField.clear();
         //If something not entered, warn the user.
         if (username.isEmpty() || password.isEmpty()){
-            badCredentialsLabel.setText("Username and password are required.");
-            badCredentialsLabel.setVisible(true);
+            loginErrorLabel.setText("Username and password are required.");
+            loginErrorLabel.setVisible(true);
         }
         else {
             //Run the login operation. Returns true if user was found and set, in which case, switch the view.
-            if (DbOperations.login(username, password)){
+            int loginSuccessCode = DbOperations.login(username, password);
+            if (loginSuccessCode == 0){
                 try {
                     BuySellSwapApp.setRoot("user-view");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-            else{
-                badCredentialsLabel.setText("Username or password incorrect.");
-                badCredentialsLabel.setVisible(true);
+            else if (loginSuccessCode == -1 ){
+                loginErrorLabel.setText("Could not connect to DB.");
+                loginErrorLabel.setVisible(true);
+            }
+            else if (loginSuccessCode == -2){
+                loginErrorLabel.setText("Username or password incorrect.");
+                loginErrorLabel.setVisible(true);
             }
         }
     }
@@ -68,5 +73,20 @@ public class LoginViewController {
     @FXML
     private void menuItemExitOnAction() {
         System.exit(0);
+    }
+
+    /**
+     * Development tool - skip to user view without logging in, in order to avoid accessing the DB.
+     */
+    @FXML
+    private void skipToUserView(){
+        try {
+            BuySellSwapApp.setCurrentUser(new User(1, "user", "pass", "Firstname",
+                    "", "Lastname", "XX-XX-XXXX", "123 Street St", "City",
+                    "State", "00000", "555-555-5555", "Hash1234!", false));
+            BuySellSwapApp.setRoot("user-view");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
