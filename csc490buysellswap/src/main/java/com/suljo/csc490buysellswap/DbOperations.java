@@ -9,7 +9,7 @@ public class DbOperations {
      * @return the Connection.
      */
     private static Connection connectToDb() throws SQLException {
-        return DriverManager.getConnection(BuySellSwapApp.getDbProperties().getProperty("connectionStringPabloContained"));
+        return DriverManager.getConnection(BuySellSwapApp.getDbProperties().getProperty("connectionStringPablo"));
     }
 
     /**
