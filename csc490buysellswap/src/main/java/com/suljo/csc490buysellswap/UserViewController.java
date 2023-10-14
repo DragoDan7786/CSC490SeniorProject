@@ -14,6 +14,7 @@ public class UserViewController {
         //TODO complete this stub (there will probably be more to do here as the app develops)
         //If the currentUser isn't an admin, disable the admin tab.
         adminTab.setDisable(!BuySellSwapApp.getCurrentUser().isAdmin());
+
     }
 
     /**
