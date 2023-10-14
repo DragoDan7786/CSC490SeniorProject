@@ -15,7 +15,6 @@ public class LoginViewController {
     @FXML
     private Label loginErrorLabel;
 
-
     public void initialize(){
         loginErrorLabel.setVisible(false);
     }
