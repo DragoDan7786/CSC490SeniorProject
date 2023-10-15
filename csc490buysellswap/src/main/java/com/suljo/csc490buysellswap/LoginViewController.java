@@ -3,6 +3,7 @@ package com.suljo.csc490buysellswap;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * Controller for login-view.fxml
@@ -35,21 +36,22 @@ public class LoginViewController {
         }
         else {
             //Run the login operation. Returns true if user was found and set, in which case, switch the view.
-            int loginSuccessCode = DbOperations.login(username, password);
-            if (loginSuccessCode == 0){
-                try {
-                    BuySellSwapApp.setRoot("user-view");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+            try {
+                if (DbOperations.login(username, password)){
+                    try {
+                        BuySellSwapApp.setRoot("user-view");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            }
-            else if (loginSuccessCode == -1 ){
-                loginErrorLabel.setText("Could not connect to DB.");
+                else {
+                    loginErrorLabel.setText("Username or password incorrect.");
+                    loginErrorLabel.setVisible(true);
+                }
+            } catch (SQLException e) {
+                loginErrorLabel.setText("Could not connect to database.");
                 loginErrorLabel.setVisible(true);
-            }
-            else if (loginSuccessCode == -2){
-                loginErrorLabel.setText("Username or password incorrect.");
-                loginErrorLabel.setVisible(true);
+                System.out.println(e);
             }
         }
     }

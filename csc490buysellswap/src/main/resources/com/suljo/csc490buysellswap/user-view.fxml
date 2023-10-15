@@ -44,29 +44,25 @@
             </Tab>
             <Tab closable="false" text="Sell">
               <content>
-                  <Pane>
-                     <children>
-                        <Accordion prefHeight="594.0" prefWidth="960.0">
-                          <panes>
-                            <TitledPane animated="false" text="Messages">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </TitledPane>
-                            <TitledPane animated="false" text="My Items">
-                              <content>
-                                    <BorderPane />
-                              </content>
-                            </TitledPane>
-                            <TitledPane animated="false" text="List an Item">
-                              <content>
-                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                              </content>
-                            </TitledPane>
-                          </panes>
-                        </Accordion>
-                     </children>
-                  </Pane>
+                  <TabPane>
+                     <tabs>
+                        <Tab text="My Listings">
+                           <content>
+                              <Pane />
+                           </content>
+                        </Tab>
+                        <Tab text="Messages">
+                           <content>
+                              <Pane />
+                           </content>
+                        </Tab>
+                        <Tab text="List An Item">
+                           <content>
+                              <Pane />
+                           </content>
+                        </Tab>
+                     </tabs>
+                  </TabPane>
               </content>
             </Tab>
             <Tab fx:id="adminTab" closable="false" text="Admin">
