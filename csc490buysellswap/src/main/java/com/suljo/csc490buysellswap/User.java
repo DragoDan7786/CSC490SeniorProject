@@ -15,7 +15,7 @@ public class User {
     private String state;
     private String zip;
     private String phoneNum;
-    private String hash;
+    //private String hash;
     private Boolean isAdmin;
 
     /**
@@ -27,7 +27,7 @@ public class User {
 
     public User(int userID, String userName, String password, String firstName, String middleName,
                 String lastName, String dateOfBirth, String street, String city, String state,
-                String zip, String phoneNum, String hash, Boolean isAdmin) {
+                String zip, String phoneNum, Boolean isAdmin) {
         this.userID = userID;
         this.userName = userName;
         this.password = password;
@@ -40,10 +40,8 @@ public class User {
         this.state = state;
         this.zip = zip;
         this.phoneNum = phoneNum;
-        this.hash = hash;
         this.isAdmin = isAdmin;
     }
-
     public String getUserName() {
         return userName;
     }
@@ -147,15 +145,6 @@ public class User {
 
     public User setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
-        return this;
-    }
-
-    public String hash() {
-        return hash;
-    }
-
-    public User setHash(String hash) {
-        this.hash = hash;
         return this;
     }
 

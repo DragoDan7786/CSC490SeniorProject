@@ -49,10 +49,9 @@ public class DbOperations {
                 String state = result.getString("state");
                 String zip = result.getString("zip");
                 String phoneNum = result.getString("phoneNum");
-                String hash = result.getString("hash");
                 boolean isAdmin = result.getBoolean("isAdmin");
                 BuySellSwapApp.setCurrentUser(new User(userID, userName, pWord, firstName, middleName, lastName,
-                        dateOfBirth, street, city, state, zip, phoneNum, hash, isAdmin));
+                        dateOfBirth, street, city, state, zip, phoneNum, isAdmin));
                 return true;
             }
             conn.close();
@@ -71,7 +70,7 @@ public class DbOperations {
         prepStmt.setBoolean(4, isForRent);
         prepStmt.setInt(5, rentalPeriodHours);
         prepStmt.setInt(6, BuySellSwapApp.getCurrentUser().getUserID());
-        if (image != null){
+        if (image != null) {
             try {
                 prepStmt.setBinaryStream(7, new FileInputStream(image));
             } catch (FileNotFoundException e) {
@@ -80,8 +79,9 @@ public class DbOperations {
         } else {
             prepStmt.setBinaryStream(7, null);
         }
-
-        return prepStmt.executeUpdate();
+        int rowsAffected = prepStmt.executeUpdate();
+        conn.close();
+        return rowsAffected;
     }
 
 }

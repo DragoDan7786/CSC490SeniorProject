@@ -44,7 +44,7 @@ public class UserViewController {
 
     private File listAnItemImage;
 
-    public void initialize(){
+    public void initialize() {
         //TODO complete this stub (there will probably be more to do here as the app develops)
         //If the currentUser isn't an admin, disable the admin tab.
         adminTab.setDisable(!BuySellSwapApp.getCurrentUser().isAdmin());
@@ -54,7 +54,7 @@ public class UserViewController {
     /**
      * Helper method which sets up the "List An Item" tab in the Sell tab.
      */
-    private void initializeListAnItemTab(){
+    private void initializeListAnItemTab() {
         setForSaleButton();
         rentalPeriodToggleGroup.selectToggle(daysButton);
         listAnItemFileOpenText.setVisible(false);
@@ -66,7 +66,7 @@ public class UserViewController {
      * Adjusts UI elements when For Rent radio button is selected.
      */
     @FXML
-    private void setForRentButton(){
+    private void setForRentButton() {
         saleOrRentToggleGroup.selectToggle(forRentButton);
         listAnItemRentalPeriodTextField.setDisable(false);
         hoursButton.setDisable(false);
@@ -77,7 +77,7 @@ public class UserViewController {
      * Adjusts UI elements when For Sale radio button is selected.
      */
     @FXML
-    private void setForSaleButton(){
+    private void setForSaleButton() {
         saleOrRentToggleGroup.selectToggle(forSaleButton);
         listAnItemRentalPeriodTextField.setDisable(true);
         hoursButton.setDisable(true);
@@ -88,12 +88,12 @@ public class UserViewController {
      * Creates a file chooser, allowing the user to select an image which should be uploaded as part of their listing.
      */
     @FXML
-    private void browseForListingPhoto(){
+    private void browseForListingPhoto() {
         FileChooser fc = new FileChooser();
         FileChooser.ExtensionFilter pngExtFilter = new FileChooser.ExtensionFilter("PNG Files (*.png)", "*.png");
         fc.getExtensionFilters().add(pngExtFilter);
         listAnItemImage = fc.showOpenDialog(null);
-        if (listAnItemImage != null){
+        if (listAnItemImage != null) {
             try {
                 listAnItemFilePathTextField.setText(listAnItemImage.getCanonicalPath());
             } catch (IOException e) {
@@ -109,22 +109,43 @@ public class UserViewController {
         }
     }
 
+    /**
+     * Clears the file selected by the user for upload with a listing (e.g., in case the user changes their mind about
+     * adding an image).
+     */
     @FXML
-    private void addListing(){
+    private void listAnItemClearImageFile() {
+        listAnItemImage = null;
+        listAnItemFilePathTextField.clear();
+        listAnItemFileOpenText.setVisible(false);
+    }
+
+    /**
+     * Adds a listing to the database. Functionality is located in List An Item tab, nested within the Sell tab.
+     */
+    @FXML
+    private void addListing() {
+        //Get the values associated with the item.
         String itemName = listAnItemTitle.getText();
         String itemDesc = listAnItemDescription.getText();
+        //The user may have entered something like 5.50, and it will come in as a string, so we need to convert it first
+        //to a double, and then to an int representing cents.
         double price = Double.parseDouble(listAnItemPriceTextField.getText());
-        int priceInCents = (int)price*100;
+        int priceInCents = (int) (price * 100);
         boolean isForRent = forRentButton.isSelected();
+        //-1 is a sentinel value / placeholder for the rental period when the item is not for rent.
+        //This is used as the default value, as when it was placed as another conditional the compiler complained to me
+        //that the variable may not have been initialized.
         int rentalPeriodHours = -1;
         if (isForRent && hoursButton.isSelected()) {
             rentalPeriodHours = Integer.parseInt(listAnItemRentalPeriodTextField.getText());
-        } else if (isForRent && daysButton.isSelected()){
+        } else if (isForRent && daysButton.isSelected()) {
             rentalPeriodHours = Integer.parseInt(listAnItemRentalPeriodTextField.getText()) * 24;
         }
-
+        //Actually try to insert the item.
         try {
-            if (DbOperations.addNewListing(itemName, itemDesc, priceInCents, isForRent, rentalPeriodHours, listAnItemImage) > 0){
+            //If the rows affected is >0, the item was successfully inserted.
+            if (DbOperations.addNewListing(itemName, itemDesc, priceInCents, isForRent, rentalPeriodHours, listAnItemImage) > 0) {
                 listAnItemSuccess.setText("Item successfully listed.");
                 listAnItemSuccess.setTextFill(Color.BLACK);
                 listAnItemSuccess.setVisible(true);
@@ -133,12 +154,9 @@ public class UserViewController {
                 listAnItemSuccess.setTextFill(Color.RED);
                 listAnItemSuccess.setVisible(true);
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-        System.out.println("addListing activated");
     }
 
     /**
@@ -146,7 +164,7 @@ public class UserViewController {
      * Also sets admin status to false.
      */
     @FXML
-    private void menuItemLogoutOnAction(){
+    private void menuItemLogoutOnAction() {
         //TODO this may need to be updated to do more, such as disconnect from the database
         BuySellSwapApp.setCurrentUser(null);
         try {

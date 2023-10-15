@@ -88,7 +88,7 @@ public class LoginViewController {
         try {
             BuySellSwapApp.setCurrentUser(new User(1, "user", "pass", "Firstname",
                     "", "Lastname", "XX-XX-XXXX", "123 Street St", "City",
-                    "State", "00000", "555-555-5555", "Hash1234!", false));
+                    "State", "00000", "555-555-5555", false));
             BuySellSwapApp.setRoot("user-view");
         } catch (IOException e) {
             throw new RuntimeException(e);
