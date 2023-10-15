@@ -1,5 +1,8 @@
 package com.suljo.csc490buysellswap;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.*;
 
 public class DbOperations {
@@ -57,5 +60,28 @@ public class DbOperations {
         return false;
     }
 
+    //If converted to a stored procedure instead of a straight insert query, could recover new item ID and return it to the user.
+    //Might not be strictly necessary if there is additional functionality to view all of your own items.
+    public static int addNewListing(String itemName, String itemDesc, int priceInCents, boolean isForRent, int rentalPeriodHours, File image) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.insertNewListingQuery);
+        prepStmt.setString(1, itemName);
+        prepStmt.setString(2, itemDesc);
+        prepStmt.setInt(3, priceInCents);
+        prepStmt.setBoolean(4, isForRent);
+        prepStmt.setInt(5, rentalPeriodHours);
+        prepStmt.setInt(6, BuySellSwapApp.getCurrentUser().getUserID());
+        if (image != null){
+            try {
+                prepStmt.setBinaryStream(7, new FileInputStream(image));
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            prepStmt.setBinaryStream(7, null);
+        }
+
+        return prepStmt.executeUpdate();
+    }
 
 }

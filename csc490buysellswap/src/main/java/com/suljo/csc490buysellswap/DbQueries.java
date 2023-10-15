@@ -3,7 +3,15 @@ package com.suljo.csc490buysellswap;
 public class DbQueries {
     public static String loginQuery = """
                SELECT *
-               FROM poc_connectivity.[user]
+               FROM sprint02.[user]
                WHERE userName = ? AND pWord = ?;
                """;
+
+    public static String insertNewListingQuery = """
+            INSERT INTO sprint02.saleable_item
+                (name, description, priceInCents, isForRent, rentalPeriodHours, sellerUserID, itemImage)
+            VALUES
+                (?,?,?,?,?,?,?)
+            ;
+            """;
 }
