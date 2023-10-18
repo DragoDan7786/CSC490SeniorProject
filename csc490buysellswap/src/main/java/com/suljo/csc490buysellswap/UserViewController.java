@@ -13,8 +13,10 @@ import java.sql.SQLException;
  * Controller for user-view.fxml
  */
 public class UserViewController {
+    //***********Sell Tab Elements BEGIN**********//
     @FXML
     private Tab adminTab;
+    //***********List An Item Elements BEGIN**********//
     @FXML
     private ToggleGroup saleOrRentToggleGroup;
     @FXML
@@ -41,9 +43,11 @@ public class UserViewController {
     private TextField listAnItemRentalPeriodTextField;
     @FXML
     private Label listAnItemSuccess;
-
     private File listAnItemImage;
+    //***********List An Item Elements END**********//
+    //***********Sell Tab Elements END**********//
 
+    //***********General User View Methods BEGIN**********//
     public void initialize() {
         //TODO complete this stub (there will probably be more to do here as the app develops)
         //If the currentUser isn't an admin, disable the admin tab.
@@ -51,6 +55,31 @@ public class UserViewController {
         initializeListAnItemTab();
     }
 
+    /**
+     * Returns the user to the login page, effectively logging them out.
+     * Also sets admin status to false.
+     */
+    @FXML
+    private void menuItemLogoutOnAction() {
+        //TODO this may need to be updated to do more, such as disconnect from the database
+        BuySellSwapApp.setCurrentUser(null);
+        try {
+            BuySellSwapApp.setRoot("login-view");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Exits the application.
+     */
+    @FXML
+    private void menuItemExitOnAction() {
+        System.exit(0);
+    }
+    //***********General User View Methods END**********//
+
+    //***********List An Item Methods BEGIN**********//
     /**
      * Helper method which sets up the "List An Item" tab in the Sell tab.
      */
@@ -121,6 +150,20 @@ public class UserViewController {
     }
 
     /**
+     * Resets the tab, e.g., when the user decides not to add an item after all and wants to start over.
+     */
+    @FXML
+    private void listAnItemResetTab(){
+        listAnItemClearImageFile();
+        listAnItemTitle.clear();
+        listAnItemDescription.clear();
+        listAnItemPriceTextField.setText("00.00");
+        listAnItemRentalPeriodTextField.setText("00");
+        listAnItemSuccess.setVisible(false);
+        initializeListAnItemTab();
+    }
+
+    /**
      * Adds a listing to the database. Functionality is located in List An Item tab, nested within the Sell tab.
      */
     @FXML
@@ -146,6 +189,7 @@ public class UserViewController {
         try {
             //If the rows affected is >0, the item was successfully inserted.
             if (DbOperations.addNewListing(itemName, itemDesc, priceInCents, isForRent, rentalPeriodHours, listAnItemImage) > 0) {
+                listAnItemResetTab();
                 listAnItemSuccess.setText("Item successfully listed.");
                 listAnItemSuccess.setTextFill(Color.BLACK);
                 listAnItemSuccess.setVisible(true);
@@ -158,27 +202,5 @@ public class UserViewController {
             throw new RuntimeException(e);
         }
     }
-
-    /**
-     * Returns the user to the login page, effectively logging them out.
-     * Also sets admin status to false.
-     */
-    @FXML
-    private void menuItemLogoutOnAction() {
-        //TODO this may need to be updated to do more, such as disconnect from the database
-        BuySellSwapApp.setCurrentUser(null);
-        try {
-            BuySellSwapApp.setRoot("login-view");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Exits the application.
-     */
-    @FXML
-    private void menuItemExitOnAction() {
-        System.exit(0);
-    }
+    //***********List An Item Methods END**********//
 }
