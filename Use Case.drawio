@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-10-23T02:15:56.247Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="qoZS1HhEZBavdw2yepZe" version="22.0.3" type="device">
+<mxfile host="Electron" modified="2023-10-23T15:23:01.400Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.0.3 Chrome/114.0.5735.289 Electron/25.8.4 Safari/537.36" etag="fNNSjbyTs0JUR75O_Jxp" version="22.0.3" type="device">
   <diagram name="Page-1" id="7VMl0kFuAjZcLwSX5T4Z">
-    <mxGraphModel dx="1687" dy="1040" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1285" dy="713" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -51,6 +51,20 @@
             </Array>
           </mxGeometry>
         </mxCell>
+        <mxCell id="mftugDNYEcWoe63v2izD-47" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;startArrow=none;startFill=0;endArrow=none;endFill=0;" edge="1" parent="1" source="mftugDNYEcWoe63v2izD-5" target="mftugDNYEcWoe63v2izD-19">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="540" y="440" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mftugDNYEcWoe63v2izD-48" style="edgeStyle=none;shape=connector;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;labelBackgroundColor=default;strokeColor=default;align=center;verticalAlign=middle;fontFamily=Helvetica;fontSize=11;fontColor=default;startArrow=none;startFill=0;endArrow=none;endFill=0;" edge="1" parent="1" source="mftugDNYEcWoe63v2izD-5" target="mftugDNYEcWoe63v2izD-22">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="550" y="370" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
         <mxCell id="mftugDNYEcWoe63v2izD-5" value="System Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" vertex="1" parent="1">
           <mxGeometry x="560" y="600" width="30" height="60" as="geometry" />
         </mxCell>
@@ -81,7 +95,7 @@
         <mxCell id="mftugDNYEcWoe63v2izD-12" value="Manage Account" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="160" y="80" width="120" height="40" as="geometry" />
         </mxCell>
-        <mxCell id="mftugDNYEcWoe63v2izD-19" value="Message Seller" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="mftugDNYEcWoe63v2izD-19" value="Message User" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="410" y="380" width="120" height="40" as="geometry" />
         </mxCell>
         <mxCell id="mftugDNYEcWoe63v2izD-22" value="Reply to a Message" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
