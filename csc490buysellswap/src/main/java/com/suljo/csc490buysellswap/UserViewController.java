@@ -2,10 +2,13 @@ package com.suljo.csc490buysellswap;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
-
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -43,6 +46,12 @@ public class UserViewController {
     private TextField listAnItemRentalPeriodTextField;
     @FXML
     private Label listAnItemSuccess;
+    @FXML
+    private ImageView listAnItemImagePreview;
+    @FXML
+    private Label listAnItemNoImageLabel;
+    @FXML
+    private Rectangle listAnItemImagePreviewFrame;
     private File listAnItemImage;
     //***********List An Item Elements END**********//
     //***********Sell Tab Elements END**********//
@@ -124,17 +133,31 @@ public class UserViewController {
         listAnItemImage = fc.showOpenDialog(null);
         if (listAnItemImage != null) {
             try {
+                //Display the image path.
                 listAnItemFilePathTextField.setText(listAnItemImage.getCanonicalPath());
+                //Display an image preview:
+                //Get a file input stream.
+                FileInputStream imageInputStream = new FileInputStream( listAnItemImage);
+                //Create an image from the stream.
+                Image inputImage = new Image((imageInputStream));
+                //Set the ImageView.
+                listAnItemImagePreview.setImage(inputImage);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
             listAnItemFileOpenText.setText("File opened.");
             listAnItemFileOpenText.setTextFill(Color.BLACK);
             listAnItemFileOpenText.setVisible(true);
+            listAnItemImagePreview.setVisible(true);
+            listAnItemNoImageLabel.setVisible(false);
+            listAnItemImagePreviewFrame.setVisible(false);
         } else {
             listAnItemFileOpenText.setText("File could not be opened.");
             listAnItemFileOpenText.setTextFill(Color.RED);
             listAnItemFileOpenText.setVisible(true);
+            listAnItemImagePreview.setVisible(false);
+            listAnItemNoImageLabel.setVisible(true);
+            listAnItemImagePreviewFrame.setVisible(true);
         }
     }
 
@@ -147,6 +170,9 @@ public class UserViewController {
         listAnItemImage = null;
         listAnItemFilePathTextField.clear();
         listAnItemFileOpenText.setVisible(false);
+        listAnItemNoImageLabel.setVisible(true);
+        listAnItemImagePreview.setVisible(false);
+        listAnItemImagePreviewFrame.setVisible(true);
     }
 
     /**
