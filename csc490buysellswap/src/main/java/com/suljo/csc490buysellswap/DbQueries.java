@@ -22,8 +22,9 @@ public class DbQueries {
             VALUES
                 (?,?,?,?,?,?,?,?,?,?,?,?)
             ;
-  
-    public static String selectUserItems = """
-            
       """;
+
+    public static String selectUserItemsQuery = """
+    
+    """;
 }
