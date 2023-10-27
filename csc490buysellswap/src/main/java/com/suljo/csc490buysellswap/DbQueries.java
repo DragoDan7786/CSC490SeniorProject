@@ -8,12 +8,13 @@ public class DbQueries {
                """;
 
     public static String insertNewListingQuery = """
-            INSERT INTO sprint02.saleable_item
-                (name, description, priceInCents, isForRent, rentalPeriodHours, sellerUserID, itemImage)
+            INSERT INTO sprint03.listing
+                (title, description, priceInCents, isForRent, rentalPeriodHours, sellerUserID, listingImage)
             VALUES
                 (?,?,?,?,?,?,?)
             ;
             """;
+
 
     public static String insertNewUserQuery = """
             INSERT INTO sprint03.[user]
@@ -21,5 +22,8 @@ public class DbQueries {
             VALUES
                 (?,?,?,?,?,?,?,?,?,?,?,?)
             ;
-            """;
+  
+    public static String selectUserItems = """
+            
+      """;
 }

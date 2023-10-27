@@ -9,6 +9,8 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
@@ -56,7 +58,34 @@
                      <tabs>
                         <Tab text="My Listings">
                            <content>
-                              <Pane />
+                              <BorderPane>
+                                 <center>
+                                    <Pane>
+                                       <children>
+                                          <TextField alignment="CENTER_RIGHT" layoutX="278.0" prefHeight="25.0" prefWidth="50.0" text="ID" />
+                                          <TextField text="Title" />
+                                          <TextArea layoutY="23.0" prefHeight="200.0" prefWidth="328.0" text="Description." />
+                                          <TextField layoutY="223.0" prefHeight="25.0" prefWidth="327.0" text="Price" />
+                                          <TextField alignment="CENTER" layoutX="169.0" layoutY="-1.0" prefHeight="25.0" prefWidth="81.0" text="Available" />
+                                          <TextField layoutY="248.0" prefHeight="25.0" prefWidth="164.0" text="Added" />
+                                          <TextField layoutX="164.0" layoutY="248.0" prefHeight="25.0" prefWidth="164.0" text="Modified" />
+                                          <Button layoutX="254.0" layoutY="281.0" mnemonicParsing="false" text="Edit Listing" />
+                                          <Button layoutX="238.0" layoutY="314.0" mnemonicParsing="false" text="Save Changes" />
+                                          <Button layoutX="217.0" layoutY="349.0" mnemonicParsing="false" text="Make Unavailable" />
+                                          <ImageView fitHeight="300.0" fitWidth="400.0" layoutX="332.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </Pane>
+                                 </center>
+                                 <left>
+                                    <TableView prefHeight="562.0" prefWidth="228.0" BorderPane.alignment="CENTER">
+                                      <columns>
+                                        <TableColumn prefWidth="75.0" text="ID" />
+                                        <TableColumn prefWidth="75.0" text="Title" />
+                                          <TableColumn prefWidth="75.0" text="Listed" />
+                                      </columns>
+                                    </TableView>
+                                 </left>
+                              </BorderPane>
                            </content>
                         </Tab>
                         <Tab text="Messages">
