@@ -99,7 +99,7 @@ public class DbOperations {
         prepStmt.setString(3, firstName);
         prepStmt.setString(4, middleName);
         prepStmt.setString(5, lastName);
-        prepStmt.setString(6, dateOfBirth;
+        prepStmt.setString(6, dateOfBirth);
         prepStmt.setString(7, street);
         prepStmt.setString(8, city);
         prepStmt.setString(9, state);
