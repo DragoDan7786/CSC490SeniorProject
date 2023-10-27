@@ -28,7 +28,7 @@ INSERT INTO sprint03.[user]
 
 CREATE TABLE sprint03.listing(
 	listingID INT IDENTITY(1,1)
-	,name VARCHAR(250) NOT NULL
+	,title VARCHAR(250) NOT NULL
 	,description VARCHAR(MAX) NOT NULL DEFAULT ''
 	,priceInCents INT NOT NULL
 	,isAvailable BIT NOT NULL DEFAULT 1
