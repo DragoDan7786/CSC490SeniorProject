@@ -3,12 +3,12 @@ package com.suljo.csc490buysellswap;
 public class DbQueries {
     public static String loginQuery = """
                SELECT *
-               FROM sprint02.[user]
+               FROM sprint03.[user]
                WHERE userName = ? AND pWord = ?;
                """;
 
     public static String insertNewListingQuery = """
-            INSERT INTO sprint02.saleable_item
+            INSERT INTO sprint03.listing
                 (name, description, priceInCents, isForRent, rentalPeriodHours, sellerUserID, itemImage)
             VALUES
                 (?,?,?,?,?,?,?)
