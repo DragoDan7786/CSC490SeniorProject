@@ -91,7 +91,7 @@ public class DbOperations {
      * @param pWord
      * @return
      */
-    public static int addNewUser(String userName,String  pWord,String  firstName,String  middleName,String  lastName,String  dateOfBirth,String  street,String  city,String  state,String  zip,String  phoneNum) throws SQLException {
+    public static int addNewUser(String userName,String  pWord,String  firstName,String  middleName,String  lastName,Date  dateOfBirth,String  street,String  city,String  state,String  zip,String  phoneNum, Boolean isAdmin) throws SQLException {
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.insertNewUserQuery);
         prepStmt.setString(1, userName);
@@ -99,13 +99,13 @@ public class DbOperations {
         prepStmt.setString(3, firstName);
         prepStmt.setString(4, middleName);
         prepStmt.setString(5, lastName);
-        prepStmt.setString(6, dateOfBirth);
+        prepStmt.setDate(6, dateOfBirth);
         prepStmt.setString(7, street);
         prepStmt.setString(8, city);
         prepStmt.setString(9, state);
         prepStmt.setString(10, zip);
         prepStmt.setString(11, phoneNum);
-        prepStmt.setBoolean(11, false);
+        prepStmt.setBoolean(12, false);
         int rowsAffected = prepStmt.executeUpdate();
         conn.close();
         return rowsAffected;

@@ -8,6 +8,7 @@ import javafx.scene.control.TextField;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 
 public class RegistrationViewController {
@@ -48,12 +49,13 @@ public class RegistrationViewController {
         String fName = fNameField.getText();
         String mName = mNameField.getText();
         String lName = lNameField.getText();
-        String bDate = birthDatePicker.toString();
+        Date bDate = java.sql.Date.valueOf(birthDatePicker.getValue());
         String streetName = streetField.getText();
         String townName = townField.getText();
         String stateName = stateField.getText();
         String zipCode = zipField.getText();
         String phoneNumber = phoneField.getText();
+        Boolean isAdmin = false;
         pwField.clear();
         //If something is missing, warn the user. Also warn user if password in "insecure"
         if (username.isEmpty()) {
@@ -74,7 +76,9 @@ public class RegistrationViewController {
         } else if (lName.isEmpty()) {
             errorLabel.setText("Please enter your last name");
             errorLabel.setVisible(true);
-        } else if (bDate.isEmpty()) {
+        }
+        //checks if date field is null
+        else if (birthDatePicker.getValue() == null){
             errorLabel.setText("Please enter your date of birth");
             errorLabel.setVisible(true);
         }else if (streetName.isEmpty()) {
@@ -107,7 +111,7 @@ public class RegistrationViewController {
             //User is not duplicate so insert user into table.
             try {
 
-                if (DbOperations.addNewUser(username,password,fName,mName,lName,bDate,streetName,townName,stateName,zipCode,phoneNumber) > 0){
+                if (DbOperations.addNewUser(username,password,fName,mName,lName,bDate,streetName,townName,stateName,zipCode,phoneNumber,isAdmin) > 0){
                     errorLabel.setText("User Created");
                     errorLabel.setVisible(true);
                     //clears fields
