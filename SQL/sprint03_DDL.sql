@@ -1,4 +1,4 @@
---DDL for Sprint 02. Includes 'user' and 'saleable_item' tables, and sample data. Primarily for testing "add item" functionality.
+--DDL for Sprint 03. "saleable_item" has been renamed to "listing".
 CREATE SCHEMA sprint03;
 GO
 
@@ -37,7 +37,18 @@ CREATE TABLE sprint03.listing(
 	,itemImage VARBINARY(MAX)
 	,sellerUserID INT NOT NULL
 	,datetimeAdded DATETIME2 DEFAULT GETDATE()
-	,datetimeModified DATETIME2 DEFAULT GETDATE()
+	,datetimeModified DATETIME2
 	,CONSTRAINT listing_pk PRIMARY KEY(itemID)
 	,CONSTRAINT listing_to_seller_fk FOREIGN KEY(sellerUserID) REFERENCES sprint03.[user](userID)
 );
+GO
+
+--Sets the datetimeModified whenever a listing is altered.
+CREATE TRIGGER sprint03_listing_INSERT_UPDATE
+	ON sprint03.listing
+	AFTER INSERT, UPDATE
+AS
+	UPDATE sprint03.listing
+	SET datetimeModified = GETDATE()
+	WHERE itemID IN (SELECT itemID FROM Inserted)
+;
