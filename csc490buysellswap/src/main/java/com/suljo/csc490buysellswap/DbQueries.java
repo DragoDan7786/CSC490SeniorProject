@@ -14,4 +14,8 @@ public class DbQueries {
                 (?,?,?,?,?,?,?)
             ;
             """;
+
+    public static String selectUserItems = """
+            
+            """;
 }
