@@ -1,6 +1,7 @@
 package com.suljo.csc490buysellswap;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -33,20 +34,24 @@ public class RegistrationViewController {
     private Label errorLabel;
     @FXML
     private TextField stateField;
+    @FXML
+    private DatePicker birthDatePicker;
 
     /*
     * Creates and registers a user
      */
     @FXML
-    private void registerOnAction()
-    {
+    private void registerOnAction() {
         //Get the user input.
         String username = usernameField.getText();
         String password = pwField.getText();
         String fName = fNameField.getText();
         String mName = mNameField.getText();
         String lName = lNameField.getText();
+        String bDate = birthDatePicker.toString();
         String streetName = streetField.getText();
+        String townName = townField.getText();
+        String stateName = stateField.getText();
         String zipCode = zipField.getText();
         String phoneNumber = phoneField.getText();
         pwField.clear();
@@ -69,8 +74,14 @@ public class RegistrationViewController {
         } else if (lName.isEmpty()) {
             errorLabel.setText("Please enter your last name");
             errorLabel.setVisible(true);
-        } else if (streetName.isEmpty()) {
+        } else if (bDate.isEmpty()) {
+            errorLabel.setText("Please enter your date of birth");
+            errorLabel.setVisible(true);
+        }else if (streetName.isEmpty()) {
             errorLabel.setText("Street name must be present");
+            errorLabel.setVisible(true);
+        }else if (stateName.isEmpty()) {
+            errorLabel.setText("State name must be present");
             errorLabel.setVisible(true);
         } else if (zipCode.isEmpty()) {
             errorLabel.setText("Zip code must be present");
@@ -94,8 +105,21 @@ public class RegistrationViewController {
                 System.out.println(e);
             }
             //User is not duplicate so insert user into table.
+            try {
+
+                if (DbOperations.addNewUser(username,password,fName,mName,lName,bDate,streetName,townName,stateName,zipCode,phoneNumber) > 0){
+                    errorLabel.setText("User Created");
+                    errorLabel.setVisible(true);
+                    //clears fields
+                    clearFields();
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
+
+
 
     /**
      * Return to the login view from the registration view without submitting registration data.
@@ -196,5 +220,19 @@ public class RegistrationViewController {
                 }
             }
         return count != 0;
+    }
+
+    private void clearFields(){
+        usernameField.clear();
+        pwField.clear();
+        fNameField.clear();
+        mNameField.clear();
+        lNameField.clear();
+        birthDatePicker.cancelEdit();
+        streetField.clear();
+        townField.clear();
+        stateField.clear();
+        zipField.clear();
+        phoneField.clear();
     }
 }

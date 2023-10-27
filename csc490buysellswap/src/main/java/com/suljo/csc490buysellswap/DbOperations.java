@@ -85,12 +85,29 @@ public class DbOperations {
     }
 
     /**
-     * Attempts to create new user in database. Checks to see if user exists in database, and throws Exception if user exists.
-     * If no user exists, takes parameters from Registration form and adds new user to database.
+     * Attempts to create new user in database. Takes parameters from Registration form and adds new user to database. returns number of rows affected. Successful if ros affected >=1. Does not allow for creation of admin through gui
      *
      * @param userName
      * @param pWord
      * @return
      */
-
+    public static int addNewUser(String userName,String  pWord,String  firstName,String  middleName,String  lastName,String  dateOfBirth,String  street,String  city,String  state,String  zip,String  phoneNum) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.insertNewUserQuery);
+        prepStmt.setString(1, userName);
+        prepStmt.setString(2, pWord);
+        prepStmt.setString(3, firstName);
+        prepStmt.setString(4, middleName);
+        prepStmt.setString(5, lastName);
+        prepStmt.setString(6, dateOfBirth;
+        prepStmt.setString(7, street);
+        prepStmt.setString(8, city);
+        prepStmt.setString(9, state);
+        prepStmt.setString(10, zip);
+        prepStmt.setString(11, phoneNum);
+        prepStmt.setBoolean(11, false);
+        int rowsAffected = prepStmt.executeUpdate();
+        conn.close();
+        return rowsAffected;
+    }
 }

@@ -15,11 +15,11 @@ public class DbQueries {
             ;
             """;
 
-    public static String registrationQuery = """
+    public static String insertNewUserQuery = """
             INSERT INTO sprint03.user
-                (userName, pWord, firstName, lastName, dateOfBirth, street, city, state, zip, phoneNum)
+                (userName, pWord, firstName, middleName, lastName, dateOfBirth, street, city, state, zip, phoneNum, isAdmin)
             VALUES
-                (?,?,?,?,?,?,?,?,?,?)
+                (?,?,?,?,?,?,?,?,?,?,?)
             ;
             """;
 }
