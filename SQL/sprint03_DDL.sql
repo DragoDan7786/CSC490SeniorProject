@@ -27,18 +27,18 @@ INSERT INTO sprint03.[user]
 ;
 
 CREATE TABLE sprint03.listing(
-	itemID INT IDENTITY(1,1)
+	listingID INT IDENTITY(1,1)
 	,name VARCHAR(250) NOT NULL
 	,description VARCHAR(MAX) NOT NULL DEFAULT ''
 	,priceInCents INT NOT NULL
 	,isAvailable BIT NOT NULL DEFAULT 1
 	,isForRent BIT NOT NULL --false indicates an item for sale, not for rental
 	,rentalPeriodHours INT NOT NULL
-	,itemImage VARBINARY(MAX)
+	,listingImage VARBINARY(MAX)
 	,sellerUserID INT NOT NULL
 	,datetimeAdded DATETIME2 DEFAULT GETDATE()
 	,datetimeModified DATETIME2
-	,CONSTRAINT listing_pk PRIMARY KEY(itemID)
+	,CONSTRAINT listing_pk PRIMARY KEY(listingID)
 	,CONSTRAINT listing_to_seller_fk FOREIGN KEY(sellerUserID) REFERENCES sprint03.[user](userID)
 );
 GO
@@ -50,5 +50,5 @@ CREATE TRIGGER sprint03_listing_INSERT_UPDATE
 AS
 	UPDATE sprint03.listing
 	SET datetimeModified = GETDATE()
-	WHERE itemID IN (SELECT itemID FROM Inserted)
+	WHERE listingID IN (SELECT listingID FROM Inserted)
 ;
