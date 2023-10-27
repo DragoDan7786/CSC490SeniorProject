@@ -3,7 +3,7 @@ package com.suljo.csc490buysellswap;
 public class DbQueries {
     public static String loginQuery = """
                SELECT *
-               FROM sprint02.[user]
+               FROM sprint03.[user]
                WHERE userName = ? AND pWord = ?;
                """;
 

@@ -38,6 +38,10 @@ public class RegistrationViewController {
     @FXML
     private DatePicker birthDatePicker;
 
+    public void initialize() {
+        errorLabel.setVisible(false);
+    }
+
     /*
     * Creates and registers a user
      */
