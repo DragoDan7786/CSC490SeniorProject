@@ -18,6 +18,8 @@ public class RegistrationViewController {
     @FXML
     private TextField fNameField;
     @FXML
+    private TextField mNameField;
+    @FXML
     private TextField lNameField;
     @FXML
     private TextField streetField;
@@ -29,6 +31,8 @@ public class RegistrationViewController {
     private TextField phoneField;
     @FXML
     private Label errorLabel;
+    @FXML
+    private TextField stateField;
 
     /*
     * Creates and registers a user
@@ -40,6 +44,7 @@ public class RegistrationViewController {
         String username = usernameField.getText();
         String password = pwField.getText();
         String fName = fNameField.getText();
+        String mName = mNameField.getText();
         String lName = lNameField.getText();
         String streetName = streetField.getText();
         String zipCode = zipField.getText();
@@ -58,6 +63,9 @@ public class RegistrationViewController {
         } else if (fName.isEmpty()) {
             errorLabel.setText("Please enter your first name");
             errorLabel.setVisible(true);
+        } else if (mName.isEmpty()) {
+            errorLabel.setText("Please enter your middle name");
+            errorLabel.setVisible(true);
         } else if (lName.isEmpty()) {
             errorLabel.setText("Please enter your last name");
             errorLabel.setVisible(true);
@@ -73,18 +81,10 @@ public class RegistrationViewController {
         } else {
             //Run the login operation. Returns true if user was found and set, in which case, switch the view.
             try {
-                //If the username/password combo found, currentUser is initialized and the view is switched.
+                //If the username/password combo found, throw user found error.
                 if (DbOperations.login(username, password)) {
-                    try {
-                        BuySellSwapApp.setRoot("user-view");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                //If the username/password combo is not found, an error message is displayed.
-                else {
-                    errorLabel.setText("Username or password incorrect.");
-                    errorLabel.setVisible(true);
+                        errorLabel.setText("Can not create user, user already exists");
+                        errorLabel.setVisible(true);
                 }
                 //If the database could not be connected to, a SQLException is thrown, which is caught here.
                 //This may happen at initial app startup if the database is paused.
@@ -93,6 +93,7 @@ public class RegistrationViewController {
                 errorLabel.setVisible(true);
                 System.out.println(e);
             }
+            //User is not duplicate so insert user into table.
         }
     }
 

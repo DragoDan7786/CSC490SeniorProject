@@ -14,4 +14,12 @@ public class DbQueries {
                 (?,?,?,?,?,?,?)
             ;
             """;
+
+    public static String registrationQuery = """
+            INSERT INTO sprint03.user
+                (userName, pWord, firstName, lastName, dateOfBirth, street, city, state, zip, phoneNum)
+            VALUES
+                (?,?,?,?,?,?,?,?,?,?)
+            ;
+            """;
 }
