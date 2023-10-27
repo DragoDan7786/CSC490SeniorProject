@@ -4,7 +4,7 @@ import java.sql.Blob;
 
 public class Listing {
     private int listingID;
-    private String title; //TODO: Should change DDL name from
+    private String title;
     private String description;
     private int priceInCents;
     private boolean isAvailable;

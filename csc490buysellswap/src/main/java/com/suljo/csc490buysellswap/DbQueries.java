@@ -9,7 +9,7 @@ public class DbQueries {
 
     public static String insertNewListingQuery = """
             INSERT INTO sprint03.listing
-                (name, description, priceInCents, isForRent, rentalPeriodHours, sellerUserID, itemImage)
+                (name, description, priceInCents, isForRent, rentalPeriodHours, sellerUserID, listingImage)
             VALUES
                 (?,?,?,?,?,?,?)
             ;
