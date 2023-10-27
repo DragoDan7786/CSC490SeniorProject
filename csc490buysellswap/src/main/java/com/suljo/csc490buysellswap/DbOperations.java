@@ -84,4 +84,13 @@ public class DbOperations {
         return rowsAffected;
     }
 
+    /**
+     * Attempts to create new user in database. Checks to see if user exists in database, and throws Exception if user exists.
+     * If no user exists, takes parameters from Registration form and adds new user to database.
+     *
+     * @param userName
+     * @param pWord
+     * @return
+     */
+
 }

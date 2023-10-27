@@ -23,17 +23,17 @@
             <Label fx:id="errorLabel" layoutX="350.0" layoutY="570.0" text="Error text." textAlignment="CENTER" textFill="#cd0101" />
             <Button layoutX="350.0" layoutY="498.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="263.0" text="Submit" />
             <Label layoutX="350.0" layoutY="195.0" text="First Name" />
-            <PasswordField layoutX="350.0" layoutY="210.0" prefHeight="25.0" prefWidth="263.0" />
+            <PasswordField fx:id="fNameField" layoutX="350.0" layoutY="210.0" prefHeight="25.0" prefWidth="263.0" />
             <Label layoutX="350.0" layoutY="245.0" text="Last Name" />
-            <PasswordField layoutX="350.0" layoutY="260.0" prefHeight="25.0" prefWidth="263.0" />
+            <PasswordField fx:id="lNameField" layoutX="350.0" layoutY="260.0" prefHeight="25.0" prefWidth="263.0" />
             <Label layoutX="350.0" layoutY="295.0" text="Street" />
-            <PasswordField layoutX="350.0" layoutY="310.0" prefHeight="25.0" prefWidth="263.0" />
+            <PasswordField fx:id="streetField" layoutX="350.0" layoutY="310.0" prefHeight="25.0" prefWidth="263.0" />
             <Label layoutX="350.0" layoutY="345.0" text="Town / City" />
-            <PasswordField layoutX="350.0" layoutY="360.0" prefHeight="25.0" prefWidth="263.0" />
+            <PasswordField fx:id="townField" layoutX="350.0" layoutY="360.0" prefHeight="25.0" prefWidth="263.0" />
             <Label layoutX="350.0" layoutY="395.0" text="ZIP" />
-            <PasswordField layoutX="350.0" layoutY="410.0" prefHeight="25.0" prefWidth="263.0" />
+            <PasswordField fx:id="zipField" layoutX="350.0" layoutY="410.0" prefHeight="25.0" prefWidth="263.0" />
             <Label layoutX="350.0" layoutY="445.0" text="Phone Number" />
-            <PasswordField layoutX="350.0" layoutY="460.0" prefHeight="25.0" prefWidth="263.0" />
+            <PasswordField fx:id="phoneField" layoutX="350.0" layoutY="460.0" prefHeight="25.0" prefWidth="263.0" />
             <Button layoutX="350.0" layoutY="534.0" mnemonicParsing="false" onAction="#cancelButtonOnAction" prefHeight="25.0" prefWidth="263.0" text="Cancel" />
          </children>
       </Pane>

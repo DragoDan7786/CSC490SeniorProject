@@ -18,7 +18,7 @@ public class BuySellSwapApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         dbProperties = new Properties();
-        dbProperties.load(new FileInputStream("./src/main/java/com/suljo/csc490buysellswap/db.properties"));
+        dbProperties.load(new FileInputStream("C:\\Users\\sulem\\IdeaProjects\\CSC490SeniorProject\\csc490buysellswap\\src\\main\\java\\com\\suljo\\csc490buysellswap\\db.properties"));
         scene = new Scene(loadFXML("login-view"), 960, 645);
         stage.setTitle("CSC 490 Buy-Sell-Swap");
         stage.setScene(scene);
