@@ -15,7 +15,15 @@ public class DbQueries {
             ;
             """;
 
+
+    public static String insertNewUserQuery = """
+            INSERT INTO sprint03.[user]
+                (userName, pWord, firstName, middleName, lastName, dateOfBirth, street, city, state, zip, phoneNum, isAdmin)
+            VALUES
+                (?,?,?,?,?,?,?,?,?,?,?,?)
+            ;
+  
     public static String selectUserItems = """
             
-            """;
+      """;
 }
