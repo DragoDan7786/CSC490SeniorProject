@@ -2,6 +2,7 @@ package com.suljo.csc490buysellswap;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -54,14 +55,24 @@ public class UserViewController {
     private Rectangle listAnItemImagePreviewFrame;
     private File listAnItemImage;
     //***********List An Item Elements END**********//
+    //***********My Listings Elements BEGIN**********//
+    @FXML
+    private TableView myListingsTableView;
+    @FXML
+    private TableColumn<Listing, Integer> myListingsTableColumnId;
+    @FXML
+    private TableColumn<Listing, String> myListingsTableColumnTitle;
+    @FXML
+    private TableColumn<Listing, String> myListingsTableColumnListedDatetime;
+    //***********My Listings Elements END**********//
     //***********Sell Tab Elements END**********//
 
     //***********General User View Methods BEGIN**********//
     public void initialize() {
-        //TODO complete this stub (there will probably be more to do here as the app develops)
         //If the currentUser isn't an admin, disable the admin tab.
         adminTab.setDisable(!BuySellSwapApp.getCurrentUser().isAdmin());
         initializeListAnItemTab();
+        initializeMyListingsTab();
     }
 
     /**
@@ -70,7 +81,6 @@ public class UserViewController {
      */
     @FXML
     private void menuItemLogoutOnAction() {
-        //TODO this may need to be updated to do more, such as disconnect from the database
         BuySellSwapApp.setCurrentUser(null);
         try {
             BuySellSwapApp.setRoot("login-view");
@@ -229,4 +239,27 @@ public class UserViewController {
         }
     }
     //***********List An Item Methods END**********//
+    //***********My Listings Methods BEGIN**********//
+    private void initializeMyListingsTab(){
+        //Set up the TableView.
+        myListingsTableColumnId.setCellValueFactory(new PropertyValueFactory<Listing, Integer>("listingID"));
+        myListingsTableColumnTitle.setCellValueFactory(new PropertyValueFactory<Listing, String>("title"));
+        myListingsTableColumnListedDatetime.setCellValueFactory(new PropertyValueFactory<Listing, String>("datetimeAdded"));
+        myListingsPopulateTableView();
+    }
+
+    /**
+     * Populates the TableView with the current user's listings.
+     */
+    private void myListingsPopulateTableView(){
+        myListingsTableView.getItems().clear();
+        try {
+            for (Listing listing: DbOperations.selectMyListings()){
+                myListingsTableView.getItems().add(listing);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    //***********My Listings Methods END**********//
 }

@@ -73,15 +73,16 @@
                                           <Button layoutX="238.0" layoutY="314.0" mnemonicParsing="false" text="Save Changes" />
                                           <Button layoutX="217.0" layoutY="349.0" mnemonicParsing="false" text="Make Unavailable" />
                                           <ImageView fitHeight="300.0" fitWidth="400.0" layoutX="332.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Button layoutX="215.0" layoutY="385.0" mnemonicParsing="false" text="Refresh TableView" />
                                        </children>
                                     </Pane>
                                  </center>
                                  <left>
-                                    <TableView prefHeight="562.0" prefWidth="228.0" BorderPane.alignment="CENTER">
+                                    <TableView fx:id="myListingsTableView" prefHeight="562.0" prefWidth="228.0" BorderPane.alignment="CENTER">
                                       <columns>
-                                        <TableColumn prefWidth="75.0" text="ID" />
-                                        <TableColumn prefWidth="75.0" text="Title" />
-                                          <TableColumn prefWidth="75.0" text="Listed" />
+                                        <TableColumn fx:id="myListingsTableColumnId" prefWidth="75.0" text="ID" />
+                                        <TableColumn fx:id="myListingsTableColumnTitle" prefWidth="75.0" text="Title" />
+                                          <TableColumn fx:id="myListingsTableColumnListedDatetime" prefWidth="75.0" text="Listed" />
                                       </columns>
                                     </TableView>
                                  </left>

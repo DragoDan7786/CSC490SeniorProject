@@ -24,8 +24,8 @@ public class DbQueries {
         ;
         """;
 
-    public static String selectUserItemsQuery = """
-        SELECT listingID, title, description, priceInCents, isAvailable, isForRent, rentalPeriodHours, listingImage, sellerUserID, datetimeAdded, datetimeModified
+    public static String selectMyListingsQuery = """
+        SELECT *
         FROM sprint03.listing
         WHERE sellerUserID = ?
         ;
