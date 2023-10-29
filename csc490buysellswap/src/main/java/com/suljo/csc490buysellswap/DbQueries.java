@@ -28,6 +28,7 @@ public class DbQueries {
         SELECT *
         FROM sprint03.listing
         WHERE sellerUserID = ?
+        ORDER BY datetimeAdded
         ;
         """;
 }
