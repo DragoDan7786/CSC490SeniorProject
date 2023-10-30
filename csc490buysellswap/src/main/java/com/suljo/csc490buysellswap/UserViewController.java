@@ -1,16 +1,21 @@
 package com.suljo.csc490buysellswap;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import org.w3c.dom.events.MouseEvent;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 
 /**
@@ -64,6 +69,22 @@ public class UserViewController {
     private TableColumn<Listing, String> myListingsTableColumnTitle;
     @FXML
     private TableColumn<Listing, String> myListingsTableColumnListedDatetime;
+    @FXML
+    private TextField myListingsDetailViewTitle;
+    @FXML
+    private TextField myListingsDetailViewAvailable;
+    @FXML
+    private TextField myListingsDetailViewListingID;
+    @FXML
+    private TextArea myListingsDetailViewDescription;
+    @FXML
+    private TextField myListingsDetailViewPrice;
+    @FXML
+    private TextField myListingsDetailViewAdded;
+    @FXML
+    private TextField myListingsDetailViewModified;
+    @FXML
+    private ImageView myListingsDetailImageView;
     //***********My Listings Elements END**********//
     //***********Sell Tab Elements END**********//
 
@@ -246,8 +267,35 @@ public class UserViewController {
         myListingsTableColumnTitle.setCellValueFactory(new PropertyValueFactory<Listing, String>("title"));
         myListingsTableColumnListedDatetime.setCellValueFactory(new PropertyValueFactory<Listing, String>("datetimeAdded"));
         myListingsPopulateTableView();
+        myListingsDisableDetailedView();
+        myListingsDetailImageView.setVisible(false);
     }
 
+    /**
+     * Disable the fields in the "detailed view"
+     */
+    private void myListingsEnableDetailedView(){
+        myListingsDetailViewTitle.setEditable(true);
+        myListingsDetailViewAvailable.setEditable(true);
+        myListingsDetailViewListingID.setEditable(true);
+        myListingsDetailViewDescription.setEditable(true);
+        myListingsDetailViewPrice.setEditable(true);
+        myListingsDetailViewAdded.setEditable(true);
+        myListingsDetailViewModified.setEditable(true);
+    }
+
+    /**
+     * Enable the fields in the "detailed view".
+     */
+    private void myListingsDisableDetailedView(){
+        myListingsDetailViewTitle.setEditable(false);
+        myListingsDetailViewAvailable.setEditable(false);
+        myListingsDetailViewListingID.setEditable(false);
+        myListingsDetailViewDescription.setEditable(false);
+        myListingsDetailViewPrice.setEditable(false);
+        myListingsDetailViewAdded.setEditable(false);
+        myListingsDetailViewModified.setEditable(false);
+    }
     /**
      * Populates the TableView with the current user's listings.
      */
@@ -259,6 +307,58 @@ public class UserViewController {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Populates the fields that constitute the "detailed view" with the values associated with the listing selected in
+     * the TableView.
+     */
+    @FXML
+    private void myListingsShowSelectedListing(){
+        ObservableList<Listing> listings = (ObservableList<Listing>) myListingsTableView.getItems();
+        int selectionIndex = myListingsTableView.getSelectionModel().getSelectedIndex();
+        if (selectionIndex >= 0 && selectionIndex < listings.size()){
+            Listing selection = listings.get(selectionIndex);
+            myListingsDetailViewTitle.setText(selection.getTitle());
+            if (selection.isAvailable()){
+                myListingsDetailViewAvailable.setText("Available");
+            } else {
+                myListingsDetailViewAvailable.setText("Unavailable");
+            }
+            myListingsDetailViewListingID.setText(Integer.toString(selection.getListingID()));
+            myListingsDetailViewDescription.setText(selection.getDescription());
+            if (selection.isForRent()) {
+                int rentalPeriodHours = selection.getRentalPeriodHours();
+                if (rentalPeriodHours == 1) {
+                    myListingsDetailViewPrice.setText(String.format("$%.2f per hour", selection.getPriceInCents() / 100.00));
+                } else if (rentalPeriodHours < 24){
+                    myListingsDetailViewPrice.setText(String.format("$%.2f per %d hours",
+                            selection.getPriceInCents() / 100.00, rentalPeriodHours));
+                }else if (rentalPeriodHours == 24){
+                    myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
+                } else if (rentalPeriodHours % 24 == 0){
+                    myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
+                } else {
+                    myListingsDetailViewPrice.setText(String.format("$%.2f for %d days and %d hours",
+                            selection.getPriceInCents()/100.00, rentalPeriodHours/24, rentalPeriodHours % 24));
+                }
+            } else {
+                myListingsDetailViewPrice.setText(String.format("$%.2f", selection.getPriceInCents()/100.0));
+            }
+            myListingsDetailViewAdded.setText(selection.getDatetimeAdded());
+            myListingsDetailViewModified.setText(selection.getDatetimeModified());
+            try {
+                Blob imageBlob = selection.getImage();
+                if (imageBlob != null){
+                    myListingsDetailImageView.setImage(new Image(selection.getImage().getBinaryStream()));
+                    myListingsDetailImageView.setVisible(true);
+                } else {
+                    myListingsDetailImageView.setVisible(false);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     //***********My Listings Methods END**********//

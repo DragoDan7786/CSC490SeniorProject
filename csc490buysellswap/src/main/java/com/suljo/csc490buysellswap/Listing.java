@@ -66,4 +66,68 @@ public class Listing {
     public void setDatetimeAdded(String datetimeAdded) {
         this.datetimeAdded = datetimeAdded;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getPriceInCents() {
+        return priceInCents;
+    }
+
+    public void setPriceInCents(int priceInCents) {
+        this.priceInCents = priceInCents;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
+    }
+
+    public boolean isForRent() {
+        return isForRent;
+    }
+
+    public void setForRent(boolean forRent) {
+        isForRent = forRent;
+    }
+
+    public int getRentalPeriodHours() {
+        return rentalPeriodHours;
+    }
+
+    public void setRentalPeriodHours(int rentalPeriodHours) {
+        this.rentalPeriodHours = rentalPeriodHours;
+    }
+
+    public Blob getImage() {
+        return image;
+    }
+
+    public void setImage(Blob image) {
+        this.image = image;
+    }
+
+    public int getSellerUserID() {
+        return sellerUserID;
+    }
+
+    public void setSellerUserID(int sellerUserID) {
+        this.sellerUserID = sellerUserID;
+    }
+
+    public String getDatetimeModified() {
+        return datetimeModified;
+    }
+
+    public void setDatetimeModified(String datetimeModified) {
+        this.datetimeModified = datetimeModified;
+    }
 }
