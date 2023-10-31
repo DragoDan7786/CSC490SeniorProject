@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DbOperations {
     /**
@@ -85,8 +86,9 @@ public class DbOperations {
     }
 
     /**
-     * Attempts to create new user in database. Takes parameters from Registration form and adds new user to database. returns number of rows affected. Successful if ros affected >=1. Does not allow for creation of admin through gui
-     *
+     * Attempts to create new user in database. Takes parameters from Registration form and adds new user to database.
+     * Returns number of rows affected. Successful if ros affected >=1.
+     * Does not allow for creation of admin through GUI.
      * @param userName
      * @param pWord
      * @return
@@ -109,5 +111,37 @@ public class DbOperations {
         int rowsAffected = prepStmt.executeUpdate();
         conn.close();
         return rowsAffected;
+    }
+
+    /**
+     * Queries the database for all listings belonging to the current user.
+     * @return An ArrayList of the Listings.
+     * @throws SQLException
+     */
+    public static ArrayList<Listing> selectMyListings() throws SQLException {
+        ArrayList<Listing> listings = new ArrayList<>();
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectMyListingsQuery);
+        prepStmt.setInt(1, BuySellSwapApp.getCurrentUser().getUserID());
+        ResultSet result = prepStmt.executeQuery();
+        while (result.next()){
+            //Get the values for the current item.
+            int listingID = result.getInt("listingID");
+            String title = result.getString("title");
+            String description = result.getString("description");
+            int priceInCents = result.getInt("priceInCents");
+            boolean isAvailable = result.getBoolean("isAvailable");
+            boolean isForRent = result.getBoolean("isForRent");
+            int rentalPeriodHours = result.getInt("rentalPeriodHours");
+            Blob image = result.getBlob("listingImage"); //might be null!
+            int sellerUserID = result.getInt("sellerUserID");
+            String datetimeAdded = result.getString("datetimeAdded");
+            String datetimeModified = result.getString("datetimeModified");
+            //Add the listing to the ArrayList.
+            listings.add(new Listing(listingID, title, description, priceInCents, isAvailable, isForRent,
+                    rentalPeriodHours, image, sellerUserID, datetimeAdded, datetimeModified));
+        }
+        conn.close();
+        return listings;
     }
 }

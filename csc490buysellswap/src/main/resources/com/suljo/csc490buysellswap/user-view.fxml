@@ -62,26 +62,27 @@
                                  <center>
                                     <Pane>
                                        <children>
-                                          <TextField alignment="CENTER_RIGHT" layoutX="278.0" prefHeight="25.0" prefWidth="50.0" text="ID" />
-                                          <TextField text="Title" />
-                                          <TextArea layoutY="23.0" prefHeight="200.0" prefWidth="328.0" text="Description." />
-                                          <TextField layoutY="223.0" prefHeight="25.0" prefWidth="327.0" text="Price" />
-                                          <TextField alignment="CENTER" layoutX="169.0" layoutY="-1.0" prefHeight="25.0" prefWidth="81.0" text="Available" />
-                                          <TextField layoutY="248.0" prefHeight="25.0" prefWidth="164.0" text="Added" />
-                                          <TextField layoutX="164.0" layoutY="248.0" prefHeight="25.0" prefWidth="164.0" text="Modified" />
+                                          <TextField fx:id="myListingsDetailViewListingID" alignment="CENTER_RIGHT" layoutX="278.0" prefHeight="25.0" prefWidth="50.0" text="ID" />
+                                          <TextField fx:id="myListingsDetailViewTitle" text="Title" />
+                                          <TextArea fx:id="myListingsDetailViewDescription" layoutY="23.0" prefHeight="200.0" prefWidth="328.0" text="Description." />
+                                          <TextField fx:id="myListingsDetailViewPrice" layoutY="223.0" prefHeight="25.0" prefWidth="327.0" text="Price" />
+                                          <TextField fx:id="myListingsDetailViewAvailable" alignment="CENTER" layoutX="169.0" layoutY="-1.0" prefHeight="25.0" prefWidth="81.0" text="Available" />
+                                          <TextField fx:id="myListingsDetailViewAdded" layoutY="248.0" prefHeight="25.0" prefWidth="164.0" text="Added" />
+                                          <TextField fx:id="myListingsDetailViewModified" layoutX="164.0" layoutY="248.0" prefHeight="25.0" prefWidth="164.0" text="Modified" />
                                           <Button layoutX="254.0" layoutY="281.0" mnemonicParsing="false" text="Edit Listing" />
                                           <Button layoutX="238.0" layoutY="314.0" mnemonicParsing="false" text="Save Changes" />
                                           <Button layoutX="217.0" layoutY="349.0" mnemonicParsing="false" text="Make Unavailable" />
-                                          <ImageView fitHeight="300.0" fitWidth="400.0" layoutX="332.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" />
+                                          <ImageView fx:id="myListingsDetailImageView" fitHeight="300.0" fitWidth="395.0" layoutX="337.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                                          <Button layoutX="215.0" layoutY="385.0" mnemonicParsing="false" text="Refresh TableView" />
                                        </children>
                                     </Pane>
                                  </center>
                                  <left>
-                                    <TableView prefHeight="562.0" prefWidth="228.0" BorderPane.alignment="CENTER">
+                                    <TableView fx:id="myListingsTableView" onMouseClicked="#myListingsShowSelectedListing" prefHeight="562.0" prefWidth="228.0" BorderPane.alignment="CENTER">
                                       <columns>
-                                        <TableColumn prefWidth="75.0" text="ID" />
-                                        <TableColumn prefWidth="75.0" text="Title" />
-                                          <TableColumn prefWidth="75.0" text="Listed" />
+                                        <TableColumn fx:id="myListingsTableColumnId" prefWidth="75.0" text="ID" />
+                                        <TableColumn fx:id="myListingsTableColumnTitle" prefWidth="75.0" text="Title" />
+                                          <TableColumn fx:id="myListingsTableColumnListedDatetime" prefWidth="75.0" text="Listed" />
                                       </columns>
                                     </TableView>
                                  </left>
