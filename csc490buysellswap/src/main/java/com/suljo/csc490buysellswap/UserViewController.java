@@ -17,6 +17,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.Optional;
 
 /**
  * Controller for user-view.fxml
@@ -86,6 +87,9 @@ public class UserViewController {
     @FXML
     private ImageView myListingsDetailImageView;
     //***********My Listings Elements END**********//
+    //***********Account Management Elements BEGIN**********//
+
+    //***********Account Management Elements END**********//
     //***********Sell Tab Elements END**********//
 
     //***********General User View Methods BEGIN**********//
@@ -362,4 +366,25 @@ public class UserViewController {
         }
     }
     //***********My Listings Methods END**********//
+    //***********Account Management Methods BEGIN**********//
+    @FXML
+    private void acctMgmtDisableAccountButtonOnAction(){
+        //Get user confirmation of their choice.
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Disable Account Confirmation");
+        alert.setHeaderText("Are you sure you want to disable your account?");
+        alert.setContentText("""
+                Disabling your account will disable and hide all your listings.
+                You will no longer be able to interact with the application except to re-enable your account.
+                
+                Are you sure you want to disable your account?
+                """);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+           //Disable the account.
+           //Update database accordingly: set user isDisabled, user's listings isDisabled and isHidden.
+        }
+    }
+    //***********Account Management Methods END**********//
 }

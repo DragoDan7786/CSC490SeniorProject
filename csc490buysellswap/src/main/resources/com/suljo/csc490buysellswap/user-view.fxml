@@ -163,6 +163,15 @@
                   </Pane>
               </content>
             </Tab>
+            <Tab text="Account Management">
+              <content>
+                  <Pane>
+                     <children>
+                        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#acctMgmtDisableAccountButtonOnAction" text="Disable Account" />
+                     </children>
+                  </Pane>
+              </content>
+            </Tab>
          </tabs>
       </TabPane>
    </center>
