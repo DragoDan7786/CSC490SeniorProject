@@ -39,6 +39,7 @@ public class RegistrationViewController {
     private DatePicker birthDatePicker;
 
     public void initialize() {
+        errorLabel.setWrapText(true);
         errorLabel.setVisible(false);
     }
 
