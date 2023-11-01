@@ -303,6 +303,7 @@ public class UserViewController {
     /**
      * Populates the TableView with the current user's listings.
      */
+    @FXML
     private void myListingsPopulateTableView(){
         myListingsTableView.getItems().clear();
         try {

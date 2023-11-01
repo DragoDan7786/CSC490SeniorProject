@@ -51,8 +51,10 @@ public class DbOperations {
                 String zip = result.getString("zip");
                 String phoneNum = result.getString("phoneNum");
                 boolean isAdmin = result.getBoolean("isAdmin");
+                boolean isActive = result.getBoolean("isActive");
+                String registrationDatetime = result.getString("registrationDatetime");
                 BuySellSwapApp.setCurrentUser(new User(userID, userName, pWord, firstName, middleName, lastName,
-                        dateOfBirth, street, city, state, zip, phoneNum, isAdmin));
+                        dateOfBirth, street, city, state, zip, phoneNum, isAdmin, isActive, registrationDatetime));
                 return true;
             }
             conn.close();
@@ -137,9 +139,13 @@ public class DbOperations {
             int sellerUserID = result.getInt("sellerUserID");
             String datetimeAdded = result.getString("datetimeAdded");
             String datetimeModified = result.getString("datetimeModified");
+            int soldAtPriceInCents = result.getInt("soldAtPriceInCents");
+            boolean isActive = result.getBoolean("isActive");
+            boolean isVisible = result.getBoolean("isVisible");
             //Add the listing to the ArrayList.
             listings.add(new Listing(listingID, title, description, priceInCents, isAvailable, isForRent,
-                    rentalPeriodHours, image, sellerUserID, datetimeAdded, datetimeModified));
+                    rentalPeriodHours, image, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents,
+                    isActive, isVisible));
         }
         conn.close();
         return listings;
