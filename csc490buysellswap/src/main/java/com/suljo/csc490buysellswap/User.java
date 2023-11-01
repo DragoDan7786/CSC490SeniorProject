@@ -7,16 +7,15 @@ public class User {
     private String firstName;
     private String middleName;
     private String lastName;
-    //Should this really be a string?
-    //Or should it be an int, which can be translated to a date of birth - e.g., number of days since January 1st, 1900?
-    private String dateOfBirth;
+    private String dateOfBirth; //Refactor this and other dates from String to Date or to LocalDate?
     private String street;
     private String city;
     private String state;
     private String zip;
     private String phoneNum;
-    //private String hash;
-    private Boolean isAdmin;
+    private boolean isAdmin;
+    private boolean isActive;
+    private String registrationDatetime;
 
     /**
      * Default constructor.
@@ -25,9 +24,9 @@ public class User {
 
     }
 
-    public User(int userID, String userName, String password, String firstName, String middleName,
-                String lastName, String dateOfBirth, String street, String city, String state,
-                String zip, String phoneNum, Boolean isAdmin) {
+    public User(int userID, String userName, String password, String firstName, String middleName, String lastName,
+                String dateOfBirth, String street, String city, String state, String zip, String phoneNum,
+                boolean isAdmin, boolean isActive, String registrationDatetime) {
         this.userID = userID;
         this.userName = userName;
         this.password = password;
@@ -41,7 +40,10 @@ public class User {
         this.zip = zip;
         this.phoneNum = phoneNum;
         this.isAdmin = isAdmin;
+        this.isActive = isActive;
+        this.registrationDatetime = registrationDatetime;
     }
+
     public String getUserName() {
         return userName;
     }
@@ -157,4 +159,19 @@ public class User {
         return this;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public String getRegistrationDatetime() {
+        return registrationDatetime;
+    }
+
+    public void setRegistrationDatetime(String registrationDatetime) {
+        this.registrationDatetime = registrationDatetime;
+    }
 }

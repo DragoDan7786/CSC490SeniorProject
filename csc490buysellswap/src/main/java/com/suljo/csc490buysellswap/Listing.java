@@ -14,22 +14,13 @@ public class Listing {
     private int sellerUserID;
     private String datetimeAdded;
     private String datetimeModified;
+    private int soldAtPriceInCents;
+    private boolean isActive;
+    private boolean isVisible;
 
-    /**
-     * Constructor for a listing with an image.
-     * @param listingID
-     * @param title
-     * @param description
-     * @param priceInCents
-     * @param isAvailable
-     * @param isForRent
-     * @param rentalPeriodHours
-     * @param image
-     * @param sellerUserID
-     * @param datetimeAdded
-     * @param datetimeModified
-     */
-    public Listing(int listingID, String title, String description, int priceInCents, boolean isAvailable, boolean isForRent, int rentalPeriodHours, Blob image, int sellerUserID, String datetimeAdded, String datetimeModified) {
+    public Listing(int listingID, String title, String description, int priceInCents, boolean isAvailable,
+                   boolean isForRent, int rentalPeriodHours, Blob image, int sellerUserID, String datetimeAdded,
+                   String datetimeModified, int soldAtPriceInCents, boolean isActive, boolean isVisible) {
         this.listingID = listingID;
         this.title = title;
         this.description = description;
@@ -41,6 +32,9 @@ public class Listing {
         this.sellerUserID = sellerUserID;
         this.datetimeAdded = datetimeAdded;
         this.datetimeModified = datetimeModified;
+        this.soldAtPriceInCents = soldAtPriceInCents;
+        this.isActive = isActive;
+        this.isVisible = isVisible;
     }
 
     public int getListingID() {
@@ -129,5 +123,29 @@ public class Listing {
 
     public void setDatetimeModified(String datetimeModified) {
         this.datetimeModified = datetimeModified;
+    }
+
+    public int getSoldAtPriceInCents() {
+        return soldAtPriceInCents;
+    }
+
+    public void setSoldAtPriceInCents(int soldAtPriceInCents) {
+        this.soldAtPriceInCents = soldAtPriceInCents;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }
