@@ -102,7 +102,7 @@ public class RegistrationViewController {
             //Run the login operation. Returns true if user was found and set, in which case, switch the view.
             try {
                 //If the username/password combo found, throw user found error.
-                if (DbOperations.login(username, password)) {
+                if (DbOperations.usernameExists(username)) {
                         errorLabel.setText("Can not create user, user already exists");
                         errorLabel.setVisible(true);
                 }
