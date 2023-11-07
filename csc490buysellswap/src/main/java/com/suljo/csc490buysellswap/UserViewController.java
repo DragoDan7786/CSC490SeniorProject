@@ -368,24 +368,72 @@ public class UserViewController {
     }
     //***********My Listings Methods END**********//
     //***********Account Management Methods BEGIN**********//
+
+    /**
+     * Disables the user's account after getting appropriate confirmation.
+     */
     @FXML
     private void acctMgmtDisableAccountButtonOnAction(){
         //Get user confirmation of their choice.
+        Optional<ButtonType> result = acctMgmtDisableAccountConfirmationAlert();
+        //If confirmation given, try to disable the account.
+        if (result.get() == ButtonType.OK){
+            try {
+                //Disable the account.
+                DbOperations.disableUserAccount(BuySellSwapApp.getCurrentUser().getUserID());
+                //If successful, inform the user and log them out.
+                acctMgmtAccountDisabledAlert();
+                menuItemLogoutOnAction();
+            } catch (SQLException e) {
+                //If unsuccessful, inform the user.
+                acctMgmtAccountDisabledFailureAlert();
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Generates an alert which gets confirmation from the user that they wish to disable their account.
+     * @return The user's choice.
+     */
+    private Optional<ButtonType> acctMgmtDisableAccountConfirmationAlert(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Disable Account Confirmation");
         alert.setHeaderText("Are you sure you want to disable your account?");
         alert.setContentText("""
                 Disabling your account will disable and hide all your listings.
-                You will no longer be able to interact with the application except to re-enable your account.
+                You will no longer be able to interact with the application without registering a new account.
                 
                 Are you sure you want to disable your account?
                 """);
+        return alert.showAndWait();
+    }
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-           //Disable the account.
-           //Update database accordingly: set user isDisabled, user's listings isDisabled and isHidden.
-        }
+    /**
+     * Displays an alert informing the user that their account was successfully disabled.
+     */
+    private void acctMgmtAccountDisabledAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Account Disabled");
+        alert.setHeaderText("Your account has been disabled.");
+        alert.setContentText("""
+                Your listings have been disabled and you will now be logged out.
+                If you would like to return to the app, please register a new account.
+                """);
+        alert.showAndWait();
+    }
+
+    /**
+     * Displays an alert to the user warning them that their account could not be disabled.
+     */
+    private void acctMgmtAccountDisabledFailureAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Account Not Disabled");
+        alert.setHeaderText("Your account could not be disabled.");
+        alert.setContentText("""
+                It is possible that a database error occurred. Please try again later.
+                """);
+        alert.show();
     }
     //***********Account Management Methods END**********//
 }

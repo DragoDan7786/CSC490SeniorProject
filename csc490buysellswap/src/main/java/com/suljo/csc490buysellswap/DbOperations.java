@@ -24,9 +24,9 @@ public class DbOperations {
      *
      * @param userName
      * @param pWord
-     * @return
+     * @return 0 if user found and active, -1 if username/password combination not matched, -2 if matched but user not active
      */
-    public static boolean login(String userName, String pWord) throws SQLException {
+    public static int login(String userName, String pWord) throws SQLException {
         //Get connection to database.
         Connection conn = connectToDb();
         //Query for a user with matching credentials.
@@ -40,6 +40,13 @@ public class DbOperations {
             String rowUserName = result.getString("userName");
             String rowPassWord = result.getString("pWord");
             if (userName.equals(rowUserName) && pWord.equals(rowPassWord)) {
+                //If the username/password combo is found, check if the user is active.
+                boolean isActive = result.getBoolean("isActive");
+                //If user is inactive, return -2.
+                if (!isActive){
+                    return -2;
+                }
+                //If user is active, return 0.
                 int userID = result.getInt("userID");
                 String firstName = result.getString("firstName");
                 String middleName = result.getString("middleName");
@@ -51,15 +58,15 @@ public class DbOperations {
                 String zip = result.getString("zip");
                 String phoneNum = result.getString("phoneNum");
                 boolean isAdmin = result.getBoolean("isAdmin");
-                boolean isActive = result.getBoolean("isActive");
                 String registrationDatetime = result.getString("registrationDatetime");
                 BuySellSwapApp.setCurrentUser(new User(userID, userName, pWord, firstName, middleName, lastName,
                         dateOfBirth, street, city, state, zip, phoneNum, isAdmin, isActive, registrationDatetime));
-                return true;
+                return 0;
             }
             conn.close();
         }
-        return false;
+        //If no user with this username/password combo is found, return -1.
+        return -1;
     }
 
     //If converted to a stored procedure instead of a straight insert query, could recover new item ID and return it to the user.
@@ -149,5 +156,37 @@ public class DbOperations {
         }
         conn.close();
         return listings;
+    }
+
+    /**
+     * Disables the account of the given user and all their listings by setting flags appropriately.
+     * @param userID
+     */
+    public static void disableUserAccount(int userID) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.disableAccountQuery);
+        prepStmt.setInt(1, userID);
+        //prepStmt.executeQuery();
+        prepStmt.execute();
+        conn.close();
+    }
+
+    /**
+     * Determines if a username is already in use by querying the user table for users with that username.
+     * @param username
+     * @return True if username exists, false otherwise.
+     * @throws SQLException
+     */
+    public static boolean usernameExists(String username) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.checkIfUsernameExistsQuery);
+        prepStmt.setString(1, username);
+        int rowsReturned = prepStmt.executeUpdate();
+        conn.close();
+        if (rowsReturned == 0){
+            return false;
+        } else {
+            return true;
+        }
     }
 }

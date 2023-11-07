@@ -31,4 +31,20 @@ public class DbQueries {
         ORDER BY datetimeAdded
         ;
         """;
+
+    /**
+     * See DDL for definition of the stored procedure.
+     * Briefly, sets isActive, isAvailable, and isVisible flags to false for all listings where
+     * the sellerUserID == @userID, and sets the isActive flag = false in the [user] table where
+     * userID == @userID.
+     */
+    public static String disableAccountQuery = """
+            EXEC sprint04.spDisableAccount @userID = ?;
+            """;
+
+    public static String checkIfUsernameExistsQuery = """
+            SELECT *
+            FROM sprint04.[user]
+            WHERE userID = ?
+            """;
 }
