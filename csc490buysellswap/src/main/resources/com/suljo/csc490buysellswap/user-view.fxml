@@ -78,7 +78,7 @@
                                     </Pane>
                                  </center>
                                  <left>
-                                    <TableView fx:id="myListingsTableView" onMouseClicked="#myListingsShowSelectedListing" prefHeight="562.0" prefWidth="228.0" BorderPane.alignment="CENTER">
+                                    <TableView fx:id="myListingsTableView" prefHeight="562.0" prefWidth="228.0" BorderPane.alignment="CENTER">
                                       <columns>
                                         <TableColumn fx:id="myListingsTableColumnId" prefWidth="75.0" text="ID" />
                                         <TableColumn fx:id="myListingsTableColumnTitle" prefWidth="75.0" text="Title" />

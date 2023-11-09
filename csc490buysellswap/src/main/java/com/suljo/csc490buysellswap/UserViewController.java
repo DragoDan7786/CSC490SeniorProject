@@ -273,6 +273,8 @@ public class UserViewController {
         myListingsPopulateTableView();
         myListingsDisableDetailedView();
         myListingsDetailImageView.setVisible(false);
+        myListingsTableView.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> myListingsShowSelectionDetails((Listing) newValue));
     }
 
     /**
@@ -365,6 +367,66 @@ public class UserViewController {
                 throw new RuntimeException(e);
             }
         }
+    }
+    private void myListingsShowSelectionDetails(Listing selection){
+        if (selection != null){
+            //Set simple parameters,
+            myListingsDetailViewTitle.setText(selection.getTitle());
+            myListingsDetailViewListingID.setText(Integer.toString(selection.getListingID()));
+            myListingsDetailViewDescription.setText(selection.getDescription());
+            myListingsDetailViewAdded.setText(selection.getDatetimeAdded());
+            myListingsDetailViewModified.setText(selection.getDatetimeModified());
+            if (selection.isAvailable()){
+                myListingsDetailViewAvailable.setText("Available");
+            } else {
+                myListingsDetailViewAvailable.setText("Unavailable");
+            }
+            //Determine correct price string to display.
+            if (selection.isForRent()) {
+                int rentalPeriodHours = selection.getRentalPeriodHours();
+                if (rentalPeriodHours == 1) {
+                    myListingsDetailViewPrice.setText(String.format("$%.2f per hour", selection.getPriceInCents() / 100.00));
+                } else if (rentalPeriodHours < 24){
+                    myListingsDetailViewPrice.setText(String.format("$%.2f per %d hours",
+                            selection.getPriceInCents() / 100.00, rentalPeriodHours));
+                }else if (rentalPeriodHours == 24){
+                    myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
+                } else if (rentalPeriodHours % 24 == 0){
+                    myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
+                } else {
+                    myListingsDetailViewPrice.setText(String.format("$%.2f for %d days and %d hours",
+                            selection.getPriceInCents()/100.00, rentalPeriodHours/24, rentalPeriodHours % 24));
+                }
+            } else {
+                myListingsDetailViewPrice.setText(String.format("$%.2f", selection.getPriceInCents()/100.0));
+            }
+            //Display the image, if any.
+            try {
+                Blob imageBlob = selection.getImage();
+                if (imageBlob != null){
+                    myListingsDetailImageView.setImage(new Image(selection.getImage().getBinaryStream()));
+                    myListingsDetailImageView.setVisible(true);
+                } else {
+                    myListingsDetailImageView.setVisible(false);
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            //If selection is null, clear the detailed view.
+            myListingsClearSelectionDetails();
+        }
+    }
+
+    private void myListingsClearSelectionDetails(){
+        myListingsDetailViewTitle.clear();
+        myListingsDetailViewListingID.clear();
+        myListingsDetailViewDescription.clear();
+        myListingsDetailViewAdded.clear();
+        myListingsDetailViewModified.clear();
+        myListingsDetailViewAvailable.clear();
+        myListingsDetailViewPrice.clear();
+        myListingsDetailImageView.setVisible(false);
     }
     //***********My Listings Methods END**********//
     //***********Account Management Methods BEGIN**********//
