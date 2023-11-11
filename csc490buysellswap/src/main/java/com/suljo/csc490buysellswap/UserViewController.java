@@ -13,8 +13,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 /**
@@ -350,7 +348,7 @@ public class UserViewController {
             }
         } else {
             //If selection is null, clear the detailed view.
-            myListingsClearSelectionDetails();
+            myListingsResetSelectionDetails();
         }
     }
 
@@ -382,14 +380,14 @@ public class UserViewController {
     /**
      * Clears the detailed view of My Listings.
      */
-    private void myListingsClearSelectionDetails(){
-        myListingsDetailViewTitle.clear();
-        myListingsDetailViewListingID.clear();
-        myListingsDetailViewDescription.clear();
-        myListingsDetailViewAdded.clear();
-        myListingsDetailViewModified.clear();
-        myListingsDetailViewAvailable.clear();
-        myListingsDetailViewPrice.clear();
+    private void myListingsResetSelectionDetails(){
+        myListingsDetailViewTitle.setText("Title");
+        myListingsDetailViewListingID.setText("ID");
+        myListingsDetailViewDescription.setText("Description.");
+        myListingsDetailViewAdded.setText("Added");
+        myListingsDetailViewModified.setText("Modified");
+        myListingsDetailViewAvailable.setText("Available");
+        myListingsDetailViewPrice.setText("Price");
         myListingsDetailImageView.setVisible(false);
     }
     //***********My Listings Methods END**********//
