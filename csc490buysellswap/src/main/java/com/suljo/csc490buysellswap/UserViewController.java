@@ -1,17 +1,13 @@
 package com.suljo.csc490buysellswap;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
-import org.w3c.dom.events.MouseEvent;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -271,29 +267,30 @@ public class UserViewController {
         myListingsTableColumnTitle.setCellValueFactory(new PropertyValueFactory<Listing, String>("title"));
         myListingsTableColumnListedDatetime.setCellValueFactory(new PropertyValueFactory<Listing, String>("datetimeAdded"));
         myListingsPopulateTableView();
-        myListingsDisableDetailedView();
+        myListingsSetDetailedViewElementsNotEditable();
         myListingsDetailImageView.setVisible(false);
         myListingsTableView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> myListingsShowSelectionDetails((Listing) newValue));
     }
 
-    /**
-     * Disable the fields in the "detailed view"
-     */
-    private void myListingsEnableDetailedView(){
-        myListingsDetailViewTitle.setEditable(true);
-        myListingsDetailViewAvailable.setEditable(true);
-        myListingsDetailViewListingID.setEditable(true);
-        myListingsDetailViewDescription.setEditable(true);
-        myListingsDetailViewPrice.setEditable(true);
-        myListingsDetailViewAdded.setEditable(true);
-        myListingsDetailViewModified.setEditable(true);
-    }
+//    This method can likely be removed as redundant, due to change in plans with regard to how listings will be edited.
+//    /**
+//     * Disable the fields in the "detailed view"
+//     */
+//    private void myListingsEnableDetailedView(){
+//        myListingsDetailViewTitle.setEditable(true);
+//        myListingsDetailViewAvailable.setEditable(true);
+//        myListingsDetailViewListingID.setEditable(true);
+//        myListingsDetailViewDescription.setEditable(true);
+//        myListingsDetailViewPrice.setEditable(true);
+//        myListingsDetailViewAdded.setEditable(true);
+//        myListingsDetailViewModified.setEditable(true);
+//    }
 
     /**
      * Enable the fields in the "detailed view".
      */
-    private void myListingsDisableDetailedView(){
+    private void myListingsSetDetailedViewElementsNotEditable(){
         myListingsDetailViewTitle.setEditable(false);
         myListingsDetailViewAvailable.setEditable(false);
         myListingsDetailViewListingID.setEditable(false);
@@ -318,87 +315,22 @@ public class UserViewController {
     }
 
     /**
-     * Populates the fields that constitute the "detailed view" with the values associated with the listing selected in
-     * the TableView.
+     * Sets the detailed view fields to the current My Listings selection, or clears them if there is no selection.
+     * @param selection
      */
-    @FXML
-    private void myListingsShowSelectedListing(){
-        ObservableList<Listing> listings = (ObservableList<Listing>) myListingsTableView.getItems();
-        int selectionIndex = myListingsTableView.getSelectionModel().getSelectedIndex();
-        if (selectionIndex >= 0 && selectionIndex < listings.size()){
-            Listing selection = listings.get(selectionIndex);
-            myListingsDetailViewTitle.setText(selection.getTitle());
-            if (selection.isAvailable()){
-                myListingsDetailViewAvailable.setText("Available");
-            } else {
-                myListingsDetailViewAvailable.setText("Unavailable");
-            }
-            myListingsDetailViewListingID.setText(Integer.toString(selection.getListingID()));
-            myListingsDetailViewDescription.setText(selection.getDescription());
-            if (selection.isForRent()) {
-                int rentalPeriodHours = selection.getRentalPeriodHours();
-                if (rentalPeriodHours == 1) {
-                    myListingsDetailViewPrice.setText(String.format("$%.2f per hour", selection.getPriceInCents() / 100.00));
-                } else if (rentalPeriodHours < 24){
-                    myListingsDetailViewPrice.setText(String.format("$%.2f per %d hours",
-                            selection.getPriceInCents() / 100.00, rentalPeriodHours));
-                }else if (rentalPeriodHours == 24){
-                    myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
-                } else if (rentalPeriodHours % 24 == 0){
-                    myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
-                } else {
-                    myListingsDetailViewPrice.setText(String.format("$%.2f for %d days and %d hours",
-                            selection.getPriceInCents()/100.00, rentalPeriodHours/24, rentalPeriodHours % 24));
-                }
-            } else {
-                myListingsDetailViewPrice.setText(String.format("$%.2f", selection.getPriceInCents()/100.0));
-            }
-            myListingsDetailViewAdded.setText(selection.getDatetimeAdded());
-            myListingsDetailViewModified.setText(selection.getDatetimeModified());
-            try {
-                Blob imageBlob = selection.getImage();
-                if (imageBlob != null){
-                    myListingsDetailImageView.setImage(new Image(selection.getImage().getBinaryStream()));
-                    myListingsDetailImageView.setVisible(true);
-                } else {
-                    myListingsDetailImageView.setVisible(false);
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
     private void myListingsShowSelectionDetails(Listing selection){
         if (selection != null){
-            //Set simple parameters,
+            //Set textual parameters,
             myListingsDetailViewTitle.setText(selection.getTitle());
             myListingsDetailViewListingID.setText(Integer.toString(selection.getListingID()));
             myListingsDetailViewDescription.setText(selection.getDescription());
             myListingsDetailViewAdded.setText(selection.getDatetimeAdded());
             myListingsDetailViewModified.setText(selection.getDatetimeModified());
+            myListingsSetDetailViewPrice(selection);
             if (selection.isAvailable()){
                 myListingsDetailViewAvailable.setText("Available");
             } else {
                 myListingsDetailViewAvailable.setText("Unavailable");
-            }
-            //Determine correct price string to display.
-            if (selection.isForRent()) {
-                int rentalPeriodHours = selection.getRentalPeriodHours();
-                if (rentalPeriodHours == 1) {
-                    myListingsDetailViewPrice.setText(String.format("$%.2f per hour", selection.getPriceInCents() / 100.00));
-                } else if (rentalPeriodHours < 24){
-                    myListingsDetailViewPrice.setText(String.format("$%.2f per %d hours",
-                            selection.getPriceInCents() / 100.00, rentalPeriodHours));
-                }else if (rentalPeriodHours == 24){
-                    myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
-                } else if (rentalPeriodHours % 24 == 0){
-                    myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
-                } else {
-                    myListingsDetailViewPrice.setText(String.format("$%.2f for %d days and %d hours",
-                            selection.getPriceInCents()/100.00, rentalPeriodHours/24, rentalPeriodHours % 24));
-                }
-            } else {
-                myListingsDetailViewPrice.setText(String.format("$%.2f", selection.getPriceInCents()/100.0));
             }
             //Display the image, if any.
             try {
@@ -418,6 +350,34 @@ public class UserViewController {
         }
     }
 
+    /**
+     * Determines and sets the price string to display in the My Listings detailed view.
+     * @param selection
+     */
+    private void myListingsSetDetailViewPrice(Listing selection){
+        if (!selection.isForRent()) {
+            myListingsDetailViewPrice.setText(String.format("$%.2f", selection.getPriceInCents()/100.0));
+        } else {
+            int rentalPeriodHours = selection.getRentalPeriodHours();
+            if (rentalPeriodHours == 1) {
+                myListingsDetailViewPrice.setText(String.format("$%.2f per hour", selection.getPriceInCents() / 100.00));
+            } else if (rentalPeriodHours < 24){
+                myListingsDetailViewPrice.setText(String.format("$%.2f per %d hours",
+                        selection.getPriceInCents() / 100.00, rentalPeriodHours));
+            }else if (rentalPeriodHours == 24){
+                myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
+            } else if (rentalPeriodHours % 24 == 0){
+                myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
+            } else {
+                myListingsDetailViewPrice.setText(String.format("$%.2f for %d days and %d hours",
+                        selection.getPriceInCents()/100.00, rentalPeriodHours/24, rentalPeriodHours % 24));
+            }
+        }
+    }
+
+    /**
+     * Clears the detailed view of My Listings.
+     */
     private void myListingsClearSelectionDetails(){
         myListingsDetailViewTitle.clear();
         myListingsDetailViewListingID.clear();
