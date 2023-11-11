@@ -13,6 +13,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 /**
@@ -324,8 +326,10 @@ public class UserViewController {
             myListingsDetailViewTitle.setText(selection.getTitle());
             myListingsDetailViewListingID.setText(Integer.toString(selection.getListingID()));
             myListingsDetailViewDescription.setText(selection.getDescription());
-            myListingsDetailViewAdded.setText(selection.getDatetimeAdded());
-            myListingsDetailViewModified.setText(selection.getDatetimeModified());
+            myListingsDetailViewAdded.setText("Added: " +
+                    DateTimeUtil.mssqlDatetime2ToHumanReadable(selection.getDatetimeAdded(), DateTimeUtil.yearMonthDay_12HoursMinutesSeconds));
+            myListingsDetailViewModified.setText("Modified: " +
+                    DateTimeUtil.mssqlDatetime2ToHumanReadable(selection.getDatetimeModified(), DateTimeUtil.yearMonthDay_12HoursMinutesSeconds));
             myListingsSetDetailViewPrice(selection);
             if (selection.isAvailable()){
                 myListingsDetailViewAvailable.setText("Available");
