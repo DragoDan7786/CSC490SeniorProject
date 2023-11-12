@@ -43,6 +43,7 @@ CREATE TABLE sprint04.listing(
 	,soldAtPriceInCents INT NOT NULL DEFAULT -1 --default value to avoid attempting to populate a primitive with a null when creating the Java Listing object representation
 	,isActive BIT DEFAULT 1
 	,isVisible BIT DEFAULT 1
+	,datetimeSold DATETIME2
 	,CONSTRAINT listing_pk PRIMARY KEY(listingID)
 	,CONSTRAINT listing_to_seller_fk FOREIGN KEY(sellerUserID) REFERENCES sprint04.[user](userID)
 );
