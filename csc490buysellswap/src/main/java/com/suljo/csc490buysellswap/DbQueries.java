@@ -47,4 +47,11 @@ public class DbQueries {
             FROM sprint04.[user]
             WHERE userID = ?
             """;
+
+    public static String updateListingQuery = """
+            UPDATE sprint04.listing
+            SET title = ?, description = ?, priceInCents = ?, isAvailable = ?, isForRent = ?, rentalPeriodHours = ?, 
+                listingImage = ?, soldAtPriceInCents = ?, isActive = ?, isVisible = ?, datetimeSold = ?
+            WHERE listingID = ?
+            """;
 }

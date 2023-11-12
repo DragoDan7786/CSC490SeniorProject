@@ -3,7 +3,10 @@ package com.suljo.csc490buysellswap;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DbOperations {
@@ -142,17 +145,18 @@ public class DbOperations {
             boolean isAvailable = result.getBoolean("isAvailable");
             boolean isForRent = result.getBoolean("isForRent");
             int rentalPeriodHours = result.getInt("rentalPeriodHours");
-            Blob image = result.getBlob("listingImage"); //might be null!
+            Blob imageBlob = result.getBlob("listingImage"); //might be null!
             int sellerUserID = result.getInt("sellerUserID");
             String datetimeAdded = result.getString("datetimeAdded");
             String datetimeModified = result.getString("datetimeModified");
             int soldAtPriceInCents = result.getInt("soldAtPriceInCents");
             boolean isActive = result.getBoolean("isActive");
             boolean isVisible = result.getBoolean("isVisible");
+            LocalDate dateSold = DateTimeUtil.mssqlDatetime2StringToLocalDate(result.getString("datetimeSold"));
             //Add the listing to the ArrayList.
             listings.add(new Listing(listingID, title, description, priceInCents, isAvailable, isForRent,
-                    rentalPeriodHours, image, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents,
-                    isActive, isVisible));
+                    rentalPeriodHours, imageBlob, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents,
+                    isActive, isVisible, dateSold));
         }
         conn.close();
         return listings;
@@ -187,6 +191,46 @@ public class DbOperations {
             return false;
         } else {
             return true;
+        }
+    }
+
+    /**
+     * Updates the database table row which corresponds to a Listing object.
+     * @param listing the updated listing
+     * @param imageFile the File containing the new image, or null
+     * @return true of database updated
+     * @throws SQLException
+     * @throws FileNotFoundException
+     */
+    public static boolean updateListing(Listing listing, File imageFile) throws SQLException, FileNotFoundException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.updateListingQuery);
+        prepStmt.setString(1, listing.getTitle());
+        prepStmt.setString(2, listing.getDescription());
+        prepStmt.setInt(3, listing.getPriceInCents());
+        prepStmt.setBoolean(4, listing.isAvailable());
+        prepStmt.setBoolean(5, listing.isForRent());
+        prepStmt.setInt(6, listing.getRentalPeriodHours());
+        if (imageFile != null){
+            prepStmt.setBinaryStream(7, new FileInputStream(imageFile));
+        } else {
+            prepStmt.setBinaryStream(7, null);
+        }
+        prepStmt.setInt(8, listing.getSoldAtPriceInCents());
+        prepStmt.setBoolean(9, listing.isActive());
+        prepStmt.setBoolean(10, listing.isVisible());
+        if (listing.getDateSold() != null){
+            prepStmt.setString(11, listing.getDateSold().toString());
+        } else {
+            prepStmt.setString(11, null);
+        }
+        prepStmt.setInt(12, listing.getListingID());
+        int rowCount = prepStmt.executeUpdate();
+        conn.close();
+        if (rowCount == 1){
+            return true;
+        } else {
+            return false;
         }
     }
 }

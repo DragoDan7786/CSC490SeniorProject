@@ -11,7 +11,6 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -273,20 +272,6 @@ public class UserViewController {
                 (observable, oldValue, newValue) -> myListingsShowSelectionDetails((Listing) newValue));
     }
 
-//    This method can likely be removed as redundant, due to change in plans with regard to how listings will be edited.
-//    /**
-//     * Disable the fields in the "detailed view"
-//     */
-//    private void myListingsEnableDetailedView(){
-//        myListingsDetailViewTitle.setEditable(true);
-//        myListingsDetailViewAvailable.setEditable(true);
-//        myListingsDetailViewListingID.setEditable(true);
-//        myListingsDetailViewDescription.setEditable(true);
-//        myListingsDetailViewPrice.setEditable(true);
-//        myListingsDetailViewAdded.setEditable(true);
-//        myListingsDetailViewModified.setEditable(true);
-//    }
-
     /**
      * Enable the fields in the "detailed view".
      */
@@ -335,16 +320,12 @@ public class UserViewController {
                 myListingsDetailViewAvailable.setText("Unavailable");
             }
             //Display the image, if any.
-            try {
-                Blob imageBlob = selection.getImage();
-                if (imageBlob != null){
-                    myListingsDetailImageView.setImage(new Image(selection.getImage().getBinaryStream()));
-                    myListingsDetailImageView.setVisible(true);
-                } else {
-                    myListingsDetailImageView.setVisible(false);
-                }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            Image image = selection.getImage();
+            if (image != null){
+                myListingsDetailImageView.setImage(image);
+                myListingsDetailImageView.setVisible(true);
+            } else {
+                myListingsDetailImageView.setVisible(false);
             }
         } else {
             //If selection is null, clear the detailed view.
@@ -389,6 +370,14 @@ public class UserViewController {
         myListingsDetailViewAvailable.setText("Available");
         myListingsDetailViewPrice.setText("Price");
         myListingsDetailImageView.setVisible(false);
+    }
+
+    @FXML
+    private void myListingsHandleEditListing(){
+        Listing selection = (Listing) myListingsTableView.getSelectionModel().getSelectedItem();
+        if (selection != null && BuySellSwapApp.showEditListingDialog(selection, myListingsTableView.getScene().getWindow())){
+            myListingsShowSelectionDetails(selection);
+        }
     }
     //***********My Listings Methods END**********//
     //***********Account Management Methods BEGIN**********//
