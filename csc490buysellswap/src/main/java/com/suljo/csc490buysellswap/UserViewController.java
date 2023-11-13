@@ -7,6 +7,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
@@ -86,6 +87,10 @@ public class UserViewController {
     private TextField myListingsDetailViewModified;
     @FXML
     private ImageView myListingsDetailImageView;
+    @FXML
+    private TextField searchTxtField;
+    @FXML
+    private HBox searchHbox;
     //***********My Listings Elements END**********//
     //***********Account Management Elements BEGIN**********//
 
@@ -98,6 +103,7 @@ public class UserViewController {
         adminTab.setDisable(!BuySellSwapApp.getCurrentUser().isAdmin());
         initializeListAnItemTab();
         initializeMyListingsTab();
+        HBox.setHgrow(searchTxtField, Priority.ALWAYS);
     }
 
     /**
@@ -388,4 +394,8 @@ public class UserViewController {
         }
     }
     //***********Account Management Methods END**********//
+
+
+
+
 }
