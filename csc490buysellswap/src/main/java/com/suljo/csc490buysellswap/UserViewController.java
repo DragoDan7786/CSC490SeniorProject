@@ -8,6 +8,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
@@ -19,6 +20,8 @@ import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.Optional;
+
+import static javafx.scene.layout.Priority.*;
 
 /**
  * Controller for user-view.fxml
@@ -103,7 +106,7 @@ public class UserViewController {
         adminTab.setDisable(!BuySellSwapApp.getCurrentUser().isAdmin());
         initializeListAnItemTab();
         initializeMyListingsTab();
-        HBox.setHgrow(searchTxtField, Priority.ALWAYS);
+        HBox.setHgrow(searchTxtField, ALWAYS);
     }
 
     /**
