@@ -4,8 +4,9 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import javafx.stage.Window;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -32,6 +33,29 @@ public class BuySellSwapApp extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(BuySellSwapApp.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
+    }
+
+    public static boolean showEditListingDialog(Listing listing, Window parentWindow){
+        try {
+            //Create and set up the stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Edit Listing ID " + listing.getListingID());
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(parentWindow);
+            //Load the FXML.
+            FXMLLoader loader = new FXMLLoader(BuySellSwapApp.class.getResource("edit-listing-dialog.fxml"));
+            dialogStage.setScene(new Scene(loader.load()));
+            //Set up the controller.
+            EditListingDialogController controller = loader.getController();
+            controller.setStage(dialogStage);
+            controller.setListing(listing);
+            //Show the stage.
+            dialogStage.showAndWait();
+            //If the listing was updated, return true. Otherwise, return false.
+            return controller.isListingUpdated();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static User getCurrentUser() {

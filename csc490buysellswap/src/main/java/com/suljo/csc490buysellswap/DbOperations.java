@@ -6,7 +6,10 @@ import javafx.collections.ObservableList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DbOperations {
@@ -27,9 +30,9 @@ public class DbOperations {
      *
      * @param userName
      * @param pWord
-     * @return
+     * @return 0 if user found and active, -1 if username/password combination not matched, -2 if matched but user not active
      */
-    public static boolean login(String userName, String pWord) throws SQLException {
+    public static int login(String userName, String pWord) throws SQLException {
         //Get connection to database.
         Connection conn = connectToDb();
         //Query for a user with matching credentials.
@@ -43,6 +46,13 @@ public class DbOperations {
             String rowUserName = result.getString("userName");
             String rowPassWord = result.getString("pWord");
             if (userName.equals(rowUserName) && pWord.equals(rowPassWord)) {
+                //If the username/password combo is found, check if the user is active.
+                boolean isActive = result.getBoolean("isActive");
+                //If user is inactive, return -2.
+                if (!isActive){
+                    return -2;
+                }
+                //If user is active, return 0.
                 int userID = result.getInt("userID");
                 String firstName = result.getString("firstName");
                 String middleName = result.getString("middleName");
@@ -54,15 +64,15 @@ public class DbOperations {
                 String zip = result.getString("zip");
                 String phoneNum = result.getString("phoneNum");
                 boolean isAdmin = result.getBoolean("isAdmin");
-                boolean isActive = result.getBoolean("isActive");
                 String registrationDatetime = result.getString("registrationDatetime");
                 BuySellSwapApp.setCurrentUser(new User(userID, userName, pWord, firstName, middleName, lastName,
                         dateOfBirth, street, city, state, zip, phoneNum, isAdmin, isActive, registrationDatetime));
-                return true;
+                return 0;
             }
             conn.close();
         }
-        return false;
+        //If no user with this username/password combo is found, return -1.
+        return -1;
     }
 
     //If converted to a stored procedure instead of a straight insert query, could recover new item ID and return it to the user.
@@ -138,17 +148,18 @@ public class DbOperations {
             boolean isAvailable = result.getBoolean("isAvailable");
             boolean isForRent = result.getBoolean("isForRent");
             int rentalPeriodHours = result.getInt("rentalPeriodHours");
-            Blob image = result.getBlob("listingImage"); //might be null!
+            Blob imageBlob = result.getBlob("listingImage"); //might be null!
             int sellerUserID = result.getInt("sellerUserID");
             String datetimeAdded = result.getString("datetimeAdded");
             String datetimeModified = result.getString("datetimeModified");
             int soldAtPriceInCents = result.getInt("soldAtPriceInCents");
             boolean isActive = result.getBoolean("isActive");
             boolean isVisible = result.getBoolean("isVisible");
+            LocalDate dateSold = DateTimeUtil.mssqlDatetime2StringToLocalDate(result.getString("datetimeSold"));
             //Add the listing to the ArrayList.
             listings.add(new Listing(listingID, title, description, priceInCents, isAvailable, isForRent,
-                    rentalPeriodHours, image, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents,
-                    isActive, isVisible));
+                    rentalPeriodHours, imageBlob, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents,
+                    isActive, isVisible, dateSold));
         }
         conn.close();
         return listings;
@@ -182,5 +193,76 @@ public class DbOperations {
         }
         conn.close();
         return activeListings;
+=======
+    /**
+     * Disables the account of the given user and all their listings by setting flags appropriately.
+     * @param userID
+     */
+    public static void disableUserAccount(int userID) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.disableAccountQuery);
+        prepStmt.setInt(1, userID);
+        //prepStmt.executeQuery();
+        prepStmt.execute();
+        conn.close();
+    }
+
+    /**
+     * Determines if a username is already in use by querying the user table for users with that username.
+     * @param username
+     * @return True if username exists, false otherwise.
+     * @throws SQLException
+     */
+    public static boolean usernameExists(String username) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.checkIfUsernameExistsQuery);
+        prepStmt.setString(1, username);
+        int rowsReturned = prepStmt.executeUpdate();
+        conn.close();
+        if (rowsReturned == 0){
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Updates the database table row which corresponds to a Listing object.
+     * @param listing the updated listing
+     * @param imageFile the File containing the new image, or null
+     * @return true of database updated
+     * @throws SQLException
+     * @throws FileNotFoundException
+     */
+    public static boolean updateListing(Listing listing, File imageFile) throws SQLException, FileNotFoundException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.updateListingQuery);
+        prepStmt.setString(1, listing.getTitle());
+        prepStmt.setString(2, listing.getDescription());
+        prepStmt.setInt(3, listing.getPriceInCents());
+        prepStmt.setBoolean(4, listing.isAvailable());
+        prepStmt.setBoolean(5, listing.isForRent());
+        prepStmt.setInt(6, listing.getRentalPeriodHours());
+        if (imageFile != null){
+            prepStmt.setBinaryStream(7, new FileInputStream(imageFile));
+        } else {
+            prepStmt.setBinaryStream(7, null);
+        }
+        prepStmt.setInt(8, listing.getSoldAtPriceInCents());
+        prepStmt.setBoolean(9, listing.isActive());
+        prepStmt.setBoolean(10, listing.isVisible());
+        if (listing.getDateSold() != null){
+            prepStmt.setString(11, listing.getDateSold().toString());
+        } else {
+            prepStmt.setString(11, null);
+        }
+        prepStmt.setInt(12, listing.getListingID());
+        int rowCount = prepStmt.executeUpdate();
+        conn.close();
+        if (rowCount == 1){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -16,7 +16,7 @@ CREATE TABLE sprint04.[user](
 	,zip CHAR(5) NOT NULL
 	,phoneNum VARCHAR(20) NOT NULL
 	,isAdmin BIT NOT NULL DEFAULT 0
-	,isActive BIT NOT NULL DEFAULT 1
+	,isActive BIT NOT NULL DEFAULT 1 --consider changing to isDisabled, and then add a reason table for why the user account was disabled
 	,registrationDatetime DATETIME2 DEFAULT GETDATE()
 	,CONSTRAINT user_pk PRIMARY KEY(userID)
 );
@@ -43,6 +43,7 @@ CREATE TABLE sprint04.listing(
 	,soldAtPriceInCents INT NOT NULL DEFAULT -1 --default value to avoid attempting to populate a primitive with a null when creating the Java Listing object representation
 	,isActive BIT DEFAULT 1
 	,isVisible BIT DEFAULT 1
+	,datetimeSold DATETIME2
 	,CONSTRAINT listing_pk PRIMARY KEY(listingID)
 	,CONSTRAINT listing_to_seller_fk FOREIGN KEY(sellerUserID) REFERENCES sprint04.[user](userID)
 );
@@ -63,3 +64,29 @@ INSERT INTO sprint04.listing(title, description, priceInCents, isAvailable, isFo
 SELECT title, description, priceInCents, isAvailable, isForRent, rentalPeriodHours, listingImage, sellerUserID, datetimeAdded, datetimeModified
 FROM sprint03.listing
 ;
+GO
+
+--Stored procedure for disabling a user account. Also disables/hides all their listings.
+USE pablo;
+IF OBJECT_ID('sprint04.spDisableAccount') IS NOT NULL
+	DROP PROC sprint04.spDisableAccount;
+GO
+
+CREATE PROC sprint04.spDisableAccount
+	@userID INT
+AS
+	SET XACT_ABORT ON;
+	BEGIN TRANSACTION;
+		--Set flags on the user's listings to prevent them from being visible
+		UPDATE sprint04.listing
+		SET isAvailable = 0, isActive = 0, isVisible = 0
+		WHERE sellerUserID = @userID
+		;
+		--Set flag on the user to prevent this account logging in.
+		UPDATE sprint04.[user]
+		SET isActive = 0
+		WHERE userID = @userID
+		;
+	SET XACT_ABORT OFF;
+	COMMIT;
+GO

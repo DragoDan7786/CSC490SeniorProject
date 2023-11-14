@@ -34,30 +34,39 @@ public class LoginViewController {
         if (username.isEmpty() || password.isEmpty()) {
             loginErrorLabel.setText("Username and password are required.");
             loginErrorLabel.setVisible(true);
+        //Otherwise, search for a user with matching credentials.
         } else {
-            //Run the login operation. Returns true if user was found and set, in which case, switch the view.
             try {
-                //If the username/password combo found, currentUser is initialized and the view is switched.
-                if (DbOperations.login(username, password)) {
-                    try {
-                        BuySellSwapApp.setRoot("user-view");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                int loginResult = DbOperations.login(username, password);
+                switch (loginResult) {
+                    case 0: //If the username/password combo found, currentUser is initialized and the view is switched.
+                        try { BuySellSwapApp.setRoot("user-view"); } catch (IOException e) { throw new RuntimeException(e); }
+                        break;
+                    case -1:
+                        generateInformationDialog("Could Not Login", "Username or password incorrect.",
+                                "Please try again.").show();
+                        break;
+                    case -2:
+                        generateInformationDialog("Could Not Login", "Account is disabled.",
+                                "Please register for a new account or contact an administrator.").show();
+                        break;
                 }
-                //If the username/password combo is not found, an error message is displayed.
-                else {
-                    loginErrorLabel.setText("Username or password incorrect.");
-                    loginErrorLabel.setVisible(true);
-                }
-                //If the database could not be connected to, a SQLException is thrown, which is caught here.
-                //This may happen at initial app startup if the database is paused.
+            //If the database could not be connected to, a SQLException is thrown, which is caught here.
+            //This may happen at initial app startup if the database is paused.
             } catch (SQLException e) {
-                loginErrorLabel.setText("Could not connect to DB.");
-                loginErrorLabel.setVisible(true);
-                System.out.println(e);
+                generateInformationDialog("Database Error", "Could not connect to the database.",
+                        "The database may not be active. Please try again in a few minutes.").show();
+                e.printStackTrace();
             }
         }
+    }
+
+    private Alert generateInformationDialog(String title, String header, String content){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        return alert;
     }
 
     /**
