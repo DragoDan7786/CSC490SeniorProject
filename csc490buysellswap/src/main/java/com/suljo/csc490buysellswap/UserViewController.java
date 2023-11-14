@@ -1,18 +1,34 @@
 package com.suljo.csc490buysellswap;
 
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import org.w3c.dom.events.MouseEvent;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+
+import static com.suljo.csc490buysellswap.DbOperations.selectAllActiveListings;
+import static javafx.scene.layout.Priority.*;
 
 /**
  * Controller for user-view.fxml
@@ -81,6 +97,12 @@ public class UserViewController {
     private TextField myListingsDetailViewModified;
     @FXML
     private ImageView myListingsDetailImageView;
+    @FXML
+    private TextField searchTxtField;
+    @FXML
+    private HBox searchHbox;
+    @FXML
+    private ListView<Listing> buyerBrowseListView;
     //***********My Listings Elements END**********//
     //***********Account Management Elements BEGIN**********//
 
@@ -93,6 +115,8 @@ public class UserViewController {
         adminTab.setDisable(!BuySellSwapApp.getCurrentUser().isAdmin());
         initializeListAnItemTab();
         initializeMyListingsTab();
+        browseListingInitialize();
+        HBox.setHgrow(searchTxtField, ALWAYS);
     }
 
     /**
@@ -449,4 +473,119 @@ public class UserViewController {
         alert.show();
     }
     //***********Account Management Methods END**********//
+
+    //***********Browse Listings Methods BEGIN**********//
+    private void browseListingInitialize(){
+        try {
+            buyerBrowseListView.setItems(selectAllActiveListings());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        buyerBrowseListView.setCellFactory(param -> new ListCell<Listing>() {
+            @Override
+            protected void updateItem(Listing listing, boolean empty) {
+                super.updateItem(listing, empty);
+                if (empty || listing == null || listing.getTitle() == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    // Convert price from cents to dollars
+                    double priceInDollars = listing.getPriceInCents() / 100.0;
+
+                    // Format date
+                    DateTimeFormatter oldFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
+                    LocalDateTime dateTime = LocalDateTime.parse(listing.getDatetimeAdded(), oldFormat);
+                    DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+                    String date = dateTime.format(newFormat);
+
+                    // Determine type of listing
+                    String typeOfListing = listing.isForRent() ? "Rent" : "Buy";
+
+                    // Set the text of the ListCell
+                    setText("Type: " + typeOfListing + "\nTitle: " + listing.getTitle() + "\nPrice: $" + priceInDollars + "\nDate Added: " + date);
+
+                    // Convert Blob to Image
+                    Blob blob = listing.getImage();
+                    Image image = null;
+                    if (blob != null) {
+                        try {
+                            byte[] data = blob.getBytes(1, (int) blob.length());
+                            image = new Image(new ByteArrayInputStream(data));
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    // Create ImageView and set the Image
+                    ImageView imageView = new ImageView();
+                    if (image != null) {
+                        imageView.setImage(image);
+                        imageView.setFitWidth(50);  // Adjust the width and height as needed
+                        imageView.setFitHeight(50);
+                        imageView.setPreserveRatio(true);
+                    }
+
+                    // Set the ImageView as the graphic of the ListCell
+                    setGraphic(imageView);
+                }
+            }
+        });
+
+
+        buyerBrowseListView.setOnMouseClicked(event -> {
+            if(event.getClickCount() == 2) {
+                Listing selectedListing = buyerBrowseListView.getSelectionModel().getSelectedItem();
+
+                // Create a new Stage for the detailed view
+                Stage stage = new Stage();
+
+                // Create a VBox for the detailed view
+                VBox vbox = new VBox();
+
+                // Add all fields of the listing to the VBox
+                vbox.getChildren().add (new Label("Title: " + selectedListing.getTitle()));
+                vbox.getChildren().add (new Label("Description: " + selectedListing.getDescription()));
+                vbox.getChildren().add (new Label("Price: $" + selectedListing.getPriceInCents()/100.0));
+                if(selectedListing.isForRent())
+                    vbox.getChildren().add (new Label("Rental Period Hours: " + selectedListing.getRentalPeriodHours()));
+                vbox.getChildren().add (new Label("Seller User ID: " + selectedListing.getSellerUserID()));
+                vbox.getChildren().add (new Label("Date Added: " + selectedListing.getDatetimeAdded()));
+
+
+
+                // If the image is not null, add it to the VBox
+                Blob blob = selectedListing.getImage();
+                if (blob != null) {
+                    try {
+                        byte[] data = blob.getBytes(1, (int) blob.length());
+                        Image image = new Image(new ByteArrayInputStream(data));
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitWidth(50);  // Adjust the width and height as needed
+                        imageView.setFitHeight(50);
+                        imageView.setPreserveRatio(true);
+                        vbox.getChildren().add(imageView);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Add buttons to the VBox
+                Button msgBuyerButton = new Button("Contact Buyer");
+                vbox.getChildren().add(msgBuyerButton);
+                Button reportListingButton = new Button("Report Listing");
+                vbox.getChildren().add(reportListingButton);
+                // Add actions to the buttons as needed
+
+                // Create a new Scene with the VBox and set it on the Stage
+                Scene scene = new Scene(vbox);
+                stage.setScene(scene);
+
+                // Show the Stage
+                stage.show();
+            }
+        });
+    }
+
+
 }
