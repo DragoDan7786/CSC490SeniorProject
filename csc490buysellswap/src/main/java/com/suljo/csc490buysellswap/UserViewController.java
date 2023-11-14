@@ -1,5 +1,6 @@
 package com.suljo.csc490buysellswap;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,13 +15,18 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import org.w3c.dom.events.MouseEvent;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import static com.suljo.csc490buysellswap.DbOperations.selectAllActiveListings;
 import static javafx.scene.layout.Priority.*;
 
 /**
@@ -94,6 +100,8 @@ public class UserViewController {
     private TextField searchTxtField;
     @FXML
     private HBox searchHbox;
+    @FXML
+    private ListView<Listing> buyerBrowseListView;
     //***********My Listings Elements END**********//
     //***********Account Management Elements BEGIN**********//
 
@@ -106,6 +114,7 @@ public class UserViewController {
         adminTab.setDisable(!BuySellSwapApp.getCurrentUser().isAdmin());
         initializeListAnItemTab();
         initializeMyListingsTab();
+        browseListingInitialize();
         HBox.setHgrow(searchTxtField, ALWAYS);
     }
 
@@ -398,7 +407,64 @@ public class UserViewController {
     }
     //***********Account Management Methods END**********//
 
+    //***********Browse Listings Methods BEGIN**********//
+    private void browseListingInitialize(){
+        try {
+            buyerBrowseListView.setItems(selectAllActiveListings());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
+        buyerBrowseListView.setCellFactory(param -> new ListCell<Listing>() {
+            @Override
+            protected void updateItem(Listing listing, boolean empty) {
+                super.updateItem(listing, empty);
+                if (empty || listing == null || listing.getTitle() == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    // Convert price from cents to dollars
+                    double priceInDollars = listing.getPriceInCents() / 100.0;
+
+                    // Format date
+                    DateTimeFormatter oldFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSSS");
+                    LocalDateTime dateTime = LocalDateTime.parse(listing.getDatetimeAdded(), oldFormat);
+                    DateTimeFormatter newFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+                    String date = dateTime.format(newFormat);
+
+                    // Determine type of listing
+                    String typeOfListing = listing.isForRent() ? "Rent" : "Buy";
+
+                    // Set the text of the ListCell
+                    setText("Type: " + typeOfListing + "\nTitle: " + listing.getTitle() + "\nPrice: $" + priceInDollars + "\nDate Added: " + date);
+
+                    // Convert Blob to Image
+                    Blob blob = listing.getImage();
+                    Image image = null;
+                    if (blob != null) {
+                        try {
+                            byte[] data = blob.getBytes(1, (int) blob.length());
+                            image = new Image(new ByteArrayInputStream(data));
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    // Create ImageView and set the Image
+                    ImageView imageView = new ImageView();
+                    if (image != null) {
+                        imageView.setImage(image);
+                        imageView.setFitWidth(50);  // Adjust the width and height as needed
+                        imageView.setFitHeight(50);
+                        imageView.setPreserveRatio(true);
+                    }
+
+                    // Set the ImageView as the graphic of the ListCell
+                    setGraphic(imageView);
+                }
+            }
+        });
+    }
 
 
 }

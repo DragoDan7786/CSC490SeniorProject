@@ -1,5 +1,8 @@
 package com.suljo.csc490buysellswap;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -149,5 +152,35 @@ public class DbOperations {
         }
         conn.close();
         return listings;
+    }
+
+    public static ObservableList<Listing> selectAllActiveListings() throws SQLException{
+        ObservableList<Listing> activeListings = FXCollections.observableArrayList();
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectAllActiveListingsQuery);
+        ResultSet result = prepStmt.executeQuery();
+        while (result.next()){
+            //Get the values for the current item.
+            int listingID = result.getInt("listingID");
+            String title = result.getString("title");
+            String description = result.getString("description");
+            int priceInCents = result.getInt("priceInCents");
+            boolean isAvailable = result.getBoolean("isAvailable");
+            boolean isForRent = result.getBoolean("isForRent");
+            int rentalPeriodHours = result.getInt("rentalPeriodHours");
+            Blob image = result.getBlob("listingImage"); //might be null!
+            int sellerUserID = result.getInt("sellerUserID");
+            String datetimeAdded = result.getString("datetimeAdded");
+            String datetimeModified = result.getString("datetimeModified");
+            int soldAtPriceInCents = result.getInt("soldAtPriceInCents");
+            boolean isActive = result.getBoolean("isActive");
+            boolean isVisible = result.getBoolean("isVisible");
+            //Add the listing to the ObservableList.
+            activeListings.add(new Listing(listingID, title, description, priceInCents, isAvailable, isForRent,
+                    rentalPeriodHours, image, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents,
+                    isActive, isVisible));
+        }
+        conn.close();
+        return activeListings;
     }
 }

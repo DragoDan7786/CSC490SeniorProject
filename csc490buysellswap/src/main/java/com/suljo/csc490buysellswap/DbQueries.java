@@ -31,4 +31,12 @@ public class DbQueries {
         ORDER BY datetimeAdded
         ;
         """;
+
+    public static String selectAllActiveListingsQuery = """
+            SELECT *
+            FROM sprint04.listing
+            WHERE isActive  = 1
+            ORDER BY datetimeAdded
+            ;
+            """;
 }
