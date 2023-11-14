@@ -140,60 +140,51 @@ public class DbOperations {
         prepStmt.setInt(1, BuySellSwapApp.getCurrentUser().getUserID());
         ResultSet result = prepStmt.executeQuery();
         while (result.next()){
-            //Get the values for the current item.
-            int listingID = result.getInt("listingID");
-            String title = result.getString("title");
-            String description = result.getString("description");
-            int priceInCents = result.getInt("priceInCents");
-            boolean isAvailable = result.getBoolean("isAvailable");
-            boolean isForRent = result.getBoolean("isForRent");
-            int rentalPeriodHours = result.getInt("rentalPeriodHours");
-            Blob imageBlob = result.getBlob("listingImage"); //might be null!
-            int sellerUserID = result.getInt("sellerUserID");
-            String datetimeAdded = result.getString("datetimeAdded");
-            String datetimeModified = result.getString("datetimeModified");
-            int soldAtPriceInCents = result.getInt("soldAtPriceInCents");
-            boolean isActive = result.getBoolean("isActive");
-            boolean isVisible = result.getBoolean("isVisible");
-            LocalDate dateSold = DateTimeUtil.mssqlDatetime2StringToLocalDate(result.getString("datetimeSold"));
-            //Add the listing to the ArrayList.
-            listings.add(new Listing(listingID, title, description, priceInCents, isAvailable, isForRent,
-                    rentalPeriodHours, imageBlob, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents,
-                    isActive, isVisible, dateSold));
+            listings.add(makeListingFromResult(result));
         }
         conn.close();
         return listings;
     }
 
-    public static ObservableList<Listing> selectAllActiveListings() throws SQLException{
+    public static ObservableList<Listing> selectAllActiveListings() throws SQLException {
         ObservableList<Listing> activeListings = FXCollections.observableArrayList();
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectAllActiveListingsQuery);
         ResultSet result = prepStmt.executeQuery();
-        while (result.next()){
-            //Get the values for the current item.
-            int listingID = result.getInt("listingID");
-            String title = result.getString("title");
-            String description = result.getString("description");
-            int priceInCents = result.getInt("priceInCents");
-            boolean isAvailable = result.getBoolean("isAvailable");
-            boolean isForRent = result.getBoolean("isForRent");
-            int rentalPeriodHours = result.getInt("rentalPeriodHours");
-            Blob image = result.getBlob("listingImage"); //might be null!
-            int sellerUserID = result.getInt("sellerUserID");
-            String datetimeAdded = result.getString("datetimeAdded");
-            String datetimeModified = result.getString("datetimeModified");
-            int soldAtPriceInCents = result.getInt("soldAtPriceInCents");
-            boolean isActive = result.getBoolean("isActive");
-            boolean isVisible = result.getBoolean("isVisible");
-            //Add the listing to the ObservableList.
-            activeListings.add(new Listing(listingID, title, description, priceInCents, isAvailable, isForRent,
-                    rentalPeriodHours, image, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents,
-                    isActive, isVisible));
+        while (result.next()) {
+            activeListings.add(makeListingFromResult(result));
         }
         conn.close();
         return activeListings;
-=======
+    }
+
+    /**
+     * Generates and returns a Listing from the current row in a ResultSet.
+     * @param resultSet The ResultSet from a SQL query that returns rows from the Listing table.
+     * @return A Listing object corresponding to the current row in the ResultSet.
+     * @throws SQLException
+     */
+    private static Listing makeListingFromResult(ResultSet resultSet) throws SQLException {
+        int listingID = resultSet.getInt("listingID");
+        String title = resultSet.getString("title");
+        String description = resultSet.getString("description");
+        int priceInCents = resultSet.getInt("priceInCents");
+        boolean isAvailable = resultSet.getBoolean("isAvailable");
+        boolean isForRent = resultSet.getBoolean("isForRent");
+        int rentalPeriodHours = resultSet.getInt("rentalPeriodHours");
+        Blob imageBlob = resultSet.getBlob("listingImage"); //might be null!
+        int sellerUserID = resultSet.getInt("sellerUserID");
+        String datetimeAdded = resultSet.getString("datetimeAdded");
+        String datetimeModified = resultSet.getString("datetimeModified");
+        int soldAtPriceInCents = resultSet.getInt("soldAtPriceInCents");
+        boolean isActive = resultSet.getBoolean("isActive");
+        boolean isVisible = resultSet.getBoolean("isVisible");
+        LocalDate dateSold = DateTimeUtil.mssqlDatetime2StringToLocalDate(resultSet.getString("datetimeSold"));
+        return new Listing(listingID, title, description, priceInCents, isAvailable, isForRent,
+                rentalPeriodHours, imageBlob, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents,
+                isActive, isVisible, dateSold);
+    }
+
     /**
      * Disables the account of the given user and all their listings by setting flags appropriately.
      * @param userID

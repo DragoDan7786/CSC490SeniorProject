@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -505,20 +506,8 @@ public class UserViewController {
                     // Set the text of the ListCell
                     setText("Type: " + typeOfListing + "\nTitle: " + listing.getTitle() + "\nPrice: $" + priceInDollars + "\nDate Added: " + date);
 
-                    // Convert Blob to Image
-                    Blob blob = listing.getImage();
-                    Image image = null;
-                    if (blob != null) {
-                        try {
-                            byte[] data = blob.getBytes(1, (int) blob.length());
-                            image = new Image(new ByteArrayInputStream(data));
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    // Create ImageView and set the Image
                     ImageView imageView = new ImageView();
+                    Image image = listing.getImage();
                     if (image != null) {
                         imageView.setImage(image);
                         imageView.setFitWidth(50);  // Adjust the width and height as needed
@@ -552,22 +541,14 @@ public class UserViewController {
                 vbox.getChildren().add (new Label("Seller User ID: " + selectedListing.getSellerUserID()));
                 vbox.getChildren().add (new Label("Date Added: " + selectedListing.getDatetimeAdded()));
 
-
-
                 // If the image is not null, add it to the VBox
-                Blob blob = selectedListing.getImage();
-                if (blob != null) {
-                    try {
-                        byte[] data = blob.getBytes(1, (int) blob.length());
-                        Image image = new Image(new ByteArrayInputStream(data));
-                        ImageView imageView = new ImageView(image);
-                        imageView.setFitWidth(50);  // Adjust the width and height as needed
-                        imageView.setFitHeight(50);
-                        imageView.setPreserveRatio(true);
-                        vbox.getChildren().add(imageView);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+                Image image = selectedListing.getImage();
+                if (image != null) {
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitWidth(50);  // Adjust the width and height as needed
+                    imageView.setFitHeight(50);
+                    imageView.setPreserveRatio(true);
+                    vbox.getChildren().add(imageView);
                 }
 
                 // Add buttons to the VBox

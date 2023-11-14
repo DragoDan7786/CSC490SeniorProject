@@ -38,6 +38,7 @@ public class DbQueries {
             WHERE isActive  = 1
             ORDER BY datetimeAdded
             ;
+            """;
     /**
      * See DDL for definition of the stored procedure.
      * Briefly, sets isActive, isAvailable, and isVisible flags to false for all listings where
