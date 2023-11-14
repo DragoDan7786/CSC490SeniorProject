@@ -3,6 +3,7 @@ package com.suljo.csc490buysellswap;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -10,9 +11,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.w3c.dom.events.MouseEvent;
 
 import java.io.ByteArrayInputStream;
@@ -462,6 +465,60 @@ public class UserViewController {
                     // Set the ImageView as the graphic of the ListCell
                     setGraphic(imageView);
                 }
+            }
+        });
+
+
+        buyerBrowseListView.setOnMouseClicked(event -> {
+            if(event.getClickCount() == 2) {
+                Listing selectedListing = buyerBrowseListView.getSelectionModel().getSelectedItem();
+
+                // Create a new Stage for the detailed view
+                Stage stage = new Stage();
+
+                // Create a VBox for the detailed view
+                VBox vbox = new VBox();
+
+                // Add all fields of the listing to the VBox
+                vbox.getChildren().add (new Label("Title: " + selectedListing.getTitle()));
+                vbox.getChildren().add (new Label("Description: " + selectedListing.getDescription()));
+                vbox.getChildren().add (new Label("Price: $" + selectedListing.getPriceInCents()/100.0));
+                if(selectedListing.isForRent())
+                    vbox.getChildren().add (new Label("Rental Period Hours: " + selectedListing.getRentalPeriodHours()));
+                vbox.getChildren().add (new Label("Seller User ID: " + selectedListing.getSellerUserID()));
+                vbox.getChildren().add (new Label("Date Added: " + selectedListing.getDatetimeAdded()));
+
+
+
+                // If the image is not null, add it to the VBox
+                Blob blob = selectedListing.getImage();
+                if (blob != null) {
+                    try {
+                        byte[] data = blob.getBytes(1, (int) blob.length());
+                        Image image = new Image(new ByteArrayInputStream(data));
+                        ImageView imageView = new ImageView(image);
+                        imageView.setFitWidth(50);  // Adjust the width and height as needed
+                        imageView.setFitHeight(50);
+                        imageView.setPreserveRatio(true);
+                        vbox.getChildren().add(imageView);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                // Add buttons to the VBox
+                Button msgBuyerButton = new Button("Contact Buyer");
+                vbox.getChildren().add(msgBuyerButton);
+                Button reportListingButton = new Button("Report Listing");
+                vbox.getChildren().add(reportListingButton);
+                // Add actions to the buttons as needed
+
+                // Create a new Scene with the VBox and set it on the Stage
+                Scene scene = new Scene(vbox);
+                stage.setScene(scene);
+
+                // Show the Stage
+                stage.show();
             }
         });
     }
