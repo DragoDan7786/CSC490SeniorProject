@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -505,6 +506,7 @@ public class UserViewController {
                     // Set the text of the ListCell
                     setText("Type: " + typeOfListing + "\nTitle: " + listing.getTitle() + "\nPrice: $" + priceInDollars + "\nDate Added: " + date);
 
+                    /*
                     // Convert Blob to Image
                     Blob blob = listing.getImage();
                     Image image = null;
@@ -519,6 +521,15 @@ public class UserViewController {
 
                     // Create ImageView and set the Image
                     ImageView imageView = new ImageView();
+                    if (image != null) {
+                        imageView.setImage(image);
+                        imageView.setFitWidth(50);  // Adjust the width and height as needed
+                        imageView.setFitHeight(50);
+                        imageView.setPreserveRatio(true);
+                    }
+                    */
+                    ImageView imageView = new ImageView();
+                    Image image = listing.getImage();
                     if (image != null) {
                         imageView.setImage(image);
                         imageView.setFitWidth(50);  // Adjust the width and height as needed
@@ -553,7 +564,7 @@ public class UserViewController {
                 vbox.getChildren().add (new Label("Date Added: " + selectedListing.getDatetimeAdded()));
 
 
-
+/*
                 // If the image is not null, add it to the VBox
                 Blob blob = selectedListing.getImage();
                 if (blob != null) {
@@ -568,6 +579,17 @@ public class UserViewController {
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
+                }
+*/
+
+                // If the image is not null, add it to the VBox
+                Image image = selectedListing.getImage();
+                if (image != null) {
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitWidth(50);  // Adjust the width and height as needed
+                    imageView.setFitHeight(50);
+                    imageView.setPreserveRatio(true);
+                    vbox.getChildren().add(imageView);
                 }
 
                 // Add buttons to the VBox
