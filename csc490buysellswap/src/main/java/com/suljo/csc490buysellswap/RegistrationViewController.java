@@ -48,84 +48,167 @@ public class RegistrationViewController {
      */
     @FXML
     private void registerOnAction() {
-        //Get the user input.
-        String username = usernameField.getText();
-        String password = pwField.getText();
-        String fName = fNameField.getText();
-        String mName = mNameField.getText();
-        String lName = lNameField.getText();
-        Date bDate = java.sql.Date.valueOf(birthDatePicker.getValue());
-        String streetName = streetField.getText();
-        String townName = townField.getText();
-        String stateName = stateField.getText();
-        String zipCode = zipField.getText();
-        String phoneNumber = phoneField.getText();
-        Boolean isAdmin = false;
-        pwField.clear();
-        //If something is missing, warn the user. Also warn user if password in "insecure"
-        if (username.isEmpty()) {
-            errorLabel.setText("Username is missing");
-            errorLabel.setVisible(true);
-        } else if (password.isEmpty()) {
-            errorLabel.setText("Please enter a password");
-            errorLabel.setVisible(true);
-        } else if (!isValid(password)) {
-            errorLabel.setText("Password needs to contain at 1 upper or lowercase letter, at least one number, and at least one special character.");
-            errorLabel.setVisible(true);
-        } else if (fName.isEmpty()) {
-            errorLabel.setText("Please enter your first name");
-            errorLabel.setVisible(true);
-        } else if (mName.isEmpty()) {
-            errorLabel.setText("Please enter your middle name");
-            errorLabel.setVisible(true);
-        } else if (lName.isEmpty()) {
-            errorLabel.setText("Please enter your last name");
-            errorLabel.setVisible(true);
-        }
-        //checks if date field is null
-        else if (birthDatePicker.getValue() == null){
-            errorLabel.setText("Please enter your date of birth");
-            errorLabel.setVisible(true);
-        }else if (streetName.isEmpty()) {
-            errorLabel.setText("Street name must be present");
-            errorLabel.setVisible(true);
-        }else if (stateName.isEmpty()) {
-            errorLabel.setText("State name must be present");
-            errorLabel.setVisible(true);
-        } else if (zipCode.isEmpty()) {
-            errorLabel.setText("Zip code must be present");
-            errorLabel.setVisible(true);
-        } else if (phoneNumber.isEmpty()) {
-            errorLabel.setText("Please enter your phone number");
-            errorLabel.setVisible(true);
-        } else {
-            //Run the login operation. Returns true if user was found and set, in which case, switch the view.
-            try {
-                //If the username/password combo found, throw user found error.
-                if (DbOperations.usernameExists(username)) {
-                        errorLabel.setText("Can not create user, user already exists");
-                        errorLabel.setVisible(true);
-                }
-                //If the database could not be connected to, a SQLException is thrown, which is caught here.
-                //This may happen at initial app startup if the database is paused.
-            } catch (SQLException e) {
-                errorLabel.setText("Could not connect to DB.");
+        try {
+            //Get the user input.
+            String username = usernameField.getText();
+            String password = pwField.getText();
+            String fName = fNameField.getText();
+            String mName = mNameField.getText();
+            String lName = lNameField.getText();
+            Date bDate = java.sql.Date.valueOf(birthDatePicker.getValue());
+            String streetName = streetField.getText();
+            String townName = townField.getText();
+            String stateName = stateField.getText();
+            String zipCode = zipField.getText();
+            String phoneNumber = phoneField.getText();
+            Boolean isAdmin = false;
+            pwField.clear();
+            //If something is missing, warn the user. Also warn user if password in "insecure"
+            if (username.isEmpty()) {
+                errorLabel.setText("Username is missing");
                 errorLabel.setVisible(true);
-                System.out.println(e);
+            } else if (password.isEmpty()) {
+                errorLabel.setText("Please enter a password");
+                errorLabel.setVisible(true);
+            } else if (!isValid(password)) {
+                errorLabel.setText("Password needs to contain at 1 upper or lowercase letter, at least one number, and at least one special character.");
+                errorLabel.setVisible(true);
+            } else if (fName.isEmpty()) {
+                errorLabel.setText("Please enter your first name");
+                errorLabel.setVisible(true);
+            } else if (mName.isEmpty()) {
+                errorLabel.setText("Please enter your middle name");
+                errorLabel.setVisible(true);
+            } else if (lName.isEmpty()) {
+                errorLabel.setText("Please enter your last name");
+                errorLabel.setVisible(true);
             }
-            //User is not duplicate so insert user into table.
-            try {
-
+            //checks if date field is null
+            else if (birthDatePicker.getValue() == null){
+                errorLabel.setText("Please enter your date of birth");
+                errorLabel.setVisible(true);
+            }else if (streetName.isEmpty()) {
+                errorLabel.setText("Street name must be present");
+                errorLabel.setVisible(true);
+            }else if (stateName.isEmpty()) {
+                errorLabel.setText("State name must be present");
+                errorLabel.setVisible(true);
+            } else if (zipCode.isEmpty()) {
+                errorLabel.setText("Zip code must be present");
+                errorLabel.setVisible(true);
+            } else if (phoneNumber.isEmpty()) {
+                errorLabel.setText("Please enter your phone number");
+                errorLabel.setVisible(true);
+            } else if (DbOperations.usernameExists(username)) {
+                errorLabel.setText("Can not create user, user already exists");
+                errorLabel.setVisible(true);
+            } else {
                 if (DbOperations.addNewUser(username,password,fName,mName,lName,bDate,streetName,townName,stateName,zipCode,phoneNumber,isAdmin) > 0){
                     errorLabel.setText("User Created");
                     errorLabel.setVisible(true);
                     //clears fields
                     clearFields();
+                } else {
+                    errorLabel.setText("Could not create user.");
+                    errorLabel.setVisible(true);
                 }
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
-        }
+        } catch (SQLException e) {
+        throw new RuntimeException(e);
+    }
+//        //Get the user input.
+//        String username = usernameField.getText();
+//        String password = pwField.getText();
+//        String fName = fNameField.getText();
+//        String mName = mNameField.getText();
+//        String lName = lNameField.getText();
+//        Date bDate = java.sql.Date.valueOf(birthDatePicker.getValue());
+//        String streetName = streetField.getText();
+//        String townName = townField.getText();
+//        String stateName = stateField.getText();
+//        String zipCode = zipField.getText();
+//        String phoneNumber = phoneField.getText();
+//        Boolean isAdmin = false;
+//        pwField.clear();
+//        //If something is missing, warn the user. Also warn user if password in "insecure"
+//        if (username.isEmpty()) {
+//            errorLabel.setText("Username is missing");
+//            errorLabel.setVisible(true);
+//        } else if (password.isEmpty()) {
+//            errorLabel.setText("Please enter a password");
+//            errorLabel.setVisible(true);
+//        } else if (!isValid(password)) {
+//            errorLabel.setText("Password needs to contain at 1 upper or lowercase letter, at least one number, and at least one special character.");
+//            errorLabel.setVisible(true);
+//        } else if (fName.isEmpty()) {
+//            errorLabel.setText("Please enter your first name");
+//            errorLabel.setVisible(true);
+//        } else if (mName.isEmpty()) {
+//            errorLabel.setText("Please enter your middle name");
+//            errorLabel.setVisible(true);
+//        } else if (lName.isEmpty()) {
+//            errorLabel.setText("Please enter your last name");
+//            errorLabel.setVisible(true);
+//        }
+//        //checks if date field is null
+//        else if (birthDatePicker.getValue() == null){
+//            errorLabel.setText("Please enter your date of birth");
+//            errorLabel.setVisible(true);
+//        }else if (streetName.isEmpty()) {
+//            errorLabel.setText("Street name must be present");
+//            errorLabel.setVisible(true);
+//        }else if (stateName.isEmpty()) {
+//            errorLabel.setText("State name must be present");
+//            errorLabel.setVisible(true);
+//        } else if (zipCode.isEmpty()) {
+//            errorLabel.setText("Zip code must be present");
+//            errorLabel.setVisible(true);
+//        } else if (phoneNumber.isEmpty()) {
+//            errorLabel.setText("Please enter your phone number");
+//            errorLabel.setVisible(true);
+//        } else if (DbOperations.usernameExists(username)) {
+//            errorLabel.setText("Can not create user, user already exists");
+//            errorLabel.setVisible(true);
+//        } else {
+//            //register the user
+//            try {
+//                if (DbOperations.addNewUser(username,password,fName,mName,lName,bDate,streetName,townName,stateName,zipCode,phoneNumber,isAdmin) > 0){
+//                    errorLabel.setText("User Created");
+//                    errorLabel.setVisible(true);
+//                    //clears fields
+//                    clearFields();
+//                }
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+            //Run the login operation. Returns true if user was found and set, in which case, switch the view.
+//            try {
+//                //If the username/password combo found, throw user found error.
+//                if (DbOperations.usernameExists(username)) {
+//                        errorLabel.setText("Can not create user, user already exists");
+//                        errorLabel.setVisible(true);
+//                }
+//                //If the database could not be connected to, a SQLException is thrown, which is caught here.
+//                //This may happen at initial app startup if the database is paused.
+//            } catch (SQLException e) {
+//                errorLabel.setText("Could not connect to DB.");
+//                errorLabel.setVisible(true);
+//                System.out.println(e);
+//            }
+            //User is not duplicate so insert user into table.
+//            try {
+//
+//                if (DbOperations.addNewUser(username,password,fName,mName,lName,bDate,streetName,townName,stateName,zipCode,phoneNumber,isAdmin) > 0){
+//                    errorLabel.setText("User Created");
+//                    errorLabel.setVisible(true);
+//                    //clears fields
+//                    clearFields();
+//                }
+//            } catch (SQLException e) {
+//                throw new RuntimeException(e);
+//            }
+        //}
     }
 
 
