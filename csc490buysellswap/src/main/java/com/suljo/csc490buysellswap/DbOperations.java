@@ -205,16 +205,19 @@ public class DbOperations {
      * @throws SQLException
      */
     public static boolean usernameExists(String username) throws SQLException {
+        boolean userAlreadyExists;
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.checkIfUsernameExistsQuery);
         prepStmt.setString(1, username);
-        int rowsReturned = prepStmt.executeUpdate();
-        conn.close();
-        if (rowsReturned == 0){
-            return false;
+        ResultSet result = prepStmt.executeQuery();
+        if (!result.next()){
+            System.out.println("result set is empty, username does not exist");
+            userAlreadyExists = false;
         } else {
-            return true;
+            userAlreadyExists = true;
         }
+        conn.close();
+        return userAlreadyExists;
     }
 
     /**

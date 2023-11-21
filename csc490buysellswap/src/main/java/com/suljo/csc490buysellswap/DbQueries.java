@@ -52,7 +52,7 @@ public class DbQueries {
     public static String checkIfUsernameExistsQuery = """
             SELECT *
             FROM sprint04.[user]
-            WHERE userID = ?
+            WHERE userName = ?
             """;
 
     public static String updateListingQuery = """
