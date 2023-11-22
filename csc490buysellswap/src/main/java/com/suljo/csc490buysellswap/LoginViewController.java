@@ -89,19 +89,5 @@ public class LoginViewController {
         System.exit(0);
     }
 
-    /**
-     * Development tool - skip to user view without logging in, in order to avoid accessing the DB.
-     */
-    @FXML
-    private void skipToUserView() {
-        try {
-            BuySellSwapApp.setCurrentUser(new User(1, "user", "pass", "Firstname",
-                    "", "Lastname", "XX-XX-XXXX", "123 Street St", "City",
-                    "State", "00000", "555-555-5555", false, true,
-                    "2023-10-31"));
-            BuySellSwapApp.setRoot("user-view");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }
