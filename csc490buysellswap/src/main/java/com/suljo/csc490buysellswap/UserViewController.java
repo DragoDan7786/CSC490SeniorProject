@@ -110,7 +110,14 @@ public class UserViewController {
     //***********Account Management Elements END**********//
     //***********Sell Tab Elements END**********//
     //***********Messages Tab Elements BEGIN**********//
-
+    @FXML
+    private TableView messagesTable;
+    @FXML
+    private TableColumn<Message, String> messagesTableColumnSubject;
+    @FXML
+    private TableColumn<Message, String> messagesTableColumnFrom;
+    @FXML
+    private TableColumn<Message, String> messagesTableColumnDateTimeReceived;
     //***********Messages Tab Elements END**********//
 
     //***********General User View Methods BEGIN**********//
@@ -121,6 +128,7 @@ public class UserViewController {
         initializeMyListingsTab();
         browseListingInitialize();
         HBox.setHgrow(searchTxtField, ALWAYS);
+        initializeMessagesTab();
     }
 
     /**
@@ -572,6 +580,24 @@ public class UserViewController {
     }
     //***********Browse Listings Methods END**********//
     //***********Messages Methods BEGIN**********//
+    private void initializeMessagesTab(){
+        messagesTableColumnSubject.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
+        messagesTableColumnFrom.setCellValueFactory(cellData -> cellData.getValue().fromUsernameProperty());
+        messagesTableColumnDateTimeReceived.setCellValueFactory(cellData -> cellData.getValue().readableDatetimeSentProperty());
+        messagesPopulateTableView();
+        messagesTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> messagesShowMessageDetails((Message)newValue));
 
+    }
+
+    private void messagesPopulateTableView(){
+        //TODO complete this stub
+        //Clear the view.
+        //Fetch the messages from the database. Add each one to the table. See myListingsPopulateTableView() for a model.
+    }
+
+    private void messagesShowMessageDetails(Message message){
+        //TODO complete this stub
+    }
     //***********Messages Methods BEGIN**********//
 }

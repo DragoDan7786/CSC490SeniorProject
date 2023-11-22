@@ -41,4 +41,8 @@ public class DateTimeUtil {
             return null;
         }
     }
+
+    public static String localDateTimeTo12HourClockString(LocalDateTime localDateTime){
+        return localDateTime.format(yearMonthDay_12HoursMinutesSeconds);
+    }
 }

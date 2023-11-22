@@ -9,6 +9,7 @@ public class Message {
     private StringProperty fromUsername;
     private StringProperty toUsername;
     private ObjectProperty<LocalDateTime> datetimeSent;
+    private StringProperty readableDatetimeSent;
     private IntegerProperty aboutListingID;
     private StringProperty subject;
     private StringProperty contents;
@@ -19,6 +20,7 @@ public class Message {
         this.fromUsername = new SimpleStringProperty(fromUsername);
         this.toUsername = new SimpleStringProperty(toUsername);
         this.datetimeSent = new SimpleObjectProperty<>(datetimeSent);
+        this.readableDatetimeSent = new SimpleStringProperty(DateTimeUtil.localDateTimeTo12HourClockString(datetimeSent));
         this.aboutListingID = new SimpleIntegerProperty(aboutListingID);
         this.subject = new SimpleStringProperty(subject);
         this.contents = new SimpleStringProperty(contents);
@@ -66,10 +68,19 @@ public class Message {
 
     public void setDatetimeSent(LocalDateTime datetimeSent) {
         this.datetimeSent.set(datetimeSent);
+        readableDatetimeSent.set(DateTimeUtil.localDateTimeTo12HourClockString(datetimeSent));
     }
 
     public ObjectProperty<LocalDateTime> datetimeSentProperty(){
         return datetimeSent;
+    }
+
+    public String getReadableDatetimeSent(){
+        return readableDatetimeSent.get();
+    }
+
+    public StringProperty readableDatetimeSentProperty(){
+        return readableDatetimeSent;
     }
 
     public Integer getAboutListingID() {

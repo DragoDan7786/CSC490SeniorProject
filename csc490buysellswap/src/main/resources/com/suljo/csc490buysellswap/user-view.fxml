@@ -162,11 +162,11 @@
                         </Pane>
                      </center>
                      <left>
-                        <TableView prefHeight="591.0" prefWidth="400.0" BorderPane.alignment="CENTER">
+                        <TableView fx:id="messagesTable" prefHeight="591.0" prefWidth="400.0" BorderPane.alignment="CENTER">
                           <columns>
-                            <TableColumn prefWidth="192.0" text="Subject" />
-                              <TableColumn prefWidth="105.0" text="From" />
-                            <TableColumn prefWidth="102.0" text="Date Received" />
+                            <TableColumn fx:id="messagesTableColumnSubject" prefWidth="192.0" text="Subject" />
+                              <TableColumn fx:id="messagesTableColumnFrom" prefWidth="105.0" text="From" />
+                            <TableColumn fx:id="messagesTableColumnDateTimeReceived" prefWidth="102.0" text="Received" />
                           </columns>
                         </TableView>
                      </left>
