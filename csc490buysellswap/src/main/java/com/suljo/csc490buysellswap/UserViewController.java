@@ -109,6 +109,9 @@ public class UserViewController {
 
     //***********Account Management Elements END**********//
     //***********Sell Tab Elements END**********//
+    //***********Messages Tab Elements BEGIN**********//
+
+    //***********Messages Tab Elements END**********//
 
     //***********General User View Methods BEGIN**********//
     public void initialize() {
@@ -567,6 +570,8 @@ public class UserViewController {
             }
         });
     }
+    //***********Browse Listings Methods END**********//
+    //***********Messages Methods BEGIN**********//
 
-
+    //***********Messages Methods BEGIN**********//
 }
