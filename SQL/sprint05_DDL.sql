@@ -1,8 +1,8 @@
 --DDL for Sprint 04. Added isActive, registrationDatetime to user table. Added soldAtPriceInCents, isActive, isVisible to lising table.
-CREATE SCHEMA sprint04;
+CREATE SCHEMA sprint05;
 GO
 
-CREATE TABLE sprint04.[user](
+CREATE TABLE sprint05.[user](
 	userID INT IDENTITY(1,1)
 	,userName VARCHAR(250) NOT NULL UNIQUE
 	,pWord VARCHAR(250) NOT NULL
@@ -21,14 +21,14 @@ CREATE TABLE sprint04.[user](
 	,CONSTRAINT user_pk PRIMARY KEY(userID)
 );
 
-INSERT INTO sprint04.[user]
+INSERT INTO sprint05.[user]
 	(userName, pWord, firstName, middleName, lastName, dateOfBirth, street, city, [state], zip, phoneNum, isAdmin)
 	VALUES
 	 ('admin','pass','Maddy','Em','Straightener','1973-12-11','123 Maple Street','Tree City', 'NY', '12345', '1-234-567-8901)', 1)
 	,('user','pass','Us', '','Er','1993-03-21','987 Grass Street', 'Plains City', 'WY', '98765', '9-876-543-2109', 0)
 ;
 
-CREATE TABLE sprint04.listing(
+CREATE TABLE sprint05.listing(
 	listingID INT IDENTITY(1,1)
 	,title VARCHAR(250) NOT NULL
 	,description VARCHAR(MAX) NOT NULL DEFAULT ''
@@ -45,22 +45,22 @@ CREATE TABLE sprint04.listing(
 	,isVisible BIT DEFAULT 1
 	,datetimeSold DATETIME2
 	,CONSTRAINT listing_pk PRIMARY KEY(listingID)
-	,CONSTRAINT listing_to_seller_fk FOREIGN KEY(sellerUserID) REFERENCES sprint04.[user](userID)
+	,CONSTRAINT listing_to_seller_fk FOREIGN KEY(sellerUserID) REFERENCES sprint05.[user](userID)
 );
 GO
 
 --Sets the datetimeModified whenever a listing is altered.
-CREATE TRIGGER sprint04_listing_INSERT_UPDATE
-	ON sprint04.listing
+CREATE TRIGGER sprint05_listing_INSERT_UPDATE
+	ON sprint05.listing
 	AFTER INSERT, UPDATE
 AS
-	UPDATE sprint04.listing
+	UPDATE sprint05.listing
 	SET datetimeModified = GETDATE()
 	WHERE listingID IN (SELECT listingID FROM Inserted)
 ;
 GO
 
-INSERT INTO sprint04.listing(title, description, priceInCents, isAvailable, isForRent, rentalPeriodHours, listingImage, sellerUserID, datetimeAdded, datetimeModified)
+INSERT INTO sprint05.listing(title, description, priceInCents, isAvailable, isForRent, rentalPeriodHours, listingImage, sellerUserID, datetimeAdded, datetimeModified)
 SELECT title, description, priceInCents, isAvailable, isForRent, rentalPeriodHours, listingImage, sellerUserID, datetimeAdded, datetimeModified
 FROM sprint03.listing
 ;
@@ -68,25 +68,50 @@ GO
 
 --Stored procedure for disabling a user account. Also disables/hides all their listings.
 USE pablo;
-IF OBJECT_ID('sprint04.spDisableAccount') IS NOT NULL
-	DROP PROC sprint04.spDisableAccount;
+IF OBJECT_ID('sprint05.spDisableAccount') IS NOT NULL
+	DROP PROC sprint05.spDisableAccount;
 GO
 
-CREATE PROC sprint04.spDisableAccount
+CREATE PROC sprint05.spDisableAccount
 	@userID INT
 AS
 	SET XACT_ABORT ON;
 	BEGIN TRANSACTION;
 		--Set flags on the user's listings to prevent them from being visible
-		UPDATE sprint04.listing
+		UPDATE sprint05.listing
 		SET isAvailable = 0, isActive = 0, isVisible = 0
 		WHERE sellerUserID = @userID
 		;
 		--Set flag on the user to prevent this account logging in.
-		UPDATE sprint04.[user]
+		UPDATE sprint05.[user]
 		SET isActive = 0
 		WHERE userID = @userID
 		;
 	SET XACT_ABORT OFF;
 	COMMIT;
 GO
+
+CREATE TABLE sprint05.message(
+	messageID INT IDENTITY(1,1)
+	,fromUsername VARCHAR(250) NOT NULL
+	,toUsername VARCHAR(250) NOT NULL
+	,datetimeSent DATETIME2 NOT NULL DEFAULT GETDATE()
+	,aboutListingID INT
+	,subject VARCHAR(250)
+	,contents VARCHAR(5000)
+	,CONSTRAINT message_pk PRIMARY KEY(messageID)
+	,CONSTRAINT message_from_user_fk FOREIGN KEY(fromUsername) REFERENCES sprint05.[user](userName)
+	,CONSTRAINT message_to_user_fk FOREIGN KEY(toUsername) REFERENCES sprint05.[user](userName)
+	,CONSTRAINT message_about_listing_fk FOREIGN KEY(aboutListingID) REFERENCES sprint05.listing(listingID)
+);
+
+INSERT INTO sprint05.message
+	(fromUsername, toUsername, aboutListingID, subject, contents)
+VALUES
+	('admin', 'user', 1, 'Re: listing', 'Just wondering if this is still available?')
+	,('user', 'admin', 1, 'Re: listing', 'Yes, it is.')
+	,('admin', 'user', 1, 'Re: listing', 'Great, I''ll take it, where and when can I pick it up?')
+	,('user', 'admin', 1, 'Re: listing', 'Let''s meet at 12pm in the Target parking lot. Bring cash.')
+	,('admin', 'user', 1, 'Re: listing', 'Cool, see you there and then.')
+	,('user', 'admin', 1, 'Re: listing', 'Thanks for your business.')
+;
