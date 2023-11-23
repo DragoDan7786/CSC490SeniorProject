@@ -258,4 +258,24 @@ public class DbOperations {
             return false;
         }
     }
+
+    public static ArrayList<Message> getUserMessages(String username) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectMessagesToUserQuery);
+        prepStmt.setString(1, username);
+        ResultSet result = prepStmt.executeQuery();
+        ArrayList<Message> messages = new ArrayList<>();
+        while (result.next()){
+            Integer messageID = result.getInt("messageID");
+            String fromUsername = result.getString("fromUsername");
+            String toUsername = result.getString("toUsername");
+            LocalDateTime datetimeSent = DateTimeUtil.mssqlDatetime2StringToLocalDateTime(result.getString("datetimeSent"));
+            Integer aboutListingID = result.getInt("aboutListingID");
+            String subject = result.getString("subject");
+            String contents = result.getString("contents");
+            messages.add(new Message(messageID, fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents));
+        }
+        conn.close();
+        return messages;
+    }
 }

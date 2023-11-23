@@ -3,12 +3,12 @@ package com.suljo.csc490buysellswap;
 public class DbQueries {
     public static String loginQuery = """
         SELECT *
-        FROM sprint04.[user]
+        FROM sprint05.[user]
         WHERE userName = ? AND pWord = ?;
         """;
 
     public static String insertNewListingQuery = """
-        INSERT INTO sprint04.listing
+        INSERT INTO sprint05.listing
             (title, description, priceInCents, isForRent, rentalPeriodHours, sellerUserID, listingImage)
         VALUES
             (?,?,?,?,?,?,?)
@@ -17,7 +17,7 @@ public class DbQueries {
 
 
     public static String insertNewUserQuery = """
-        INSERT INTO sprint04.[user]
+        INSERT INTO sprint05.[user]
             (userName, pWord, firstName, middleName, lastName, dateOfBirth, street, city, state, zip, phoneNum, isAdmin)
         VALUES
             (?,?,?,?,?,?,?,?,?,?,?,?)
@@ -26,7 +26,7 @@ public class DbQueries {
 
     public static String selectMyListingsQuery = """
         SELECT *
-        FROM sprint04.listing
+        FROM sprint05.listing
         WHERE sellerUserID = ?
         ORDER BY datetimeAdded
         ;
@@ -34,7 +34,7 @@ public class DbQueries {
           
     public static String selectAllActiveListingsQuery = """
             SELECT *
-            FROM sprint04.listing
+            FROM sprint05.listing
             WHERE isActive  = 1
             ORDER BY datetimeAdded
             ;
@@ -46,19 +46,27 @@ public class DbQueries {
      * userID == @userID.
      */
     public static String disableAccountQuery = """
-            EXEC sprint04.spDisableAccount @userID = ?;
+            EXEC sprint05.spDisableAccount @userID = ?;
             """;
 
     public static String checkIfUsernameExistsQuery = """
             SELECT *
-            FROM sprint04.[user]
+            FROM sprint05.[user]
             WHERE userName = ?
             """;
 
     public static String updateListingQuery = """
-            UPDATE sprint04.listing
+            UPDATE sprint05.listing
             SET title = ?, description = ?, priceInCents = ?, isAvailable = ?, isForRent = ?, rentalPeriodHours = ?, 
                 listingImage = ?, soldAtPriceInCents = ?, isActive = ?, isVisible = ?, datetimeSold = ?
             WHERE listingID = ?
+            """;
+
+    public static String selectMessagesToUserQuery = """
+            SELECT *
+            FROM sprint05.message
+            WHERE toUsername = ?
+            ORDER BY datetimeSent
+            ;
             """;
 }

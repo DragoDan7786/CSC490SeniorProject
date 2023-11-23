@@ -1,8 +1,6 @@
 package com.suljo.csc490buysellswap;
 
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,20 +8,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.w3c.dom.events.MouseEvent;
-import java.io.ByteArrayInputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Blob;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -75,7 +69,7 @@ public class UserViewController {
     //***********List An Item Elements END**********//
     //***********My Listings Elements BEGIN**********//
     @FXML
-    private TableView myListingsTableView;
+    private TableView<Listing> myListingsTableView;
     @FXML
     private TableColumn<Listing, Integer> myListingsTableColumnId;
     @FXML
@@ -111,13 +105,21 @@ public class UserViewController {
     //***********Sell Tab Elements END**********//
     //***********Messages Tab Elements BEGIN**********//
     @FXML
-    private TableView messagesTable;
+    private TableView<Message> messagesTable;
     @FXML
     private TableColumn<Message, String> messagesTableColumnSubject;
     @FXML
     private TableColumn<Message, String> messagesTableColumnFrom;
     @FXML
     private TableColumn<Message, String> messagesTableColumnDateTimeReceived;
+    @FXML
+    private TextField messagesFromTextField;
+    @FXML
+    private TextField messagesDateTextField;
+    @FXML
+    private TextField messagesSubjectTextField;
+    @FXML
+    private TextArea messagesContentsTextArea;
     //***********Messages Tab Elements END**********//
 
     //***********General User View Methods BEGIN**********//
@@ -298,14 +300,14 @@ public class UserViewController {
     //***********My Listings Methods BEGIN**********//
     private void initializeMyListingsTab(){
         //Set up the TableView.
-        myListingsTableColumnId.setCellValueFactory(new PropertyValueFactory<Listing, Integer>("listingID"));
-        myListingsTableColumnTitle.setCellValueFactory(new PropertyValueFactory<Listing, String>("title"));
-        myListingsTableColumnListedDatetime.setCellValueFactory(new PropertyValueFactory<Listing, String>("datetimeAdded"));
+        myListingsTableColumnId.setCellValueFactory(new PropertyValueFactory<>("listingID"));
+        myListingsTableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        myListingsTableColumnListedDatetime.setCellValueFactory(new PropertyValueFactory<>("datetimeAdded"));
         myListingsPopulateTableView();
         myListingsSetDetailedViewElementsNotEditable();
         myListingsDetailImageView.setVisible(false);
         myListingsTableView.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> myListingsShowSelectionDetails((Listing) newValue));
+                (observable, oldValue, newValue) -> myListingsShowSelectionDetails(newValue));
     }
 
     /**
@@ -410,7 +412,7 @@ public class UserViewController {
 
     @FXML
     private void myListingsHandleEditListing(){
-        Listing selection = (Listing) myListingsTableView.getSelectionModel().getSelectedItem();
+        Listing selection = myListingsTableView.getSelectionModel().getSelectedItem();
         if (selection != null && BuySellSwapApp.showEditListingDialog(selection, myListingsTableView.getScene().getWindow())){
             myListingsShowSelectionDetails(selection);
         }
@@ -583,21 +585,48 @@ public class UserViewController {
     private void initializeMessagesTab(){
         messagesTableColumnSubject.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
         messagesTableColumnFrom.setCellValueFactory(cellData -> cellData.getValue().fromUsernameProperty());
-        messagesTableColumnDateTimeReceived.setCellValueFactory(cellData -> cellData.getValue().readableDatetimeSentProperty());
+        messagesTableColumnDateTimeReceived.setCellValueFactory(cellData -> cellData.getValue().displayDatetimeSentProperty());
         messagesPopulateTableView();
         messagesTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> messagesShowMessageDetails((Message)newValue));
-
+                (observable, oldValue, newValue) -> messagesShowMessageDetails(newValue));
+        messagesFromTextField.setEditable(false);
+        messagesDateTextField.setEditable(false);
+        messagesSubjectTextField.setEditable(false);
+        messagesContentsTextArea.setEditable(false);
     }
 
     private void messagesPopulateTableView(){
-        //TODO complete this stub
-        //Clear the view.
-        //Fetch the messages from the database. Add each one to the table. See myListingsPopulateTableView() for a model.
+        try {
+            messagesTable.getItems().clear();
+            for (Message message : DbOperations.getUserMessages(BuySellSwapApp.getCurrentUser().getUserName())){
+                messagesTable.getItems().add(message);
+            }
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setHeaderText("Error retrieving current user's messages.");
+            alert.setContentText(e.getMessage());
+            alert.show();
+            e.printStackTrace();
+        }
     }
 
     private void messagesShowMessageDetails(Message message){
-        //TODO complete this stub
+        if (message != null){
+            messagesFromTextField.setText(message.getFromUsername());
+            messagesDateTextField.setText(message.getDisplayDatetimeSent());
+            messagesSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
+            messagesContentsTextArea.setText(message.getContents());
+        } else {
+            messagesResetDetails();
+        }
+    }
+
+    private void messagesResetDetails(){
+        messagesFromTextField.setText("From");
+        messagesDateTextField.setText("Date");
+        messagesSubjectTextField.setText("Subject");
+        messagesContentsTextArea.setText("Contents");
     }
     //***********Messages Methods BEGIN**********//
 }
