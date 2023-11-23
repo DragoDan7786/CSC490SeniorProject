@@ -6,7 +6,6 @@ import javafx.collections.ObservableList;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -259,23 +258,40 @@ public class DbOperations {
         }
     }
 
-    public static ArrayList<Message> getUserMessages(String username) throws SQLException {
+    public static ArrayList<Message> getMessagesToUser(String username) throws SQLException {
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectMessagesToUserQuery);
         prepStmt.setString(1, username);
         ResultSet result = prepStmt.executeQuery();
         ArrayList<Message> messages = new ArrayList<>();
         while (result.next()){
-            Integer messageID = result.getInt("messageID");
-            String fromUsername = result.getString("fromUsername");
-            String toUsername = result.getString("toUsername");
-            LocalDateTime datetimeSent = DateTimeUtil.mssqlDatetime2StringToLocalDateTime(result.getString("datetimeSent"));
-            Integer aboutListingID = result.getInt("aboutListingID");
-            String subject = result.getString("subject");
-            String contents = result.getString("contents");
-            messages.add(new Message(messageID, fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents));
+            messages.add(makeMessageFromResult(result));
         }
         conn.close();
         return messages;
+    }
+
+    public static ArrayList<Message> getMessagesFromUser(String username) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectMessagesFromUserQuery);
+        prepStmt.setString(1, username);
+        ResultSet result = prepStmt.executeQuery();
+        ArrayList<Message> messages = new ArrayList<>();
+        while (result.next()){
+            messages.add(makeMessageFromResult(result));
+        }
+        conn.close();
+        return messages;
+    }
+
+    private static Message makeMessageFromResult(ResultSet result) throws SQLException {
+        Integer messageID = result.getInt("messageID");
+        String fromUsername = result.getString("fromUsername");
+        String toUsername = result.getString("toUsername");
+        LocalDateTime datetimeSent = DateTimeUtil.mssqlDatetime2StringToLocalDateTime(result.getString("datetimeSent"));
+        Integer aboutListingID = result.getInt("aboutListingID");
+        String subject = result.getString("subject");
+        String contents = result.getString("contents");
+        return new Message(messageID, fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents);
     }
 }

@@ -66,7 +66,15 @@ public class DbQueries {
             SELECT *
             FROM sprint05.message
             WHERE toUsername = ?
-            ORDER BY datetimeSent
+            ORDER BY datetimeSent DESC
+            ;
+            """;
+
+    public static String selectMessagesFromUserQuery = """
+            SELECT *
+            FROM sprint05.message
+            WHERE fromUsername = ?
+            ORDER BY datetimeSent DESC
             ;
             """;
 }

@@ -105,21 +105,37 @@ public class UserViewController {
     //***********Sell Tab Elements END**********//
     //***********Messages Tab Elements BEGIN**********//
     @FXML
-    private TableView<Message> messagesTable;
+    private TableView<Message> messagesReceivedTable;
     @FXML
-    private TableColumn<Message, String> messagesTableColumnSubject;
+    private TableColumn<Message, String> messagesReceivedTableSubjectColumn;
     @FXML
-    private TableColumn<Message, String> messagesTableColumnFrom;
+    private TableColumn<Message, String> messagesReceivedTableFromColumn;
     @FXML
-    private TableColumn<Message, String> messagesTableColumnDateTimeReceived;
+    private TableColumn<Message, String> messagesReceivedTableDatetimeColumn;
     @FXML
-    private TextField messagesFromTextField;
+    private TextField messagesReceivedFromTextField;
     @FXML
-    private TextField messagesDateTextField;
+    private TextField messagesReceivedDateTextField;
     @FXML
-    private TextField messagesSubjectTextField;
+    private TextField messagesReceivedSubjectTextField;
     @FXML
-    private TextArea messagesContentsTextArea;
+    private TextArea messagesReceivedContentsTextArea;
+    @FXML
+    private TableView<Message> messagesSentTable;
+    @FXML
+    private TableColumn<Message, String> messagesSentTableSubjectColumn;
+    @FXML
+    private TableColumn<Message, String> messagesSentTableToColumn;
+    @FXML
+    private TableColumn<Message, String> messagesSentTableDatetimeColumn;
+    @FXML
+    private TextField messagesSentToTextField;
+    @FXML
+    private TextField messagesSentDateTextField;
+    @FXML
+    private TextField messagesSentSubjectTextField;
+    @FXML
+    private TextArea messagesSentContentsTextArea;
     //***********Messages Tab Elements END**********//
 
     //***********General User View Methods BEGIN**********//
@@ -583,23 +599,35 @@ public class UserViewController {
     //***********Browse Listings Methods END**********//
     //***********Messages Methods BEGIN**********//
     private void initializeMessagesTab(){
-        messagesTableColumnSubject.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
-        messagesTableColumnFrom.setCellValueFactory(cellData -> cellData.getValue().fromUsernameProperty());
-        messagesTableColumnDateTimeReceived.setCellValueFactory(cellData -> cellData.getValue().displayDatetimeSentProperty());
-        messagesPopulateTableView();
-        messagesTable.getSelectionModel().selectedItemProperty().addListener(
-                (observable, oldValue, newValue) -> messagesShowMessageDetails(newValue));
-        messagesFromTextField.setEditable(false);
-        messagesDateTextField.setEditable(false);
-        messagesSubjectTextField.setEditable(false);
-        messagesContentsTextArea.setEditable(false);
+        //Initialize the Received tab.
+        messagesReceivedTableSubjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
+        messagesReceivedTableFromColumn.setCellValueFactory(cellData -> cellData.getValue().fromUsernameProperty());
+        messagesReceivedTableDatetimeColumn.setCellValueFactory(cellData -> cellData.getValue().displayDatetimeSentProperty());
+        messagesPopulateReceivedTable();
+        messagesReceivedTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> messagesShowReceivedMessageDetails(newValue));
+        messagesReceivedFromTextField.setEditable(false);
+        messagesReceivedDateTextField.setEditable(false);
+        messagesReceivedSubjectTextField.setEditable(false);
+        messagesReceivedContentsTextArea.setEditable(false);
+        //Initialize the Sent tab.
+        messagesSentTableSubjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
+        messagesSentTableToColumn.setCellValueFactory(cellData -> cellData.getValue().toUsernameProperty());
+        messagesSentTableDatetimeColumn.setCellValueFactory(cellData -> cellData.getValue().displayDatetimeSentProperty());
+        messagesPopulateSentTable();
+        messagesSentTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> messagesShowSentMessageDetails(newValue));
+        messagesSentToTextField.setEditable(false);
+        messagesSentDateTextField.setEditable(false);
+        messagesSentSubjectTextField.setEditable(false);
+        messagesSentContentsTextArea.setEditable(false);
     }
 
-    private void messagesPopulateTableView(){
+    private void messagesPopulateReceivedTable(){
         try {
-            messagesTable.getItems().clear();
-            for (Message message : DbOperations.getUserMessages(BuySellSwapApp.getCurrentUser().getUserName())){
-                messagesTable.getItems().add(message);
+            messagesReceivedTable.getItems().clear();
+            for (Message message : DbOperations.getMessagesToUser(BuySellSwapApp.getCurrentUser().getUserName())){
+                messagesReceivedTable.getItems().add(message);
             }
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -611,22 +639,62 @@ public class UserViewController {
         }
     }
 
-    private void messagesShowMessageDetails(Message message){
-        if (message != null){
-            messagesFromTextField.setText(message.getFromUsername());
-            messagesDateTextField.setText(message.getDisplayDatetimeSent());
-            messagesSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
-            messagesContentsTextArea.setText(message.getContents());
-        } else {
-            messagesResetDetails();
+    private void messagesPopulateSentTable(){
+        try {
+            messagesSentTable.getItems().clear();
+            for (Message message : DbOperations.getMessagesFromUser(BuySellSwapApp.getCurrentUser().getUserName())){
+                messagesSentTable.getItems().add(message);
+            }
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setHeaderText("Error retrieving current user's messages.");
+            alert.setContentText(e.getMessage());
+            alert.show();
+            e.printStackTrace();
         }
     }
 
-    private void messagesResetDetails(){
-        messagesFromTextField.setText("From");
-        messagesDateTextField.setText("Date");
-        messagesSubjectTextField.setText("Subject");
-        messagesContentsTextArea.setText("Contents");
+    private void messagesShowReceivedMessageDetails(Message message){
+        if (message != null){
+            messagesReceivedFromTextField.setText(message.getFromUsername());
+            messagesReceivedDateTextField.setText(message.getDisplayDatetimeSent());
+            messagesReceivedSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
+            messagesReceivedContentsTextArea.setText(message.getContents());
+        } else {
+            messagesResetReceivedMessageDetails();
+        }
+    }
+
+    private void messagesShowSentMessageDetails(Message message){
+        if (message != null){
+            messagesSentToTextField.setText(message.getToUsername());
+            messagesSentDateTextField.setText(message.getDisplayDatetimeSent());
+            messagesSentSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
+            messagesSentContentsTextArea.setText(message.getContents());
+        } else {
+            messagesResetSentMessageDetails();
+        }
+    }
+
+    private void messagesResetReceivedMessageDetails(){
+        messagesReceivedFromTextField.setText("From");
+        messagesReceivedDateTextField.setText("Date");
+        messagesReceivedSubjectTextField.setText("Subject");
+        messagesReceivedContentsTextArea.setText("Contents");
+    }
+
+    private void messagesResetSentMessageDetails(){
+        messagesSentToTextField.setText("To");
+        messagesSentDateTextField.setText("Date");
+        messagesSentSubjectTextField.setText("Subject");
+        messagesSentContentsTextArea.setText("Contents");
+    }
+
+    @FXML
+    private void messagesRefresh(){
+        messagesPopulateReceivedTable();
+        messagesPopulateSentTable();
     }
     //***********Messages Methods BEGIN**********//
 }
