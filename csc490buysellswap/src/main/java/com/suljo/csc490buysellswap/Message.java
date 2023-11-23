@@ -13,9 +13,12 @@ public class Message {
     private IntegerProperty aboutListingID;
     private StringProperty subject;
     private StringProperty contents;
+    private IntegerProperty replyToMessageID;
+
+
 
     public Message(Integer messageID, String fromUsername, String toUsername, LocalDateTime datetimeSent,
-                   Integer aboutListingID, String subject, String contents) {
+                   Integer aboutListingID, String subject, String contents, Integer replyToMessageID) {
         this.messageID = new SimpleIntegerProperty(messageID);
         this.fromUsername = new SimpleStringProperty(fromUsername);
         this.toUsername = new SimpleStringProperty(toUsername);
@@ -24,6 +27,7 @@ public class Message {
         this.aboutListingID = new SimpleIntegerProperty(aboutListingID);
         this.subject = new SimpleStringProperty(subject);
         this.contents = new SimpleStringProperty(contents);
+        this.replyToMessageID = new SimpleIntegerProperty(replyToMessageID);
     }
 
     public Integer getMessageID() {
@@ -117,5 +121,17 @@ public class Message {
 
     public StringProperty contentsProperty() {
         return contents;
+    }
+
+    public int getReplyToMessageID() {
+        return replyToMessageID.get();
+    }
+
+    public IntegerProperty replyToMessageIDProperty() {
+        return replyToMessageID;
+    }
+
+    public void setReplyToMessageID(int replyToMessageID) {
+        this.replyToMessageID.set(replyToMessageID);
     }
 }

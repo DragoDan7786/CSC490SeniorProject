@@ -292,6 +292,7 @@ public class DbOperations {
         Integer aboutListingID = result.getInt("aboutListingID");
         String subject = result.getString("subject");
         String contents = result.getString("contents");
-        return new Message(messageID, fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents);
+        Integer replyToMessageID = result.getInt("replyToMessageID");
+        return new Message(messageID, fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents, replyToMessageID);
     }
 }
