@@ -99,19 +99,21 @@ CREATE TABLE sprint05.message(
 	,aboutListingID INT
 	,subject VARCHAR(250)
 	,contents VARCHAR(5000)
+	,replyToMessageID INT
 	,CONSTRAINT message_pk PRIMARY KEY(messageID)
 	,CONSTRAINT message_from_user_fk FOREIGN KEY(fromUsername) REFERENCES sprint05.[user](userName)
 	,CONSTRAINT message_to_user_fk FOREIGN KEY(toUsername) REFERENCES sprint05.[user](userName)
 	,CONSTRAINT message_about_listing_fk FOREIGN KEY(aboutListingID) REFERENCES sprint05.listing(listingID)
+	,CONSTRAINT reply_to_message_fk FOREIGN KEY(replyToMessageID) REFERENCES sprint05.message(messageID)
 );
 
 INSERT INTO sprint05.message
-	(fromUsername, toUsername, aboutListingID, subject, contents)
+	(fromUsername, toUsername, aboutListingID, subject, contents, replyToMessageID)
 VALUES
-	('admin', 'user', 1, 'Re: listing', 'Just wondering if this is still available?')
-	,('user', 'admin', 1, 'Re: listing', 'Yes, it is.')
-	,('admin', 'user', 1, 'Re: listing', 'Great, I''ll take it, where and when can I pick it up?')
-	,('user', 'admin', 1, 'Re: listing', 'Let''s meet at 12pm in the Target parking lot. Bring cash.')
-	,('admin', 'user', 1, 'Re: listing', 'Cool, see you there and then.')
-	,('user', 'admin', 1, 'Re: listing', 'Thanks for your business.')
+	('admin', 'user', 1, 'Re: listing', 'Just wondering if this is still available?', null)
+	,('user', 'admin', 1, 'Re: listing', 'Yes, it is.', 1)
+	,('admin', 'user', 1, 'Re: listing', 'Great, I''ll take it, where and when can I pick it up?', 2)
+	,('user', 'admin', 1, 'Re: listing', 'Let''s meet at 12pm in the Target parking lot. Bring cash.', 3)
+	,('admin', 'user', 1, 'Re: listing', 'Cool, see you there and then.', 4)
+	,('user', 'admin', 1, 'Re: listing', 'Thanks for your business.', 5)
 ;
