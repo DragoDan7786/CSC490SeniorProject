@@ -57,7 +57,7 @@ public class DbQueries {
 
     public static String updateListingQuery = """
             UPDATE sprint05.listing
-            SET title = ?, description = ?, priceInCents = ?, isAvailable = ?, isForRent = ?, rentalPeriodHours = ?, 
+            SET title = ?, description = ?, priceInCents = ?, isAvailable = ?, isForRent = ?, rentalPeriodHours = ?,
                 listingImage = ?, soldAtPriceInCents = ?, isActive = ?, isVisible = ?, datetimeSold = ?
             WHERE listingID = ?
             """;

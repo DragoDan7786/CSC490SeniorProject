@@ -696,5 +696,12 @@ public class UserViewController {
         messagesPopulateReceivedTable();
         messagesPopulateSentTable();
     }
+
+    @FXML
+    private void messagesNewMessage(){
+        if (BuySellSwapApp.showMessageSendDialog(null, null, null, messagesReceivedTable.getScene().getWindow())){
+            messagesRefresh();
+        }
+    }
     //***********Messages Methods BEGIN**********//
 }

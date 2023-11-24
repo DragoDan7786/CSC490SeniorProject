@@ -58,6 +58,28 @@ public class BuySellSwapApp extends Application {
         }
     }
 
+    public static boolean showMessageSendDialog(String toUsername, String subjectString, Integer listingID, Window parentWindow){
+        try {
+            //Create and set up the stage.
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("BuySellSwap Message");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.initOwner(parentWindow);
+            //Load the FXML.
+            FXMLLoader loader = new FXMLLoader(BuySellSwapApp.class.getResource("message-send-dialog.fxml"));
+            dialogStage.setScene(new Scene(loader.load()));
+            //Set up the controller.
+            MessageSendDialogController controller = loader.getController();
+            controller.setStage(dialogStage);
+            //Show the stage.
+            dialogStage.showAndWait();
+            //Signal if the message was sent (or not).
+            return controller.isMessageSent();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static User getCurrentUser() {
         return currentUser;
     }
