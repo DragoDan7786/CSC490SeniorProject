@@ -53,6 +53,7 @@ public class DbQueries {
             SELECT *
             FROM sprint05.[user]
             WHERE userName = ?
+            ;
             """;
 
     public static String updateListingQuery = """
@@ -60,6 +61,7 @@ public class DbQueries {
             SET title = ?, description = ?, priceInCents = ?, isAvailable = ?, isForRent = ?, rentalPeriodHours = ?,
                 listingImage = ?, soldAtPriceInCents = ?, isActive = ?, isVisible = ?, datetimeSold = ?
             WHERE listingID = ?
+            ;
             """;
 
     public static String selectMessagesToUserQuery = """
@@ -75,6 +77,21 @@ public class DbQueries {
             FROM sprint05.message
             WHERE fromUsername = ?
             ORDER BY datetimeSent DESC
+            ;
+            """;
+
+    public static String listingIDExistsQuery = """
+            SELECT *
+            FROM sprint05.listing
+            WHERE listingID = ?
+            ;
+            """;
+
+    public static String insertNewMessageQuery = """
+            INSERT INTO sprint05.message
+                (fromUsername, toUsername, aboutListingID, subject, contents, replyToMessageID)
+            VALUES
+                (?,?,?,?,?,?)
             ;
             """;
 }

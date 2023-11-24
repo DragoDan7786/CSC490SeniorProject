@@ -204,18 +204,25 @@ public class DbOperations {
      * @throws SQLException
      */
     public static boolean usernameExists(String username) throws SQLException {
-        boolean userAlreadyExists;
+        boolean userExists;
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.checkIfUsernameExistsQuery);
         prepStmt.setString(1, username);
         ResultSet result = prepStmt.executeQuery();
-        if (!result.next()){
-            userAlreadyExists = false;
-        } else {
-            userAlreadyExists = true;
-        }
+        userExists = result.next();
         conn.close();
-        return userAlreadyExists;
+        return userExists;
+    }
+
+    public static boolean listingIDExists(int listingID) throws SQLException {
+        boolean listingIDExists;
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.listingIDExistsQuery);
+        prepStmt.setInt(1, listingID);
+        ResultSet result = prepStmt.executeQuery();
+        listingIDExists = result.next();
+        conn.close();
+        return listingIDExists;
     }
 
     /**
@@ -294,5 +301,32 @@ public class DbOperations {
         String contents = result.getString("contents");
         Integer replyToMessageID = result.getInt("replyToMessageID");
         return new Message(messageID, fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents, replyToMessageID);
+    }
+
+    public static boolean insertNewMessage(String fromUsername, String toUsername, Integer aboutListingID,
+                                           String subject, String contents, Integer replyToMessageID) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.insertNewMessageQuery);
+        prepStmt.setString(1, fromUsername);
+        prepStmt.setString(2, toUsername);
+        if (aboutListingID != null){
+            prepStmt.setInt(3, aboutListingID);
+        } else {
+            prepStmt.setNull(3, Types.INTEGER);
+        }
+        if (subject == null || subject.isEmpty()){
+            prepStmt.setString(4, "[no subject]");
+        } else {
+            prepStmt.setString(4, subject);
+        }
+        prepStmt.setString(5, contents);
+        if (replyToMessageID != null){
+            prepStmt.setInt(6, replyToMessageID);
+        } else {
+            prepStmt.setNull(6, Types.INTEGER);
+        }
+        int rowCount = prepStmt.executeUpdate();
+        conn.close();
+        return rowCount != 0; //if 0 rows were affected, the message was not inserted
     }
 }

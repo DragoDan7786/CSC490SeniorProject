@@ -659,7 +659,11 @@ public class UserViewController {
         if (message != null){
             messagesReceivedFromTextField.setText(message.getFromUsername());
             messagesReceivedDateTextField.setText(message.getDisplayDatetimeSent());
-            messagesReceivedSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
+            if (message.getAboutListingID() != 0){
+                messagesReceivedSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
+            } else {
+                messagesReceivedSubjectTextField.setText(message.getSubject());
+            }
             messagesReceivedContentsTextArea.setText(message.getContents());
         } else {
             messagesResetReceivedMessageDetails();
@@ -670,7 +674,11 @@ public class UserViewController {
         if (message != null){
             messagesSentToTextField.setText(message.getToUsername());
             messagesSentDateTextField.setText(message.getDisplayDatetimeSent());
-            messagesSentSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
+            if (message.getAboutListingID() != 0){
+                messagesReceivedSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
+            } else {
+                messagesReceivedSubjectTextField.setText(message.getSubject());
+            }
             messagesSentContentsTextArea.setText(message.getContents());
         } else {
             messagesResetSentMessageDetails();
@@ -699,7 +707,7 @@ public class UserViewController {
 
     @FXML
     private void messagesNewMessage(){
-        if (BuySellSwapApp.showMessageSendDialog(null, null, null, messagesReceivedTable.getScene().getWindow())){
+        if (BuySellSwapApp.showMessageSendDialog(null, null, null, null, messagesReceivedTable.getScene().getWindow())){
             messagesRefresh();
         }
     }

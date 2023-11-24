@@ -4,11 +4,15 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Optional;
 import java.util.Properties;
 
 public class BuySellSwapApp extends Application {
@@ -58,7 +62,8 @@ public class BuySellSwapApp extends Application {
         }
     }
 
-    public static boolean showMessageSendDialog(String toUsername, String subjectString, Integer listingID, Window parentWindow){
+    public static boolean showMessageSendDialog(String toUsername, String subjectString, Integer listingID,
+                                                Integer replyToMessageID, Window parentWindow){
         try {
             //Create and set up the stage.
             Stage dialogStage = new Stage();
@@ -71,6 +76,7 @@ public class BuySellSwapApp extends Application {
             //Set up the controller.
             MessageSendDialogController controller = loader.getController();
             controller.setStage(dialogStage);
+            controller.setReplyToMessageID(replyToMessageID);
             //Show the stage.
             dialogStage.showAndWait();
             //Signal if the message was sent (or not).
@@ -78,6 +84,19 @@ public class BuySellSwapApp extends Application {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Displays an alert to the user when an exception is thrown while interacting with the database.
+     * The alert will display the exception message.
+     * @param exception The exception that was generated.
+     */
+    public static Optional<ButtonType> sqlExceptionAlert(SQLException exception){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Database Error");
+        alert.setHeaderText("There was a problem interacting with the database. Please try again.");
+        alert.setContentText(exception.getMessage());
+        return  alert.showAndWait();
     }
 
     public static User getCurrentUser() {
