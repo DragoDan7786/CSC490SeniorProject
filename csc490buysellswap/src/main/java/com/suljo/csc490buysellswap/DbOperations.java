@@ -337,4 +337,17 @@ public class DbOperations {
         return rowCount != 0; //if 0 rows were affected, nothing was deleted
     }
 
+    public static String userIDToUsername(int userID) throws SQLException {
+        String username = null;
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.userIdToUsernameQuery);
+        prepStmt.setInt(1, userID);
+        ResultSet result = prepStmt.executeQuery();
+        if (result.next()){
+            username = result.getString("userName");
+        }
+        conn.close();
+        return username;
+    }
+
 }

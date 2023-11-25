@@ -40,16 +40,20 @@ public class MessageSendDialogController {
         this.replyToMessageID = replyToMessageID;
     }
 
-    public void setFieldInitialValues(String toUsername, String subjectString, Integer listingID){
-        if (toUsername != null){
-            toField.setText(toUsername);
-        }
-        if (subjectString != null){
-            subjectField.setText(subjectString);
-        }
-        if (listingID != null){
-            listingIdField.setText(listingID.toString());
-        }
+    public void setToFieldText(String text){
+        toField.setText(text);
+    }
+
+    public void setSubjectFieldText(String text){
+        subjectField.setText(text);
+    }
+
+    public void setListingIdField(String text){
+        listingIdField.setText(text);
+    }
+
+    public void setMessageBodyFieldText(String text){
+        messageBodyField.setText(text);
     }
 
     @FXML

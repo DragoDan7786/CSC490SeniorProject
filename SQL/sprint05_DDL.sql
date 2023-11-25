@@ -97,10 +97,10 @@ CREATE TABLE sprint05.message(
 	,toUsername VARCHAR(250) NOT NULL
 	,datetimeSent DATETIME2 NOT NULL DEFAULT GETDATE()
 	,aboutListingID INT
-	,subject VARCHAR(250)
+	,subject VARCHAR(250) NOT NULL DEFAULT '[no subject]'
 	,contents VARCHAR(5000)
 	,replyToMessageID INT
-	,isHidden BIT DEFAULT 0
+	,hidden BIT NOT NULL DEFAULT 0
 	,CONSTRAINT message_pk PRIMARY KEY(messageID)
 	,CONSTRAINT message_from_user_fk FOREIGN KEY(fromUsername) REFERENCES sprint05.[user](userName)
 	,CONSTRAINT message_to_user_fk FOREIGN KEY(toUsername) REFERENCES sprint05.[user](userName)

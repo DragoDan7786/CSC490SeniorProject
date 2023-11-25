@@ -29,7 +29,7 @@ CREATE TABLE sprint05.temp_message(
 );
 
 INSERT INTO sprint05.temp_message(fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents, replyToMessageID, hidden)
-SELECT fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents, replyToMessageID, isHidden
+SELECT fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents, replyToMessageID, hidden
 FROM sprint05.message
 ;
 
@@ -41,7 +41,7 @@ CREATE TABLE sprint05.message(
 	,toUsername VARCHAR(250) NOT NULL
 	,datetimeSent DATETIME2 NOT NULL DEFAULT GETDATE()
 	,aboutListingID INT
-	,subject VARCHAR(250)
+	,subject VARCHAR(250) NOT NULL DEFAULT '[no subject]'
 	,contents VARCHAR(5000)
 	,replyToMessageID INT
 	,hidden BIT NOT NULL DEFAULT 0

@@ -593,7 +593,7 @@ public class UserViewController {
                 Button reportListingButton = new Button("Report Listing");
                 vbox.getChildren().add(reportListingButton);
                 // Add actions to the buttons as needed
-
+                msgBuyerButton.setOnAction(e -> buyerBrowseMessageSeller(selectedListing));
                 // Create a new Scene with the VBox and set it on the Stage
                 Scene scene = new Scene(vbox);
                 stage.setScene(scene);
@@ -602,6 +602,26 @@ public class UserViewController {
                 stage.show();
             }
         });
+    }
+
+    /**
+     * Generates a new message dialog populated with details relevant to the selected listing.
+     * @param listing The listing.
+     */
+    private void buyerBrowseMessageSeller(Listing listing){
+        try {
+            String toUsername = DbOperations.userIDToUsername(listing.getSellerUserID());
+            if (BuySellSwapApp.showMessageSendDialog(toUsername, listing.getTitle(), listing.getListingID(),
+                    null, null, messagesTabPane.getScene().getWindow())){
+                messagesRefresh();
+            }
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setHeaderText("An database error occurred. Could not message seller.");
+            alert.setContentText(e.getMessage());
+            e.printStackTrace();
+        }
     }
     //***********Browse Listings Methods END**********//
     //***********Messages Methods BEGIN**********//
@@ -718,7 +738,8 @@ public class UserViewController {
 
     @FXML
     private void messagesNewMessage(){
-        if (BuySellSwapApp.showMessageSendDialog(null, null, null, null, messagesReceivedTable.getScene().getWindow())){
+        if (BuySellSwapApp.showMessageSendDialog(null, null, null, null,
+                null, messagesReceivedTable.getScene().getWindow())){
             messagesRefresh();
         }
     }
@@ -733,8 +754,7 @@ public class UserViewController {
         try {
             if (selectedMessage != null && confirmMessageDeletion()){
                 hideMessage(selectedMessage.getMessageID());
-                messagesPopulateSentTable();
-                messagesPopulateReceivedTable();
+                messagesRefresh();
                 //I was hoping to avoid database operations for the sake of efficiency, but the below only seems to
                 //remove the message from a single TableView, not from both.
                 //I need to move on to other things, so I'll just re-populate the tables, to ensure it's working.
@@ -777,5 +797,30 @@ public class UserViewController {
         Optional<ButtonType> choice = alert.showAndWait();
         return (choice.get() == ButtonType.OK);
     }
-    //***********Messages Methods BEGIN**********//
+
+    @FXML
+    private void messagesHandleReply(){
+        //Get selected message
+        //Use relevant values to initialize a new message dialog
+        Message selectedMessage = getSelectedMessage();
+        if (selectedMessage != null){
+            String toUsername = null;
+            if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesReceivedTab)){
+                toUsername = selectedMessage.getFromUsername();
+            } else if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesSentTab)){
+                toUsername = selectedMessage.getToUsername();
+            }
+            String replySubject = "Re: " + selectedMessage.getSubject(); //database constraint ensures not null
+            String messageBody = selectedMessage.getContents();
+            messageBody = "\n>>>" + messageBody.replaceAll("\\n", "\n>>>");
+            if (messageBody.charAt(messageBody.length()-1) == '>'){
+                messageBody = messageBody.substring(0, messageBody.length() - 3);
+            }
+            if (BuySellSwapApp.showMessageSendDialog(toUsername, replySubject, selectedMessage.getAboutListingID(), messageBody,
+                    selectedMessage.getMessageID(), messagesTabPane.getScene().getWindow())){
+                messagesRefresh();
+            }
+        }
+    }
+    //***********Messages Methods END**********//
 }

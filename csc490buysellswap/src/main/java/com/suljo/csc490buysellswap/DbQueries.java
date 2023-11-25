@@ -99,5 +99,13 @@ public class DbQueries {
             UPDATE sprint05.message
             SET hidden = 1
             WHERE messageID = ?
+            ;
+            """;
+
+    public static String userIdToUsernameQuery = """
+            SELECT userName
+            FROM sprint05.[user]
+            WHERE userID = ?
+            ;
             """;
 }

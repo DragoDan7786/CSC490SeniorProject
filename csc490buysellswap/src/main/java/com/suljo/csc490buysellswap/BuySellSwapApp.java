@@ -62,7 +62,7 @@ public class BuySellSwapApp extends Application {
         }
     }
 
-    public static boolean showMessageSendDialog(String toUsername, String subjectString, Integer listingID,
+    public static boolean showMessageSendDialog(String toUsername, String subjectString, Integer listingID, String messageBody,
                                                 Integer replyToMessageID, Window parentWindow){
         try {
             //Create and set up the stage.
@@ -77,6 +77,18 @@ public class BuySellSwapApp extends Application {
             MessageSendDialogController controller = loader.getController();
             controller.setStage(dialogStage);
             controller.setReplyToMessageID(replyToMessageID);
+            if (toUsername != null){
+                controller.setToFieldText(toUsername);
+            }
+            if (subjectString != null){
+                controller.setSubjectFieldText(subjectString);
+            }
+            if (listingID != null){
+                controller.setListingIdField(listingID.toString());
+            }
+            if (messageBody != null){
+                controller.setMessageBodyFieldText(messageBody);
+            }
             //Show the stage.
             dialogStage.showAndWait();
             //Signal if the message was sent (or not).
