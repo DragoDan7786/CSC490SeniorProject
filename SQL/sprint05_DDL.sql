@@ -100,6 +100,7 @@ CREATE TABLE sprint05.message(
 	,subject VARCHAR(250)
 	,contents VARCHAR(5000)
 	,replyToMessageID INT
+	,isHidden BIT DEFAULT 0
 	,CONSTRAINT message_pk PRIMARY KEY(messageID)
 	,CONSTRAINT message_from_user_fk FOREIGN KEY(fromUsername) REFERENCES sprint05.[user](userName)
 	,CONSTRAINT message_to_user_fk FOREIGN KEY(toUsername) REFERENCES sprint05.[user](userName)
