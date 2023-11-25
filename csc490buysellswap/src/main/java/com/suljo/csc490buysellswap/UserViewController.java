@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
+import static com.suljo.csc490buysellswap.DbOperations.hideMessage;
 import static com.suljo.csc490buysellswap.DbOperations.selectAllActiveListings;
 import static javafx.scene.layout.Priority.*;
 
@@ -104,6 +105,12 @@ public class UserViewController {
     //***********Account Management Elements END**********//
     //***********Sell Tab Elements END**********//
     //***********Messages Tab Elements BEGIN**********//
+    @FXML
+    private TabPane messagesTabPane;
+    @FXML
+    private Tab messagesReceivedTab;
+    @FXML
+    private Tab messagesSentTab;
     @FXML
     private TableView<Message> messagesReceivedTable;
     @FXML
@@ -627,7 +634,9 @@ public class UserViewController {
         try {
             messagesReceivedTable.getItems().clear();
             for (Message message : DbOperations.getMessagesToUser(BuySellSwapApp.getCurrentUser().getUserName())){
-                messagesReceivedTable.getItems().add(message);
+                if (!message.isHidden()){
+                    messagesReceivedTable.getItems().add(message);
+                }
             }
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -643,7 +652,9 @@ public class UserViewController {
         try {
             messagesSentTable.getItems().clear();
             for (Message message : DbOperations.getMessagesFromUser(BuySellSwapApp.getCurrentUser().getUserName())){
-                messagesSentTable.getItems().add(message);
+                if (!message.isHidden()){
+                    messagesSentTable.getItems().add(message);
+                }
             }
         } catch (SQLException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -710,6 +721,61 @@ public class UserViewController {
         if (BuySellSwapApp.showMessageSendDialog(null, null, null, null, messagesReceivedTable.getScene().getWindow())){
             messagesRefresh();
         }
+    }
+
+    /**
+     * Performs a soft delete on the selected message by setting the hidden flag and updating the database and GUI accordingly.
+     */
+    @FXML
+    private void messagesHandleDeleteButton(){
+        //Handle the case that the delete button is pressed without a message first being selected by checking for nulls.
+        Message selectedMessage = getSelectedMessage();
+        try {
+            if (selectedMessage != null && confirmMessageDeletion()){
+                hideMessage(selectedMessage.getMessageID());
+                messagesPopulateSentTable();
+                messagesPopulateReceivedTable();
+                //I was hoping to avoid database operations for the sake of efficiency, but the below only seems to
+                //remove the message from a single TableView, not from both.
+                //I need to move on to other things, so I'll just re-populate the tables, to ensure it's working.
+                //But I'll leave the code below in case later we want to try and fix it.
+//                //Messages can be sent to yourself, in which case they will appear in both TableViews.
+//                //So just to be safe, remove the message from both TableViews, if present.
+//                //Since each table is populated from separate queries, each query generating an independent set of
+//                //Message instances, have to compare with an equals method - can't just remove the object itself, as the
+//                //individual selected object is only in one of the two TableViews.
+//                messagesSentTable.getItems().removeIf(message -> message.equals(selectedMessage));
+//                messagesReceivedTable.getItems().removeIf(message -> message.equals(selectedMessage));
+//                //No need to actually set the hidden property on the selected message, as this message will go out of
+//                //scope and be garbage collected once it's removed from the TableView lists anyway.
+            }
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setHeaderText("An error occurred while deleting the message. Please try again.");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            e.printStackTrace();
+        }
+    }
+
+    private Message getSelectedMessage() {
+        Message selectedMessage = null;
+        if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesReceivedTab)){
+            selectedMessage = messagesReceivedTable.getSelectionModel().getSelectedItem();
+        } else if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesSentTab)){
+            selectedMessage = messagesSentTable.getSelectionModel().getSelectedItem();
+        }
+        return selectedMessage;
+    }
+
+    private boolean confirmMessageDeletion(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Deletion");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete this message?");
+        Optional<ButtonType> choice = alert.showAndWait();
+        return (choice.get() == ButtonType.OK);
     }
     //***********Messages Methods BEGIN**********//
 }

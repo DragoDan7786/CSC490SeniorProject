@@ -15,7 +15,7 @@
       <Label layoutX="10.0" layoutY="6.0" text="Title" />
       <TextField fx:id="listingTitleTextField" layoutX="10.0" layoutY="25.0" prefHeight="25.0" prefWidth="260.0" />
       <Label layoutX="10.0" layoutY="54.0" text="Description" />
-      <TextArea fx:id="listingDescriptionTextArea" layoutX="10.0" layoutY="71.0" prefHeight="200.0" prefWidth="260.0" />
+      <TextArea fx:id="listingDescriptionTextArea" layoutX="10.0" layoutY="71.0" prefHeight="200.0" prefWidth="260.0" wrapText="true" />
       <RadioButton fx:id="forSaleRadio" layoutX="10.0" layoutY="274.0" mnemonicParsing="false" onAction="#handleSaleToggle" text="For Sale">
          <toggleGroup>
             <ToggleGroup fx:id="saleRentToggleGroup" />

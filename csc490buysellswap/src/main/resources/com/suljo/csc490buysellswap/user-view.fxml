@@ -80,7 +80,7 @@
                                        <children>
                                           <TextField fx:id="myListingsDetailViewListingID" alignment="CENTER_RIGHT" layoutX="278.0" prefHeight="25.0" prefWidth="50.0" text="ID" />
                                           <TextField fx:id="myListingsDetailViewTitle" text="Title" />
-                                          <TextArea fx:id="myListingsDetailViewDescription" layoutY="23.0" prefHeight="200.0" prefWidth="328.0" text="Description." />
+                                          <TextArea fx:id="myListingsDetailViewDescription" layoutY="23.0" prefHeight="200.0" prefWidth="328.0" text="Description." wrapText="true" />
                                           <TextField fx:id="myListingsDetailViewPrice" layoutY="223.0" prefHeight="25.0" prefWidth="328.0" text="Price" />
                                           <TextField fx:id="myListingsDetailViewAvailable" alignment="CENTER" layoutX="169.0" layoutY="-1.0" prefHeight="25.0" prefWidth="81.0" text="Available" />
                                           <TextField fx:id="myListingsDetailViewAdded" layoutY="248.0" prefHeight="25.0" prefWidth="328.0" text="Added" />
@@ -148,9 +148,9 @@
             </Tab>
             <Tab text="Messages">
               <content>
-                  <TabPane>
+                  <TabPane fx:id="messagesTabPane">
                      <tabs>
-                        <Tab text="Received">
+                        <Tab fx:id="messagesReceivedTab" text="Received">
                            <content>
                               <BorderPane>
                                  <center>
@@ -159,8 +159,8 @@
                                           <TextField fx:id="messagesReceivedFromTextField" layoutX="5.0" layoutY="5.0" prefHeight="25.0" prefWidth="550.0" text="From" />
                                           <TextField fx:id="messagesReceivedDateTextField" layoutX="5.0" layoutY="35.0" prefHeight="25.0" prefWidth="550.0" text="Date" />
                                           <TextField fx:id="messagesReceivedSubjectTextField" layoutX="5.0" layoutY="65.0" prefHeight="25.0" prefWidth="550.0" text="Subject" />
-                                          <TextArea fx:id="messagesReceivedContentsTextArea" layoutX="5.0" layoutY="96.0" prefHeight="430.0" prefWidth="550.0" text="Contents" />
-                                          <Button layoutX="5.0" layoutY="532.0" mnemonicParsing="false" prefWidth="100.0" text="Delete" />
+                                          <TextArea fx:id="messagesReceivedContentsTextArea" layoutX="5.0" layoutY="96.0" prefHeight="430.0" prefWidth="550.0" text="Contents" wrapText="true" />
+                                          <Button layoutX="5.0" layoutY="532.0" mnemonicParsing="false" onAction="#messagesHandleDeleteButton" prefWidth="100.0" text="Delete" />
                                           <Button layoutX="235.0" layoutY="532.0" mnemonicParsing="false" prefWidth="100.0" text="Reply" />
                                           <Button layoutX="345.0" layoutY="532.0" mnemonicParsing="false" onAction="#messagesNewMessage" prefWidth="100.0" text="New Message" />
                                           <Button layoutX="455.0" layoutY="532.0" mnemonicParsing="false" onAction="#messagesRefresh" prefWidth="100.0" text="Refresh" />
@@ -179,7 +179,7 @@
                               </BorderPane>
                            </content>
                         </Tab>
-                        <Tab text="Sent">
+                        <Tab fx:id="messagesSentTab" text="Sent">
                            <content>
                               <BorderPane>
                                  <center>
@@ -188,8 +188,8 @@
                                           <TextField fx:id="messagesSentToTextField" layoutX="5.0" layoutY="5.0" prefHeight="25.0" prefWidth="550.0" text="To" />
                                           <TextField fx:id="messagesSentDateTextField" layoutX="5.0" layoutY="35.0" prefHeight="25.0" prefWidth="550.0" text="Date" />
                                           <TextField fx:id="messagesSentSubjectTextField" layoutX="5.0" layoutY="65.0" prefHeight="25.0" prefWidth="550.0" text="Subject" />
-                                          <TextArea fx:id="messagesSentContentsTextArea" layoutX="5.0" layoutY="96.0" prefHeight="430.0" prefWidth="550.0" text="Contents" />
-                                          <Button layoutX="5.0" layoutY="532.0" mnemonicParsing="false" prefWidth="100.0" text="Delete" />
+                                          <TextArea fx:id="messagesSentContentsTextArea" layoutX="5.0" layoutY="96.0" prefHeight="430.0" prefWidth="550.0" text="Contents" wrapText="true" />
+                                          <Button layoutX="5.0" layoutY="532.0" mnemonicParsing="false" onAction="#messagesHandleDeleteButton" prefWidth="100.0" text="Delete" />
                                           <Button layoutX="235.0" layoutY="532.0" mnemonicParsing="false" onAction="#messagesRefresh" prefWidth="100.0" text="Reply" />
                                           <Button layoutX="345.0" layoutY="532.0" mnemonicParsing="false" onAction="#messagesNewMessage" prefWidth="100.0" text="New Message" />
                                           <Button layoutX="455.0" layoutY="532.0" mnemonicParsing="false" onAction="#messagesRefresh" prefWidth="100.0" text="Refresh" />

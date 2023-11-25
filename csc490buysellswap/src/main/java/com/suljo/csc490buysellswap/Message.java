@@ -3,6 +3,7 @@ package com.suljo.csc490buysellswap;
 import javafx.beans.property.*;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Message {
     private IntegerProperty messageID;
@@ -14,11 +15,10 @@ public class Message {
     private StringProperty subject;
     private StringProperty contents;
     private IntegerProperty replyToMessageID;
-
-
+    private BooleanProperty hidden;
 
     public Message(Integer messageID, String fromUsername, String toUsername, LocalDateTime datetimeSent,
-                   Integer aboutListingID, String subject, String contents, Integer replyToMessageID) {
+                   Integer aboutListingID, String subject, String contents, Integer replyToMessageID, boolean hidden) {
         this.messageID = new SimpleIntegerProperty(messageID);
         this.fromUsername = new SimpleStringProperty(fromUsername);
         this.toUsername = new SimpleStringProperty(toUsername);
@@ -28,6 +28,7 @@ public class Message {
         this.subject = new SimpleStringProperty(subject);
         this.contents = new SimpleStringProperty(contents);
         this.replyToMessageID = new SimpleIntegerProperty(replyToMessageID);
+        this.hidden = new SimpleBooleanProperty(hidden);
     }
 
     public Integer getMessageID() {
@@ -133,5 +134,30 @@ public class Message {
 
     public void setReplyToMessageID(int replyToMessageID) {
         this.replyToMessageID.set(replyToMessageID);
+    }
+
+    public boolean isHidden() {
+        return hidden.get();
+    }
+
+    public BooleanProperty hiddenProperty() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden.set(hidden);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+        Message message = (Message) other;
+        return Objects.equals(messageID, message.messageID) && Objects.equals(fromUsername, message.fromUsername) && Objects.equals(toUsername, message.toUsername) && Objects.equals(datetimeSent, message.datetimeSent) && Objects.equals(displayDatetimeSent, message.displayDatetimeSent) && Objects.equals(aboutListingID, message.aboutListingID) && Objects.equals(subject, message.subject) && Objects.equals(contents, message.contents) && Objects.equals(replyToMessageID, message.replyToMessageID) && Objects.equals(hidden, message.hidden);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(messageID, fromUsername, toUsername, datetimeSent, displayDatetimeSent, aboutListingID, subject, contents, replyToMessageID, hidden);
     }
 }

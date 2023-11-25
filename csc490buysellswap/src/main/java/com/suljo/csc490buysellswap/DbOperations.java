@@ -268,19 +268,16 @@ public class DbOperations {
     public static ArrayList<Message> getMessagesToUser(String username) throws SQLException {
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectMessagesToUserQuery);
-        prepStmt.setString(1, username);
-        ResultSet result = prepStmt.executeQuery();
-        ArrayList<Message> messages = new ArrayList<>();
-        while (result.next()){
-            messages.add(makeMessageFromResult(result));
-        }
-        conn.close();
-        return messages;
+        return getMessages(username, conn, prepStmt);
     }
 
     public static ArrayList<Message> getMessagesFromUser(String username) throws SQLException {
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectMessagesFromUserQuery);
+        return getMessages(username, conn, prepStmt);
+    }
+
+    private static ArrayList<Message> getMessages(String username, Connection conn, PreparedStatement prepStmt) throws SQLException {
         prepStmt.setString(1, username);
         ResultSet result = prepStmt.executeQuery();
         ArrayList<Message> messages = new ArrayList<>();
@@ -300,7 +297,8 @@ public class DbOperations {
         String subject = result.getString("subject");
         String contents = result.getString("contents");
         Integer replyToMessageID = result.getInt("replyToMessageID");
-        return new Message(messageID, fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents, replyToMessageID);
+        boolean hidden = result.getBoolean("hidden");
+        return new Message(messageID, fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents, replyToMessageID, hidden);
     }
 
     public static boolean insertNewMessage(String fromUsername, String toUsername, Integer aboutListingID,
@@ -329,4 +327,14 @@ public class DbOperations {
         conn.close();
         return rowCount != 0; //if 0 rows were affected, the message was not inserted
     }
+
+    public static boolean hideMessage(int messageID) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.hideMessageQuery);
+        prepStmt.setInt(1, messageID);
+        int rowCount = prepStmt.executeUpdate();
+        conn.close();
+        return rowCount != 0; //if 0 rows were affected, nothing was deleted
+    }
+
 }

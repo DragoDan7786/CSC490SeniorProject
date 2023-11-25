@@ -10,7 +10,7 @@
       <TextField fx:id="toField" layoutX="10.0" layoutY="10.0" prefHeight="25.0" prefWidth="640.0" promptText="To" />
       <TextField fx:id="subjectField" layoutX="10.0" layoutY="45.0" prefHeight="25.0" prefWidth="640.0" promptText="Subject" />
       <TextField fx:id="listingIdField" layoutX="10.0" layoutY="80.0" prefHeight="25.0" prefWidth="640.0" promptText="Listing ID" />
-      <TextArea fx:id="messageBodyField" layoutX="10.0" layoutY="115.0" prefHeight="256.0" prefWidth="640.0" promptText="Message Body" />
+      <TextArea fx:id="messageBodyField" layoutX="10.0" layoutY="115.0" prefHeight="256.0" prefWidth="640.0" promptText="Message Body" wrapText="true" />
       <Button layoutX="10.0" layoutY="380.0" mnemonicParsing="false" onAction="#handleCancel" prefWidth="100.0" text="Cancel" />
       <Button layoutX="550.0" layoutY="380.0" mnemonicParsing="false" onAction="#handleSend" prefWidth="100.0" text="Send" />
    </children>

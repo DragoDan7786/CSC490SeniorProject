@@ -94,4 +94,10 @@ public class DbQueries {
                 (?,?,?,?,?,?)
             ;
             """;
+
+    public static String hideMessageQuery = """
+            UPDATE sprint05.message
+            SET hidden = 1
+            WHERE messageID = ?
+            """;
 }
