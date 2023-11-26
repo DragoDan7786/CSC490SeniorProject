@@ -61,6 +61,13 @@ public class LoginViewController {
         }
     }
 
+    /**
+     * Helper method to generate information alerts.
+     * @param title The title of the alert.
+     * @param header The header of the alert.
+     * @param content The content of the alert.
+     * @return The Alert object.
+     */
     private Alert generateInformationDialog(String title, String header, String content){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);

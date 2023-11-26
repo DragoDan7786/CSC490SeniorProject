@@ -55,12 +55,20 @@ public class Listing {
         this.dateSold = dateSold;
     }
 
+    /**
+     * Returns a copy of this Listing.
+     * @return A shallow copy of this listing.
+     */
     public Listing copy(){
         return new Listing(listingID, title, description, priceInCents, isAvailable, isForRent, rentalPeriodHours,
                 imageBlob, sellerUserID, datetimeAdded, datetimeModified, soldAtPriceInCents, isActive, isVisible,
                 dateSold);
     }
 
+    /**
+     * Sets the member variables of this listing to equal those of another, turning this listing into a shallow copy.
+     * @param other The listing whose values wll be copied.
+     */
     public void copyValues(Listing other){
         this.listingID = other.listingID;
         this.title = other.title;

@@ -91,6 +91,9 @@ public class EditListingDialogController {
         }
     }
 
+    /**
+     * Disables the fields associated with renting an item.
+     */
     @FXML
     private void handleSaleToggle(){
         rentalPeriodTextField.clear();
@@ -99,6 +102,9 @@ public class EditListingDialogController {
         hoursRadio.setDisable(true);
     }
 
+    /**
+     * Enables the fields associated with renting an item.
+     */
     @FXML
     private void handleRentToggle(){
         rentalPeriodTextField.setDisable(false);
@@ -106,6 +112,9 @@ public class EditListingDialogController {
         hoursRadio.setDisable(false);
     }
 
+    /**
+     * Allows the user to select a PNG-formmated image.
+     */
     @FXML
     private void handleSelectImage(){
         FileChooser fc = new FileChooser();
@@ -136,6 +145,9 @@ public class EditListingDialogController {
         }
     }
 
+    /**
+     * Removes the image, if any.
+     */
     @FXML
     private void handleRemoveImage(){
         imageFile = null;
