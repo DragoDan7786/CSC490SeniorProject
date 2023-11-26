@@ -27,8 +27,8 @@ public class DbOperations {
      * currentUser and returns true. If no match is found, returns false. Throws SQLException if
      * unable to connect to the database.
      *
-     * @param userName
-     * @param pWord
+     * @param userName the userName
+     * @param pWord the password
      * @return 0 if user found and active, -1 if username/password combination not matched, -2 if matched but user not active
      */
     public static int login(String userName, String pWord) throws SQLException {
@@ -74,8 +74,20 @@ public class DbOperations {
         return -1;
     }
 
+
     //If converted to a stored procedure instead of a straight insert query, could recover new item ID and return it to the user.
     //Might not be strictly necessary if there is additional functionality to view all of your own items.
+    /**
+     * Inserts a new listing into the database.
+     * @param itemName The itemName.
+     * @param itemDesc The itemDesc.
+     * @param priceInCents The price of the item, in cents.
+     * @param isForRent If the item is for rent (vs. for sale).
+     * @param rentalPeriodHours The rental period in hours, if the item is for rent.
+     * @param image The image which accompanies the listing, if any, in PNG format.
+     * @return The number of rows affected (should be 1 for a successful addition, 0 for a failure).
+     * @throws SQLException Throws a SQLException if there is a database error.
+     */
     public static int addNewListing(String itemName, String itemDesc, int priceInCents, boolean isForRent, int rentalPeriodHours, File image) throws SQLException {
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.insertNewListingQuery);
@@ -103,9 +115,9 @@ public class DbOperations {
      * Attempts to create new user in database. Takes parameters from Registration form and adds new user to database.
      * Returns number of rows affected. Successful if ros affected >=1.
      * Does not allow for creation of admin through GUI.
-     * @param userName
-     * @param pWord
-     * @return
+     * @param userName the userName
+     * @param pWord the password
+     * @return The number of rows affected, >=1 if new user creation was successful, otherwise 0.
      */
     public static int addNewUser(String userName,String  pWord,String  firstName,String  middleName,String  lastName,Date  dateOfBirth,String  street,String  city,String  state,String  zip,String  phoneNum, Boolean isAdmin) throws SQLException {
         Connection conn = connectToDb();
@@ -130,7 +142,7 @@ public class DbOperations {
     /**
      * Queries the database for all listings belonging to the current user.
      * @return An ArrayList of the Listings.
-     * @throws SQLException
+     * @throws SQLException SQLException if there is a database error.
      */
     public static ArrayList<Listing> selectMyListings() throws SQLException {
         ArrayList<Listing> listings = new ArrayList<>();
@@ -161,7 +173,7 @@ public class DbOperations {
      * Generates and returns a Listing from the current row in a ResultSet.
      * @param resultSet The ResultSet from a SQL query that returns rows from the Listing table.
      * @return A Listing object corresponding to the current row in the ResultSet.
-     * @throws SQLException
+     * @throws SQLException SQLException if there is a database error.
      */
     private static Listing makeListingFromResult(ResultSet resultSet) throws SQLException {
         int listingID = resultSet.getInt("listingID");
@@ -186,22 +198,21 @@ public class DbOperations {
 
     /**
      * Disables the account of the given user and all their listings by setting flags appropriately.
-     * @param userID
+     * @param userID the ID of the user whose account is being disabled.
      */
     public static void disableUserAccount(int userID) throws SQLException {
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.disableAccountQuery);
         prepStmt.setInt(1, userID);
-        //prepStmt.executeQuery();
         prepStmt.execute();
         conn.close();
     }
 
     /**
      * Determines if a username is already in use by querying the user table for users with that username.
-     * @param username
+     * @param username The username to be checked.
      * @return True if username exists, false otherwise.
-     * @throws SQLException
+     * @throws SQLException SQLException if there is a database error.
      */
     public static boolean usernameExists(String username) throws SQLException {
         boolean userExists;
@@ -214,6 +225,12 @@ public class DbOperations {
         return userExists;
     }
 
+    /**
+     * Determins if a listingID exists and is thus a valid listingID.
+     * @param listingID The ID to be checked.
+     * @return true if the listingID exists, false otherwise.
+     * @throws SQLException SQLException if there is a database error.
+     */
     public static boolean listingIDExists(int listingID) throws SQLException {
         boolean listingIDExists;
         Connection conn = connectToDb();
@@ -230,8 +247,8 @@ public class DbOperations {
      * @param listing the updated listing
      * @param imageFile the File containing the new image, or null
      * @return true of database updated
-     * @throws SQLException
-     * @throws FileNotFoundException
+     * @throws SQLException SQLException if there is a database error.
+     * @throws FileNotFoundException FileNotFoundException if the image file cannot be opened.
      */
     public static boolean updateListing(Listing listing, File imageFile) throws SQLException, FileNotFoundException {
         Connection conn = connectToDb();
@@ -265,18 +282,38 @@ public class DbOperations {
         }
     }
 
+    /**
+     * Returns a list of messages sent *to* a given user.
+     * @param username The username of the user.
+     * @return A list of messages sent to the user.
+     * @throws SQLException if there is a database error.
+     */
     public static ArrayList<Message> getMessagesToUser(String username) throws SQLException {
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectMessagesToUserQuery);
         return getMessages(username, conn, prepStmt);
     }
 
+    /**
+     * Returns a list of messages sent *from* (sent by) a given user.
+     * @param username The username of the user.
+     * @return A list of messages sent by the user.
+     * @throws SQLException if there is a database error.
+     */
     public static ArrayList<Message> getMessagesFromUser(String username) throws SQLException {
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.selectMessagesFromUserQuery);
         return getMessages(username, conn, prepStmt);
     }
 
+    /**
+     * Helper method for getting messages to/from a given user. Actually gets the messages.
+     * @param username The username of the user.
+     * @param conn A connection to the database.
+     * @param prepStmt The PreparedStatement with the query to find messages either sent by or to the user
+     * @return A list of the messages.
+     * @throws SQLException if there is a database error.
+     */
     private static ArrayList<Message> getMessages(String username, Connection conn, PreparedStatement prepStmt) throws SQLException {
         prepStmt.setString(1, username);
         ResultSet result = prepStmt.executeQuery();
@@ -288,6 +325,12 @@ public class DbOperations {
         return messages;
     }
 
+    /**
+     * Generates a Message object from a row in a ResultSet of message table rows.
+     * @param result The ResultSet
+     * @return The Message object representation of the current ResultSet row.
+     * @throws SQLException if there is a database error.
+     */
     private static Message makeMessageFromResult(ResultSet result) throws SQLException {
         Integer messageID = result.getInt("messageID");
         String fromUsername = result.getString("fromUsername");
@@ -301,6 +344,17 @@ public class DbOperations {
         return new Message(messageID, fromUsername, toUsername, datetimeSent, aboutListingID, subject, contents, replyToMessageID, hidden);
     }
 
+    /**
+     * Inserts a new message into the message table.
+     * @param fromUsername the username of the sending user.
+     * @param toUsername the username of the receiving user.
+     * @param aboutListingID the listing that this message concerns, may be null.
+     * @param subject the subject line of the message.
+     * @param contents the contents of the message.
+     * @param replyToMessageID if this message is a reply to another message, the ID of that message
+     * @return true if the message was successfully inserted into the database
+     * @throws SQLException if there is a database error.
+     */
     public static boolean insertNewMessage(String fromUsername, String toUsername, Integer aboutListingID,
                                            String subject, String contents, Integer replyToMessageID) throws SQLException {
         Connection conn = connectToDb();
@@ -328,6 +382,12 @@ public class DbOperations {
         return rowCount != 0; //if 0 rows were affected, the message was not inserted
     }
 
+    /**
+     * Soft deletes a message by setting the hidden value.
+     * @param messageID The ID of the message.
+     * @return true if the update was successful.
+     * @throws SQLException if there is a database error.
+     */
     public static boolean hideMessage(int messageID) throws SQLException {
         Connection conn = connectToDb();
         PreparedStatement prepStmt = conn.prepareStatement(DbQueries.hideMessageQuery);
@@ -337,6 +397,12 @@ public class DbOperations {
         return rowCount != 0; //if 0 rows were affected, nothing was deleted
     }
 
+    /**
+     * Gets the username corresponding to a userID.
+     * @param userID The userID.
+     * @return The username of the user.
+     * @throws SQLException if there is a database error.
+     */
     public static String userIDToUsername(int userID) throws SQLException {
         String username = null;
         Connection conn = connectToDb();

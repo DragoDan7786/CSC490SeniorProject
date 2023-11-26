@@ -13,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -321,6 +320,10 @@ public class UserViewController {
     }
     //***********List An Item Methods END**********//
     //***********My Listings Methods BEGIN**********//
+
+    /**
+     * Initializes the My Listings tab.
+     */
     private void initializeMyListingsTab(){
         //Set up the TableView.
         myListingsTableColumnId.setCellValueFactory(new PropertyValueFactory<>("listingID"));
@@ -433,10 +436,13 @@ public class UserViewController {
         myListingsDetailImageView.setVisible(false);
     }
 
+    /**
+     * Generates an edit listing dialog for the currently selected listing.
+     */
     @FXML
     private void myListingsHandleEditListing(){
         Listing selection = myListingsTableView.getSelectionModel().getSelectedItem();
-        if (selection != null && BuySellSwapApp.showEditListingDialog(selection, myListingsTableView.getScene().getWindow())){
+        if (selection != null && BuySellSwapApp.editListingDialog(selection, myListingsTableView.getScene().getWindow())){
             myListingsShowSelectionDetails(selection);
         }
     }
@@ -611,7 +617,7 @@ public class UserViewController {
     private void buyerBrowseMessageSeller(Listing listing){
         try {
             String toUsername = DbOperations.userIDToUsername(listing.getSellerUserID());
-            if (BuySellSwapApp.showMessageSendDialog(toUsername, listing.getTitle(), listing.getListingID(),
+            if (BuySellSwapApp.messageSendDialog(toUsername, listing.getTitle(), listing.getListingID(),
                     null, null, messagesTabPane.getScene().getWindow())){
                 messagesRefresh();
             }
@@ -625,6 +631,9 @@ public class UserViewController {
     }
     //***********Browse Listings Methods END**********//
     //***********Messages Methods BEGIN**********//
+    /**
+     * Initiliazes the Messages tab elements. Sets table cell factories and text prompts.
+     */
     private void initializeMessagesTab(){
         //Initialize the Received tab.
         messagesReceivedTableSubjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
@@ -650,6 +659,10 @@ public class UserViewController {
         messagesSentContentsTextArea.setEditable(false);
     }
 
+    /**
+     * Populates the Received tab master list with messages sent by the current user.
+     * Messages that have been (soft) deleted == hidden are not added.
+     */
     private void messagesPopulateReceivedTable(){
         try {
             messagesReceivedTable.getItems().clear();
@@ -668,6 +681,10 @@ public class UserViewController {
         }
     }
 
+    /**
+     * Populates the Sent tab master list with messages sent by the current user.
+     * Messages that have been (soft) deleted == hidden are not added.
+     */
     private void messagesPopulateSentTable(){
         try {
             messagesSentTable.getItems().clear();
@@ -686,6 +703,10 @@ public class UserViewController {
         }
     }
 
+    /**
+     * Displays the selected message's details in the Received tab detail view.
+     * @param message The selected message.
+     */
     private void messagesShowReceivedMessageDetails(Message message){
         if (message != null){
             messagesReceivedFromTextField.setText(message.getFromUsername());
@@ -701,6 +722,10 @@ public class UserViewController {
         }
     }
 
+    /**
+     * Displays the selected message's details in the Sent tab detail view.
+     * @param message The selected message.
+     */
     private void messagesShowSentMessageDetails(Message message){
         if (message != null){
             messagesSentToTextField.setText(message.getToUsername());
@@ -716,6 +741,9 @@ public class UserViewController {
         }
     }
 
+    /**
+     * Resets the text prompts in the received messages detail view.
+     */
     private void messagesResetReceivedMessageDetails(){
         messagesReceivedFromTextField.setText("From");
         messagesReceivedDateTextField.setText("Date");
@@ -723,6 +751,9 @@ public class UserViewController {
         messagesReceivedContentsTextArea.setText("Contents");
     }
 
+    /**
+     * Resets the text prompts in the sent messages detail view.
+     */
     private void messagesResetSentMessageDetails(){
         messagesSentToTextField.setText("To");
         messagesSentDateTextField.setText("Date");
@@ -730,15 +761,22 @@ public class UserViewController {
         messagesSentContentsTextArea.setText("Contents");
     }
 
+    /**
+     * Updates both TableViews in the Messages tab, synchronizing them with the present state of the database.
+     */
     @FXML
     private void messagesRefresh(){
         messagesPopulateReceivedTable();
         messagesPopulateSentTable();
     }
 
+    /**
+     * Generates a new message dialog with none of the fields pre-populated. The user must enter a correct username, etc.,
+     * themselves.
+     */
     @FXML
     private void messagesNewMessage(){
-        if (BuySellSwapApp.showMessageSendDialog(null, null, null, null,
+        if (BuySellSwapApp.messageSendDialog(null, null, null, null,
                 null, messagesReceivedTable.getScene().getWindow())){
             messagesRefresh();
         }
@@ -779,6 +817,10 @@ public class UserViewController {
         }
     }
 
+    /**
+     * Helper method. Gets the selected message from the TableView in the currently active tab (Received vs. Sent).
+     * @return The selected message in the currently active tab.
+     */
     private Message getSelectedMessage() {
         Message selectedMessage = null;
         if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesReceivedTab)){
@@ -789,6 +831,11 @@ public class UserViewController {
         return selectedMessage;
     }
 
+    /**
+     * Helper method for deleting messages. Generates a confirmation dialog and returns true if the user selects OK,
+     * false if the user does not.
+     * @return True if the user selects OK to confirm, false otherwise.
+     */
     private boolean confirmMessageDeletion(){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Deletion");
@@ -798,29 +845,39 @@ public class UserViewController {
         return (choice.get() == ButtonType.OK);
     }
 
+    /**
+     * Generates a new message dialog with the text fields pre-populated according to the selected message.
+     */
     @FXML
     private void messagesHandleReply(){
-        //Get selected message
-        //Use relevant values to initialize a new message dialog
         Message selectedMessage = getSelectedMessage();
         if (selectedMessage != null){
-            String toUsername = null;
-            if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesReceivedTab)){
-                toUsername = selectedMessage.getFromUsername();
-            } else if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesSentTab)){
-                toUsername = selectedMessage.getToUsername();
-            }
+            String toUsername = getToUsername(selectedMessage);
             String replySubject = "Re: " + selectedMessage.getSubject(); //database constraint ensures not null
             String messageBody = selectedMessage.getContents();
-            messageBody = "\n>>>" + messageBody.replaceAll("\\n", "\n>>>");
-            if (messageBody.charAt(messageBody.length()-1) == '>'){
-                messageBody = messageBody.substring(0, messageBody.length() - 3);
-            }
-            if (BuySellSwapApp.showMessageSendDialog(toUsername, replySubject, selectedMessage.getAboutListingID(), messageBody,
+            messageBody = "\n>>>" + messageBody.stripTrailing().replaceAll("\\n", "\n>>>");
+            if (BuySellSwapApp.messageSendDialog(toUsername, replySubject, selectedMessage.getAboutListingID(), messageBody,
                     selectedMessage.getMessageID(), messagesTabPane.getScene().getWindow())){
-                messagesRefresh();
+                messagesRefresh(); //Refresh message lists if the message is sent
             }
         }
+    }
+
+    /**
+     * Helper method. Determins the toUsername string when generating a reply.
+     * The toUsername is always be the other user involved in the exchange, regardless of whether the message was sent
+     * by or received by the current user.
+     * @param selectedMessage The currently selected message to which a reply is being generated.
+     * @return The username to which the reply should be sent.
+     */
+    private String getToUsername(Message selectedMessage) {
+        String toUsername = null;
+        if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesReceivedTab)){
+            toUsername = selectedMessage.getFromUsername();
+        } else if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesSentTab)){
+            toUsername = selectedMessage.getToUsername();
+        }
+        return toUsername;
     }
     //***********Messages Methods END**********//
 }

@@ -73,6 +73,7 @@ public class Message {
 
     public void setDatetimeSent(LocalDateTime datetimeSent) {
         this.datetimeSent.set(datetimeSent);
+        //Ensure that the displayDatetimeSent is kept synchronized with the DatetimeSent.
         displayDatetimeSent.set(DateTimeUtil.localDateTimeTo12HourClockString(datetimeSent));
     }
 

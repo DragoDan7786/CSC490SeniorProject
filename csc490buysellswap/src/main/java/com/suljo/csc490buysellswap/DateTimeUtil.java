@@ -34,6 +34,11 @@ public class DateTimeUtil {
         }
     }
 
+    /**
+     * Converts a string representation of a T-SQL DATETIME2 value to a LocalDate.
+     * @param mssqlDatetime2String The string representation of the DATETIME2.
+     * @return A LocalDate representation of the DATETIME2 value.
+     */
     public static LocalDate mssqlDatetime2StringToLocalDate(String mssqlDatetime2String){
         if (mssqlDatetime2String != null){
             return LocalDate.parse(mssqlDatetime2String.substring(0, 10), datetime2_DateFormatter);
@@ -42,6 +47,11 @@ public class DateTimeUtil {
         }
     }
 
+    /**
+     * Generates a 12-hour clock String representation of a LocalDateTime.
+     * @param localDateTime The LocalDateTime.
+     * @return The string representation.
+     */
     public static String localDateTimeTo12HourClockString(LocalDateTime localDateTime){
         return localDateTime.format(yearMonthDay_12HoursMinutesSeconds);
     }

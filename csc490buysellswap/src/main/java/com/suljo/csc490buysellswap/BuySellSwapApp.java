@@ -39,7 +39,13 @@ public class BuySellSwapApp extends Application {
         return fxmlLoader.load();
     }
 
-    public static boolean showEditListingDialog(Listing listing, Window parentWindow){
+    /**
+     * Generates a dialog from which the user can edit a listing.
+     * @param listing The listing being edited.
+     * @param parentWindow The window spawning the dialog.
+     * @return True if changes to the listing were saved, otherwise false.
+     */
+    public static boolean editListingDialog(Listing listing, Window parentWindow){
         try {
             //Create and set up the stage.
             Stage dialogStage = new Stage();
@@ -62,8 +68,18 @@ public class BuySellSwapApp extends Application {
         }
     }
 
-    public static boolean showMessageSendDialog(String toUsername, String subjectString, Integer listingID, String messageBody,
-                                                Integer replyToMessageID, Window parentWindow){
+    /**
+     * Creates a send message dialog.
+     * @param toUsername The username which the "to" field will be initialized with, or null.
+     * @param subjectString The value to which the subject field should be initialized, or null.
+     * @param listingID The ID of the listing which this message concerns and to which the listing ID field will be initialized, or null.
+     * @param messageBody The value to which the message body field will be initialized, or null.
+     * @param replyToMessageID If this message is a reply, the messageID of the message being replied to, otherwise null.
+     * @param parentWindow The Window which is spawning this dialog.
+     * @return True if the message was sent.
+     */
+    public static boolean messageSendDialog(String toUsername, String subjectString, Integer listingID, String messageBody,
+                                            Integer replyToMessageID, Window parentWindow){
         try {
             //Create and set up the stage.
             Stage dialogStage = new Stage();

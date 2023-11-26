@@ -2,13 +2,10 @@ package com.suljo.csc490buysellswap;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class MessageSendDialogController {
     private boolean messageSent = false;
@@ -56,6 +53,10 @@ public class MessageSendDialogController {
         messageBodyField.setText(text);
     }
 
+    /**
+     * "Sends" the message by adding it to the database.
+     * If the message is successfully added, sets messageSent and closes the dialog.
+     */
     @FXML
     private void handleSend(){
         try {
@@ -73,16 +74,13 @@ public class MessageSendDialogController {
             if (toUsername.isEmpty()){
                 invalidInputAlert("Invalid Username", "'To' field cannot be empty.",
                         "Please enter a valid username.");
-                return;
             } else if (!DbOperations.usernameExists(toUsername)){
                 invalidInputAlert("Invalid Username", "Username does not exist.",
                         "Please check the 'To' field for typos and try again.");
-                return;
             //Check that Listing ID field, if not empty, is valid. If not, warn user and return.
             } else if (listingID != null && !DbOperations.listingIDExists(listingID)) {
                 invalidInputAlert("Invalid Listing ID", "A listing with this ID does not exist.",
                         "Please confirm the listing ID and check for typos.");
-                return;
             //If checks are passed, send the message by adding it to the database.
             } else if (DbOperations.insertNewMessage(fromUsername, toUsername, listingID, subject, contents, replyToMessageID)){
                 //If successful, set boolean signal, inform the user, and then close the dialog.
@@ -107,6 +105,12 @@ public class MessageSendDialogController {
         }
     }
 
+    /**
+     * Helper method for generating invalid input alerts.
+     * @param title The title of the alert.
+     * @param header The header of the alert.
+     * @param content The content of the alert.
+     */
     private void invalidInputAlert(String title, String header, String content){
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
