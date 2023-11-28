@@ -28,7 +28,7 @@
    <center>
       <TabPane prefHeight="645.0" prefWidth="960.0">
          <tabs>
-            <Tab closable="false" text="Buy">
+            <Tab fx:id="buyTab" closable="false" text="Buy">
                <content>
                   <Pane>
                      <children>
@@ -42,23 +42,22 @@
                           <menus>
                             <Menu mnemonicParsing="false" text="Price">
                               <items>
-                                    <RadioMenuItem mnemonicParsing="false" text="Low" />
-                                    <RadioMenuItem mnemonicParsing="false" text="Medium" />
-                                    <RadioMenuItem mnemonicParsing="false" text="High" />
+                                    <RadioMenuItem fx:id="lowPriceMItem" mnemonicParsing="false" onAction="#handleLowPriceMenuItemAction" text="\$0-24.99" />
+                                    <RadioMenuItem fx:id="medPriceMItem" mnemonicParsing="false" onAction="#handleMedPriceMenuItemAction" text="\$25-100" />
+                                    <RadioMenuItem fx:id="highPriceMItem" mnemonicParsing="false" onAction="#handleHighPriceMenuItemAction" text="\$100+" />
                               </items>
                             </Menu>
                             <Menu mnemonicParsing="false" text="Type of Listing">
                               <items>
-                                    <RadioMenuItem mnemonicParsing="false" text="Buy" />
-                                    <RadioMenuItem mnemonicParsing="false" text="Rent" />
+                                    <RadioMenuItem mnemonicParsing="false" onAction="#handleForBuyMenuItemAction" text="Buy" />
+                                    <RadioMenuItem mnemonicParsing="false" onAction="#handleForRentMenuItemAction" text="Rent" />
                               </items>
                             </Menu>
                             <Menu mnemonicParsing="false" text="Sort by">
                               <items>
-                                <MenuItem mnemonicParsing="false" text="Date" />
-                                    <MenuItem mnemonicParsing="false" text="Price Low-to-High" />
-                                    <MenuItem mnemonicParsing="false" text="Price High-to-Low" />
-                                    <MenuItem mnemonicParsing="false" text="About" />
+                                <MenuItem mnemonicParsing="false" onAction="#handleSortDateMenuItemAction" text="Date" />
+                                    <MenuItem mnemonicParsing="false" onAction="#handleSortPriceLowToHighMenuItemAction" text="Price Low-to-High" />
+                                    <MenuItem fx:id="priceHighToowMItem" mnemonicParsing="false" onAction="#handleSortPriceHighToLowMenuItemAction" text="Price High-to-Low" />
                               </items>
                             </Menu>
                           </menus>
