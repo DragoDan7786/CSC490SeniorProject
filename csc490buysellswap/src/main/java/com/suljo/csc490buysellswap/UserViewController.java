@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Optional;
 
 import static com.suljo.csc490buysellswap.DbOperations.hideMessage;
@@ -147,9 +149,18 @@ public class UserViewController {
     private TextField messagesSentSubjectTextField;
     @FXML
     private TextArea messagesSentContentsTextArea;
+    //***********Messages Tab Elements END**********//
     @FXML
     private Tab buyTab;
-    //***********Messages Tab Elements END**********//
+
+
+
+
+
+    // Initialize price range to maximum and minimum possible values
+    private int minPrice = 0;
+    private int maxPrice = Integer.MAX_VALUE;
+    private boolean priceFilterEdited = false;
 
     //***********General User View Methods BEGIN**********//
     public void initialize() {
@@ -912,7 +923,6 @@ public class UserViewController {
     //***********Search Filters and Search Bar BEGIN**********//
 
 
-
     //text field/search bar listener
     private void searchBarInitialize() {
         // Get the items from your ListView
@@ -945,6 +955,95 @@ public class UserViewController {
         // Add filtered data to the ListView.
         buyerBrowseListView.setItems(filteredData);
     }
+
+    //Price Filters here
+    @FXML
+    private void handleLowPriceMenuItemAction(ActionEvent event) {
+        if (priceFilterEdited) {
+            minPrice = 0;
+            maxPrice = Integer.MAX_VALUE;
+            priceFilterEdited = false;
+        } else {
+            minPrice = 0;
+            maxPrice = 2499;
+            priceFilterEdited = true;
+        }
+        updatePriceFilter();
+    }
+
+    @FXML
+    private void handleMedPriceMenuItemAction(ActionEvent event) {ObservableList<Listing> observableListings = buyerBrowseListView.getItems();
+
+        if (priceFilterEdited) {
+            minPrice = 0;
+            maxPrice = Integer.MAX_VALUE;
+            priceFilterEdited = false;
+        } else {
+            minPrice = 2500;
+            maxPrice = 9999;
+            priceFilterEdited = true;
+        }
+        updatePriceFilter();
+    }
+
+    @FXML
+    private void handleHighPriceMenuItemAction(ActionEvent event) {
+        if (priceFilterEdited) {
+            minPrice = 0;
+            maxPrice = Integer.MAX_VALUE;
+            priceFilterEdited = false;
+        } else {
+            minPrice = 10000;
+            maxPrice = Integer.MAX_VALUE;
+            priceFilterEdited = true;
+        }
+        updatePriceFilter();
+    }
+
+    private void updatePriceFilter() {
+        browseListingInitialize();
+        ObservableList<Listing> observableListings = buyerBrowseListView.getItems();
+
+        FilteredList<Listing> filteredData = new FilteredList<>(observableListings, p -> true);
+        filteredData.setPredicate(listing -> {
+            int price = listing.getPriceInCents();
+            return price >= minPrice && price <= maxPrice;
+        });
+        buyerBrowseListView.setItems(filteredData);
+    }
+    //sortings
+    @FXML
+    private void handleSortPriceHighToLowMenuItemAction(ActionEvent event) {
+        ObservableList<Listing> observableListings = buyerBrowseListView.getItems();
+        FilteredList<Listing> filteredData = new FilteredList<>(observableListings, p -> true);
+        SortedList<Listing> sortedData = new SortedList<>(filteredData);
+        sortedData.setComparator(Comparator.comparing(Listing::getPriceInCents).reversed());
+        buyerBrowseListView.setItems(sortedData);
+    }
+
+    @FXML
+    private void handleSortPriceLowToHighMenuItemAction(ActionEvent event) {
+        ObservableList<Listing> observableListings = buyerBrowseListView.getItems();
+        FilteredList<Listing> filteredData = new FilteredList<>(observableListings, p -> true);
+        SortedList<Listing> sortedData = new SortedList<>(filteredData);
+        sortedData.setComparator(Comparator.comparing(Listing::getPriceInCents));
+        buyerBrowseListView.setItems(sortedData);
+    }
+
+    @FXML
+    private void handleSortDateMenuItemAction(ActionEvent event) {
+        ObservableList<Listing> observableListings = buyerBrowseListView.getItems();
+        FilteredList<Listing> filteredData = new FilteredList<>(observableListings, p -> true);
+        SortedList<Listing> sortedData = new SortedList<>(filteredData);
+        sortedData.setComparator(Comparator.comparing(Listing::getDatetimeAdded));
+        buyerBrowseListView.setItems(sortedData);
+    }
+
+
+
+
+
+
 
     //***********Search Filters and Search Bar END**********//
 }
