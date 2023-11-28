@@ -28,7 +28,7 @@
    <center>
       <TabPane prefHeight="645.0" prefWidth="960.0">
          <tabs>
-            <Tab closable="false" text="Buy">
+            <Tab fx:id="buyTab" closable="false" text="Buy">
                <content>
                   <Pane>
                      <children>
@@ -42,9 +42,9 @@
                           <menus>
                             <Menu mnemonicParsing="false" text="Price">
                               <items>
-                                    <RadioMenuItem mnemonicParsing="false" text="Low" />
-                                    <RadioMenuItem mnemonicParsing="false" text="Medium" />
-                                    <RadioMenuItem mnemonicParsing="false" text="High" />
+                                    <RadioMenuItem mnemonicParsing="false" text="\$0-24.99" />
+                                    <RadioMenuItem mnemonicParsing="false" text="\$25-100" />
+                                    <RadioMenuItem mnemonicParsing="false" text="\$100+" />
                               </items>
                             </Menu>
                             <Menu mnemonicParsing="false" text="Type of Listing">

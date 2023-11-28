@@ -1,6 +1,10 @@
 package com.suljo.csc490buysellswap;
 
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,6 +17,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -142,6 +147,8 @@ public class UserViewController {
     private TextField messagesSentSubjectTextField;
     @FXML
     private TextArea messagesSentContentsTextArea;
+    @FXML
+    private Tab buyTab;
     //***********Messages Tab Elements END**********//
 
     //***********General User View Methods BEGIN**********//
@@ -153,6 +160,14 @@ public class UserViewController {
         browseListingInitialize();
         HBox.setHgrow(searchTxtField, ALWAYS);
         initializeMessagesTab();
+        searchBarInitialize();
+        //checks if db was edited upon hitting buy tab.
+        buyTab.setOnSelectionChanged(event -> {
+            if (buyTab.isSelected()) {
+                // Call browseListingInitialize to update the ListView
+                browseListingInitialize();
+            }
+        });
     }
 
     /**
@@ -179,6 +194,7 @@ public class UserViewController {
     //***********General User View Methods END**********//
 
     //***********List An Item Methods BEGIN**********//
+
     /**
      * Helper method which sets up the "List An Item" tab in the Sell tab.
      */
@@ -227,7 +243,7 @@ public class UserViewController {
                 listAnItemFilePathTextField.setText(listAnItemImage.getCanonicalPath());
                 //Display an image preview:
                 //Get a file input stream.
-                FileInputStream imageInputStream = new FileInputStream( listAnItemImage);
+                FileInputStream imageInputStream = new FileInputStream(listAnItemImage);
                 //Create an image from the stream.
                 Image inputImage = new Image((imageInputStream));
                 //Set the ImageView.
@@ -269,7 +285,7 @@ public class UserViewController {
      * Resets the tab, e.g., when the user decides not to add an item after all and wants to start over.
      */
     @FXML
-    private void listAnItemResetTab(){
+    private void listAnItemResetTab() {
         listAnItemClearImageFile();
         listAnItemTitle.clear();
         listAnItemDescription.clear();
@@ -324,7 +340,7 @@ public class UserViewController {
     /**
      * Initializes the My Listings tab.
      */
-    private void initializeMyListingsTab(){
+    private void initializeMyListingsTab() {
         //Set up the TableView.
         myListingsTableColumnId.setCellValueFactory(new PropertyValueFactory<>("listingID"));
         myListingsTableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -339,7 +355,7 @@ public class UserViewController {
     /**
      * Enable the fields in the "detailed view".
      */
-    private void myListingsSetDetailedViewElementsNotEditable(){
+    private void myListingsSetDetailedViewElementsNotEditable() {
         myListingsDetailViewTitle.setEditable(false);
         myListingsDetailViewAvailable.setEditable(false);
         myListingsDetailViewListingID.setEditable(false);
@@ -348,14 +364,15 @@ public class UserViewController {
         myListingsDetailViewAdded.setEditable(false);
         myListingsDetailViewModified.setEditable(false);
     }
+
     /**
      * Populates the TableView with the current user's listings.
      */
     @FXML
-    private void myListingsPopulateTableView(){
+    private void myListingsPopulateTableView() {
         myListingsTableView.getItems().clear();
         try {
-            for (Listing listing: DbOperations.selectMyListings()){
+            for (Listing listing : DbOperations.selectMyListings()) {
                 myListingsTableView.getItems().add(listing);
             }
         } catch (SQLException e) {
@@ -365,10 +382,11 @@ public class UserViewController {
 
     /**
      * Sets the detailed view fields to the current My Listings selection, or clears them if there is no selection.
+     *
      * @param selection
      */
-    private void myListingsShowSelectionDetails(Listing selection){
-        if (selection != null){
+    private void myListingsShowSelectionDetails(Listing selection) {
+        if (selection != null) {
             //Set textual parameters,
             myListingsDetailViewTitle.setText(selection.getTitle());
             myListingsDetailViewListingID.setText(Integer.toString(selection.getListingID()));
@@ -378,14 +396,14 @@ public class UserViewController {
             myListingsDetailViewModified.setText("Modified: " +
                     DateTimeUtil.mssqlDatetime2ToHumanReadable(selection.getDatetimeModified(), DateTimeUtil.yearMonthDay_12HoursMinutesSeconds));
             myListingsSetDetailViewPrice(selection);
-            if (selection.isAvailable()){
+            if (selection.isAvailable()) {
                 myListingsDetailViewAvailable.setText("Available");
             } else {
                 myListingsDetailViewAvailable.setText("Unavailable");
             }
             //Display the image, if any.
             Image image = selection.getImage();
-            if (image != null){
+            if (image != null) {
                 myListingsDetailImageView.setImage(image);
                 myListingsDetailImageView.setVisible(true);
             } else {
@@ -399,25 +417,26 @@ public class UserViewController {
 
     /**
      * Determines and sets the price string to display in the My Listings detailed view.
+     *
      * @param selection
      */
-    private void myListingsSetDetailViewPrice(Listing selection){
+    private void myListingsSetDetailViewPrice(Listing selection) {
         if (!selection.isForRent()) {
-            myListingsDetailViewPrice.setText(String.format("$%.2f", selection.getPriceInCents()/100.0));
+            myListingsDetailViewPrice.setText(String.format("$%.2f", selection.getPriceInCents() / 100.0));
         } else {
             int rentalPeriodHours = selection.getRentalPeriodHours();
             if (rentalPeriodHours == 1) {
                 myListingsDetailViewPrice.setText(String.format("$%.2f per hour", selection.getPriceInCents() / 100.00));
-            } else if (rentalPeriodHours < 24){
+            } else if (rentalPeriodHours < 24) {
                 myListingsDetailViewPrice.setText(String.format("$%.2f per %d hours",
                         selection.getPriceInCents() / 100.00, rentalPeriodHours));
-            }else if (rentalPeriodHours == 24){
-                myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
-            } else if (rentalPeriodHours % 24 == 0){
-                myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents()/100.00));
+            } else if (rentalPeriodHours == 24) {
+                myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents() / 100.00));
+            } else if (rentalPeriodHours % 24 == 0) {
+                myListingsDetailViewPrice.setText(String.format("$%.2f per day", selection.getPriceInCents() / 100.00));
             } else {
                 myListingsDetailViewPrice.setText(String.format("$%.2f for %d days and %d hours",
-                        selection.getPriceInCents()/100.00, rentalPeriodHours/24, rentalPeriodHours % 24));
+                        selection.getPriceInCents() / 100.00, rentalPeriodHours / 24, rentalPeriodHours % 24));
             }
         }
     }
@@ -425,7 +444,7 @@ public class UserViewController {
     /**
      * Clears the detailed view of My Listings.
      */
-    private void myListingsResetSelectionDetails(){
+    private void myListingsResetSelectionDetails() {
         myListingsDetailViewTitle.setText("Title");
         myListingsDetailViewListingID.setText("ID");
         myListingsDetailViewDescription.setText("Description.");
@@ -440,9 +459,9 @@ public class UserViewController {
      * Generates an edit listing dialog for the currently selected listing.
      */
     @FXML
-    private void myListingsHandleEditListing(){
+    private void myListingsHandleEditListing() {
         Listing selection = myListingsTableView.getSelectionModel().getSelectedItem();
-        if (selection != null && BuySellSwapApp.editListingDialog(selection, myListingsTableView.getScene().getWindow())){
+        if (selection != null && BuySellSwapApp.editListingDialog(selection, myListingsTableView.getScene().getWindow())) {
             myListingsShowSelectionDetails(selection);
         }
     }
@@ -453,11 +472,11 @@ public class UserViewController {
      * Disables the user's account after getting appropriate confirmation.
      */
     @FXML
-    private void acctMgmtDisableAccountButtonOnAction(){
+    private void acctMgmtDisableAccountButtonOnAction() {
         //Get user confirmation of their choice.
         Optional<ButtonType> result = acctMgmtDisableAccountConfirmationAlert();
         //If confirmation given, try to disable the account.
-        if (result.get() == ButtonType.OK){
+        if (result.get() == ButtonType.OK) {
             try {
                 //Disable the account.
                 DbOperations.disableUserAccount(BuySellSwapApp.getCurrentUser().getUserID());
@@ -474,16 +493,17 @@ public class UserViewController {
 
     /**
      * Generates an alert which gets confirmation from the user that they wish to disable their account.
+     *
      * @return The user's choice.
      */
-    private Optional<ButtonType> acctMgmtDisableAccountConfirmationAlert(){
+    private Optional<ButtonType> acctMgmtDisableAccountConfirmationAlert() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Disable Account Confirmation");
         alert.setHeaderText("Are you sure you want to disable your account?");
         alert.setContentText("""
                 Disabling your account will disable and hide all your listings.
                 You will no longer be able to interact with the application without registering a new account.
-                
+                                
                 Are you sure you want to disable your account?
                 """);
         return alert.showAndWait();
@@ -492,7 +512,7 @@ public class UserViewController {
     /**
      * Displays an alert informing the user that their account was successfully disabled.
      */
-    private void acctMgmtAccountDisabledAlert(){
+    private void acctMgmtAccountDisabledAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Account Disabled");
         alert.setHeaderText("Your account has been disabled.");
@@ -506,7 +526,7 @@ public class UserViewController {
     /**
      * Displays an alert to the user warning them that their account could not be disabled.
      */
-    private void acctMgmtAccountDisabledFailureAlert(){
+    private void acctMgmtAccountDisabledFailureAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Account Not Disabled");
         alert.setHeaderText("Your account could not be disabled.");
@@ -518,7 +538,7 @@ public class UserViewController {
     //***********Account Management Methods END**********//
 
     //***********Browse Listings Methods BEGIN**********//
-    private void browseListingInitialize(){
+    private void browseListingInitialize() {
         try {
             buyerBrowseListView.setItems(selectAllActiveListings());
         } catch (SQLException e) {
@@ -565,7 +585,7 @@ public class UserViewController {
 
 
         buyerBrowseListView.setOnMouseClicked(event -> {
-            if(event.getClickCount() == 2) {
+            if (event.getClickCount() == 2) {
                 Listing selectedListing = buyerBrowseListView.getSelectionModel().getSelectedItem();
 
                 // Create a new Stage for the detailed view
@@ -575,13 +595,13 @@ public class UserViewController {
                 VBox vbox = new VBox();
 
                 // Add all fields of the listing to the VBox
-                vbox.getChildren().add (new Label("Title: " + selectedListing.getTitle()));
-                vbox.getChildren().add (new Label("Description: " + selectedListing.getDescription()));
-                vbox.getChildren().add (new Label("Price: $" + selectedListing.getPriceInCents()/100.0));
-                if(selectedListing.isForRent())
-                    vbox.getChildren().add (new Label("Rental Period Hours: " + selectedListing.getRentalPeriodHours()));
-                vbox.getChildren().add (new Label("Seller User ID: " + selectedListing.getSellerUserID()));
-                vbox.getChildren().add (new Label("Date Added: " + selectedListing.getDatetimeAdded()));
+                vbox.getChildren().add(new Label("Title: " + selectedListing.getTitle()));
+                vbox.getChildren().add(new Label("Description: " + selectedListing.getDescription()));
+                vbox.getChildren().add(new Label("Price: $" + selectedListing.getPriceInCents() / 100.0));
+                if (selectedListing.isForRent())
+                    vbox.getChildren().add(new Label("Rental Period Hours: " + selectedListing.getRentalPeriodHours()));
+                vbox.getChildren().add(new Label("Seller User ID: " + selectedListing.getSellerUserID()));
+                vbox.getChildren().add(new Label("Date Added: " + selectedListing.getDatetimeAdded()));
 
                 // If the image is not null, add it to the VBox
                 Image image = selectedListing.getImage();
@@ -612,13 +632,14 @@ public class UserViewController {
 
     /**
      * Generates a new message dialog populated with details relevant to the selected listing.
+     *
      * @param listing The listing.
      */
-    private void buyerBrowseMessageSeller(Listing listing){
+    private void buyerBrowseMessageSeller(Listing listing) {
         try {
             String toUsername = DbOperations.userIDToUsername(listing.getSellerUserID());
             if (BuySellSwapApp.messageSendDialog(toUsername, listing.getTitle(), listing.getListingID(),
-                    null, null, messagesTabPane.getScene().getWindow())){
+                    null, null, messagesTabPane.getScene().getWindow())) {
                 messagesRefresh();
             }
         } catch (SQLException e) {
@@ -631,10 +652,11 @@ public class UserViewController {
     }
     //***********Browse Listings Methods END**********//
     //***********Messages Methods BEGIN**********//
+
     /**
      * Initiliazes the Messages tab elements. Sets table cell factories and text prompts.
      */
-    private void initializeMessagesTab(){
+    private void initializeMessagesTab() {
         //Initialize the Received tab.
         messagesReceivedTableSubjectColumn.setCellValueFactory(cellData -> cellData.getValue().subjectProperty());
         messagesReceivedTableFromColumn.setCellValueFactory(cellData -> cellData.getValue().fromUsernameProperty());
@@ -663,11 +685,11 @@ public class UserViewController {
      * Populates the Received tab master list with messages sent by the current user.
      * Messages that have been (soft) deleted == hidden are not added.
      */
-    private void messagesPopulateReceivedTable(){
+    private void messagesPopulateReceivedTable() {
         try {
             messagesReceivedTable.getItems().clear();
-            for (Message message : DbOperations.getMessagesToUser(BuySellSwapApp.getCurrentUser().getUserName())){
-                if (!message.isHidden()){
+            for (Message message : DbOperations.getMessagesToUser(BuySellSwapApp.getCurrentUser().getUserName())) {
+                if (!message.isHidden()) {
                     messagesReceivedTable.getItems().add(message);
                 }
             }
@@ -685,11 +707,11 @@ public class UserViewController {
      * Populates the Sent tab master list with messages sent by the current user.
      * Messages that have been (soft) deleted == hidden are not added.
      */
-    private void messagesPopulateSentTable(){
+    private void messagesPopulateSentTable() {
         try {
             messagesSentTable.getItems().clear();
-            for (Message message : DbOperations.getMessagesFromUser(BuySellSwapApp.getCurrentUser().getUserName())){
-                if (!message.isHidden()){
+            for (Message message : DbOperations.getMessagesFromUser(BuySellSwapApp.getCurrentUser().getUserName())) {
+                if (!message.isHidden()) {
                     messagesSentTable.getItems().add(message);
                 }
             }
@@ -705,13 +727,14 @@ public class UserViewController {
 
     /**
      * Displays the selected message's details in the Received tab detail view.
+     *
      * @param message The selected message.
      */
-    private void messagesShowReceivedMessageDetails(Message message){
-        if (message != null){
+    private void messagesShowReceivedMessageDetails(Message message) {
+        if (message != null) {
             messagesReceivedFromTextField.setText(message.getFromUsername());
             messagesReceivedDateTextField.setText(message.getDisplayDatetimeSent());
-            if (message.getAboutListingID() != 0){
+            if (message.getAboutListingID() != 0) {
                 messagesReceivedSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
             } else {
                 messagesReceivedSubjectTextField.setText(message.getSubject());
@@ -724,13 +747,14 @@ public class UserViewController {
 
     /**
      * Displays the selected message's details in the Sent tab detail view.
+     *
      * @param message The selected message.
      */
-    private void messagesShowSentMessageDetails(Message message){
-        if (message != null){
+    private void messagesShowSentMessageDetails(Message message) {
+        if (message != null) {
             messagesSentToTextField.setText(message.getToUsername());
             messagesSentDateTextField.setText(message.getDisplayDatetimeSent());
-            if (message.getAboutListingID() != 0){
+            if (message.getAboutListingID() != 0) {
                 messagesReceivedSubjectTextField.setText("[Listing #" + message.getAboutListingID() + "] " + message.getSubject());
             } else {
                 messagesReceivedSubjectTextField.setText(message.getSubject());
@@ -744,7 +768,7 @@ public class UserViewController {
     /**
      * Resets the text prompts in the received messages detail view.
      */
-    private void messagesResetReceivedMessageDetails(){
+    private void messagesResetReceivedMessageDetails() {
         messagesReceivedFromTextField.setText("From");
         messagesReceivedDateTextField.setText("Date");
         messagesReceivedSubjectTextField.setText("Subject");
@@ -754,7 +778,7 @@ public class UserViewController {
     /**
      * Resets the text prompts in the sent messages detail view.
      */
-    private void messagesResetSentMessageDetails(){
+    private void messagesResetSentMessageDetails() {
         messagesSentToTextField.setText("To");
         messagesSentDateTextField.setText("Date");
         messagesSentSubjectTextField.setText("Subject");
@@ -765,7 +789,7 @@ public class UserViewController {
      * Updates both TableViews in the Messages tab, synchronizing them with the present state of the database.
      */
     @FXML
-    private void messagesRefresh(){
+    private void messagesRefresh() {
         messagesPopulateReceivedTable();
         messagesPopulateSentTable();
     }
@@ -775,9 +799,9 @@ public class UserViewController {
      * themselves.
      */
     @FXML
-    private void messagesNewMessage(){
+    private void messagesNewMessage() {
         if (BuySellSwapApp.messageSendDialog(null, null, null, null,
-                null, messagesReceivedTable.getScene().getWindow())){
+                null, messagesReceivedTable.getScene().getWindow())) {
             messagesRefresh();
         }
     }
@@ -786,11 +810,11 @@ public class UserViewController {
      * Performs a soft delete on the selected message by setting the hidden flag and updating the database and GUI accordingly.
      */
     @FXML
-    private void messagesHandleDeleteButton(){
+    private void messagesHandleDeleteButton() {
         //Handle the case that the delete button is pressed without a message first being selected by checking for nulls.
         Message selectedMessage = getSelectedMessage();
         try {
-            if (selectedMessage != null && confirmMessageDeletion()){
+            if (selectedMessage != null && confirmMessageDeletion()) {
                 hideMessage(selectedMessage.getMessageID());
                 messagesRefresh();
                 //I was hoping to avoid database operations for the sake of efficiency, but the below only seems to
@@ -819,13 +843,14 @@ public class UserViewController {
 
     /**
      * Helper method. Gets the selected message from the TableView in the currently active tab (Received vs. Sent).
+     *
      * @return The selected message in the currently active tab.
      */
     private Message getSelectedMessage() {
         Message selectedMessage = null;
-        if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesReceivedTab)){
+        if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesReceivedTab)) {
             selectedMessage = messagesReceivedTable.getSelectionModel().getSelectedItem();
-        } else if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesSentTab)){
+        } else if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesSentTab)) {
             selectedMessage = messagesSentTable.getSelectionModel().getSelectedItem();
         }
         return selectedMessage;
@@ -834,9 +859,10 @@ public class UserViewController {
     /**
      * Helper method for deleting messages. Generates a confirmation dialog and returns true if the user selects OK,
      * false if the user does not.
+     *
      * @return True if the user selects OK to confirm, false otherwise.
      */
-    private boolean confirmMessageDeletion(){
+    private boolean confirmMessageDeletion() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirm Deletion");
         alert.setHeaderText(null);
@@ -849,15 +875,15 @@ public class UserViewController {
      * Generates a new message dialog with the text fields pre-populated according to the selected message.
      */
     @FXML
-    private void messagesHandleReply(){
+    private void messagesHandleReply() {
         Message selectedMessage = getSelectedMessage();
-        if (selectedMessage != null){
+        if (selectedMessage != null) {
             String toUsername = getToUsername(selectedMessage);
             String replySubject = "Re: " + selectedMessage.getSubject(); //database constraint ensures not null
             String messageBody = selectedMessage.getContents();
             messageBody = "\n>>>" + messageBody.stripTrailing().replaceAll("\\n", "\n>>>");
             if (BuySellSwapApp.messageSendDialog(toUsername, replySubject, selectedMessage.getAboutListingID(), messageBody,
-                    selectedMessage.getMessageID(), messagesTabPane.getScene().getWindow())){
+                    selectedMessage.getMessageID(), messagesTabPane.getScene().getWindow())) {
                 messagesRefresh(); //Refresh message lists if the message is sent
             }
         }
@@ -867,17 +893,58 @@ public class UserViewController {
      * Helper method. Determins the toUsername string when generating a reply.
      * The toUsername is always be the other user involved in the exchange, regardless of whether the message was sent
      * by or received by the current user.
+     *
      * @param selectedMessage The currently selected message to which a reply is being generated.
      * @return The username to which the reply should be sent.
      */
     private String getToUsername(Message selectedMessage) {
         String toUsername = null;
-        if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesReceivedTab)){
+        if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesReceivedTab)) {
             toUsername = selectedMessage.getFromUsername();
-        } else if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesSentTab)){
+        } else if (messagesTabPane.getSelectionModel().getSelectedItem().equals(messagesSentTab)) {
             toUsername = selectedMessage.getToUsername();
         }
         return toUsername;
     }
     //***********Messages Methods END**********//
+
+
+    //***********Search Filters and Search Bar BEGIN**********//
+
+
+
+    //text field/search bar listener
+    private void searchBarInitialize() {
+        // Get the items from your ListView
+        ObservableList<Listing> observableListings = buyerBrowseListView.getItems();
+
+        FilteredList<Listing> filteredData = new FilteredList<>(observableListings, p -> true);
+
+        searchTxtField.textProperty().
+
+                addListener((observable, oldValue, newValue) ->
+
+                {
+                    filteredData.setPredicate(listing -> {
+                        // If filter text is empty, display all listings.
+                        if (newValue == null || newValue.isEmpty()) {
+                            return true;
+                        }
+
+                        // Compare title and description of every listing with filter text.
+                        String lowerCaseFilter = newValue.toLowerCase();
+
+                        if (listing.getTitle().toLowerCase().contains(lowerCaseFilter)) {
+                            return true; // Filter matches title.
+                        } else
+                            return listing.getDescription().toLowerCase().contains(lowerCaseFilter); // Filter matches description.
+// Does not match.
+                    });
+                });
+
+        // Add filtered data to the ListView.
+        buyerBrowseListView.setItems(filteredData);
+    }
+
+    //***********Search Filters and Search Bar END**********//
 }
