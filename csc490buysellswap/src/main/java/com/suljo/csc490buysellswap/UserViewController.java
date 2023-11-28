@@ -1040,9 +1040,29 @@ public class UserViewController {
     }
 
 
+    //buy rent filter
 
+    @FXML
+    private void handleForBuyMenuItemAction(ActionEvent event) {
+        browseListingInitialize();
+        ObservableList<Listing> observableListings = buyerBrowseListView.getItems();
+        FilteredList<Listing> filteredData = new FilteredList<>(observableListings, p -> true);
+        // Filter matches listings for rent
+        filteredData.setPredicate(listing -> {
+            return !listing.isForRent(); // Filter matches listings for buy
+        });
+        buyerBrowseListView.setItems(filteredData);
+    }
 
-
+    @FXML
+    private void handleForRentMenuItemAction(ActionEvent event) {
+        browseListingInitialize();
+        ObservableList<Listing> observableListings = buyerBrowseListView.getItems();
+        FilteredList<Listing> filteredData = new FilteredList<>(observableListings, p -> true);
+        // Filter matches listings for rent
+        filteredData.setPredicate(Listing::isForRent);
+        buyerBrowseListView.setItems(filteredData);
+    }
 
 
     //***********Search Filters and Search Bar END**********//

@@ -49,8 +49,8 @@
                             </Menu>
                             <Menu mnemonicParsing="false" text="Type of Listing">
                               <items>
-                                    <RadioMenuItem mnemonicParsing="false" text="Buy" />
-                                    <RadioMenuItem mnemonicParsing="false" text="Rent" />
+                                    <RadioMenuItem mnemonicParsing="false" onAction="#handleForBuyMenuItemAction" text="Buy" />
+                                    <RadioMenuItem mnemonicParsing="false" onAction="#handleForRentMenuItemAction" text="Rent" />
                               </items>
                             </Menu>
                             <Menu mnemonicParsing="false" text="Sort by">
