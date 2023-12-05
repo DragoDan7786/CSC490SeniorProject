@@ -1,0 +1,330 @@
+<mxfile host="Electron" modified="2023-12-05T02:21:45.821Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="8gUle-I3_6rsDImytvEH" version="22.1.2" type="device">
+  <diagram name="Page-1" id="h9Azv4gpTXAb6JTtWs5w">
+    <mxGraphModel dx="1257" dy="817" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-9" value="View unresolved &lt;br&gt;user complaints&lt;br&gt;/&lt;br&gt;history" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" target="BCwLdGhGJxCdyk1IZBS_-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="819" y="180" />
+            </Array>
+            <mxPoint as="offset" />
+            <mxPoint x="819" y="370" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-14" value="Respond to inquiry &lt;br&gt;from other buyer/admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-3" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="-0.6667" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="510" y="130" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-16" value="View all &lt;br&gt;listings &lt;br&gt;/ &lt;br&gt;history" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" target="BCwLdGhGJxCdyk1IZBS_-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="719" y="300" />
+              <mxPoint x="719" y="300" />
+            </Array>
+            <mxPoint x="719" y="370" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wyq9pXte96wr52dJX-5Z-3" value="View sales data" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-2" target="BCwLdGhGJxCdyk1IZBS_-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="440" y="290" />
+              <mxPoint x="310" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wyq9pXte96wr52dJX-5Z-4" value="View&amp;nbsp;buyer/admin feedback" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-2" target="BCwLdGhGJxCdyk1IZBS_-3" edge="1">
+          <mxGeometry x="-0.3333" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="430" y="350" />
+              <mxPoint x="290" y="350" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wyq9pXte96wr52dJX-5Z-9" value="Recieves notification when purchase is accepted" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-2" target="dR-ZO_B_xSVAU1ZMk2cU-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="470" y="620" />
+              <mxPoint x="60" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y7Dn8XcSu2JGmOiV1SYr-1" value="View messages from buyers/admins" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-2" target="BCwLdGhGJxCdyk1IZBS_-3" edge="1">
+          <mxGeometry x="0.3623" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="570" y="60" />
+              <mxPoint x="290" y="60" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-2" value="Neighborhood Buy/Sell/Swap/Loan Application" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="430" y="370" width="400" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-11" value="List item for &lt;br&gt;sale at &lt;br&gt;a fixed price" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-3" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="-0.6129" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="170" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-12" value="Auction an item" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-3" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="-0.619" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="470" y="220" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wyq9pXte96wr52dJX-5Z-2" value="List an item for rent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-3" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="-0.36" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="260" />
+              <mxPoint x="450" y="260" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wyq9pXte96wr52dJX-5Z-6" value="Edit Post details" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-3" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="-0.48" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="100" />
+              <mxPoint x="540" y="100" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wyq9pXte96wr52dJX-5Z-7" value="Cancel a listing" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-3" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="-0.4237" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="310" y="80" />
+              <mxPoint x="550" y="80" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y7Dn8XcSu2JGmOiV1SYr-3" value="Report a buyer to SysAdmin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-3" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="0.4545" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="270" y="390" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-3" value="Seller" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="270" y="120" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-5" value="Listing automatically &lt;br&gt;expires" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-4" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="0.25" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1000" y="370" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-6" value="Buyer/Seller/Admin account suspended &lt;br&gt;after a period of inactivity" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-4" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="0.3191" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1030" y="410" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-4" value="Time" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="950" y="120" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-8" value="Remove &lt;br&gt;a listing" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-7" edge="1">
+          <mxGeometry x="-0.3" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="619" y="200" />
+            </Array>
+            <mxPoint as="offset" />
+            <mxPoint x="619" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-10" value="Disable a &lt;br&gt;buyer/seller/&lt;br&gt;local admin &lt;br&gt;account" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="659" y="310" />
+              <mxPoint x="659" y="310" />
+            </Array>
+            <mxPoint x="659" y="370" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-15" value="Message &lt;br&gt;a buyer,&lt;br&gt;seller,&lt;br&gt;or admin" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="769" y="320" />
+              <mxPoint x="769" y="320" />
+            </Array>
+            <mxPoint x="769" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-7" value="System&lt;br&gt;Admin" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="649" y="120" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="wyq9pXte96wr52dJX-5Z-5" value="Create custom &lt;br&gt;community group" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0;exitDx=0;exitDy=0;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="790" y="700" as="sourcePoint" />
+            <mxPoint x="740" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wyq9pXte96wr52dJX-5Z-10" value="Invite/remove a&lt;br&gt;&amp;nbsp;buyer/seller&lt;br&gt;to a custom group" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-13" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="0.0526" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="630" y="670" />
+              <mxPoint x="630" y="670" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CTnuppumdtjpIYP79FNl-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.183;exitDx=0;exitDy=0;entryX=0.915;entryY=1.016;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="750" y="726.96" as="sourcePoint" />
+            <mxPoint x="806" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CTnuppumdtjpIYP79FNl-4" value="Text" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="CTnuppumdtjpIYP79FNl-3" vertex="1" connectable="0">
+          <mxGeometry x="0.4924" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BCwLdGhGJxCdyk1IZBS_-13" value="Local&lt;br&gt;Admin" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="620" y="700" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="LxdO1r6LCZkFb0zN9ZCg-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="dR-ZO_B_xSVAU1ZMk2cU-1" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="100" y="470" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LxdO1r6LCZkFb0zN9ZCg-5" value="Report Listing/Seller to SysAdmin" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="LxdO1r6LCZkFb0zN9ZCg-4" vertex="1" connectable="0">
+          <mxGeometry x="0.2174" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="wyq9pXte96wr52dJX-5Z-8" value="Rent or purchase a fixed price item" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="dR-ZO_B_xSVAU1ZMk2cU-1" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="490" y="640" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y7Dn8XcSu2JGmOiV1SYr-2" value="Submit seller feedback after making a purchase" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="dR-ZO_B_xSVAU1ZMk2cU-1" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="50" y="670" />
+              <mxPoint x="510" y="670" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y7Dn8XcSu2JGmOiV1SYr-4" value="Request to join a community group" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="dR-ZO_B_xSVAU1ZMk2cU-1" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="100" y="720" />
+              <mxPoint x="550" y="720" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dR-ZO_B_xSVAU1ZMk2cU-1" value="Buyer" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="40" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="dR-ZO_B_xSVAU1ZMk2cU-2" value="" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-2" target="dR-ZO_B_xSVAU1ZMk2cU-1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="680" y="530" as="sourcePoint" />
+            <mxPoint x="630" y="580" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="460" y="580" />
+              <mxPoint x="150" y="580" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dR-ZO_B_xSVAU1ZMk2cU-3" value="View items up for sale or rent in a specific area" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="dR-ZO_B_xSVAU1ZMk2cU-2" vertex="1" connectable="0">
+          <mxGeometry x="0.5256" y="-2" relative="1" as="geometry">
+            <mxPoint x="114" y="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dR-ZO_B_xSVAU1ZMk2cU-4" value="" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="dR-ZO_B_xSVAU1ZMk2cU-1" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="291.03999999999996" y="640" as="sourcePoint" />
+            <mxPoint x="430" y="386.9499999999998" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="130" y="510" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dR-ZO_B_xSVAU1ZMk2cU-6" value="Bid on an auction (&quot;best offer&quot;) item" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="dR-ZO_B_xSVAU1ZMk2cU-4" vertex="1" connectable="0">
+          <mxGeometry x="0.4581" y="-2" relative="1" as="geometry">
+            <mxPoint x="-54" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dR-ZO_B_xSVAU1ZMk2cU-7" value="" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="dR-ZO_B_xSVAU1ZMk2cU-1" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="630" y="580" as="sourcePoint" />
+            <mxPoint x="680" y="530" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="140" y="530" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dR-ZO_B_xSVAU1ZMk2cU-8" value="Message Seller with &lt;br&gt;inquiry about listing" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="dR-ZO_B_xSVAU1ZMk2cU-7" vertex="1" connectable="0">
+          <mxGeometry x="0.5177" y="-5" relative="1" as="geometry">
+            <mxPoint y="6" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LxdO1r6LCZkFb0zN9ZCg-2" value="" style="endArrow=classic;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="dR-ZO_B_xSVAU1ZMk2cU-1" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="630" y="480" as="sourcePoint" />
+            <mxPoint x="680" y="430" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="120" y="490" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LxdO1r6LCZkFb0zN9ZCg-3" value="Follow a Seller/Add Seller to Favorites List" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="LxdO1r6LCZkFb0zN9ZCg-2" vertex="1" connectable="0">
+          <mxGeometry x="0.0928" y="-3" relative="1" as="geometry">
+            <mxPoint x="25" y="-3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Y7Dn8XcSu2JGmOiV1SYr-5" value="Request to join a &lt;br&gt;community group" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-3" target="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry x="0.6327" relative="1" as="geometry">
+            <mxPoint x="110" y="680" as="sourcePoint" />
+            <mxPoint x="560" y="570" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="260" y="180" />
+              <mxPoint x="260" y="430" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CTnuppumdtjpIYP79FNl-1" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" source="BCwLdGhGJxCdyk1IZBS_-2" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="668.1316949152542" y="560" as="sourcePoint" />
+            <mxPoint x="691.8605084745764" y="700" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="692" y="600" />
+              <mxPoint x="692" y="630" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CTnuppumdtjpIYP79FNl-2" value="Receives&lt;br&gt;requests to join&lt;br&gt;group" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="CTnuppumdtjpIYP79FNl-1" vertex="1" connectable="0">
+          <mxGeometry x="0.5276" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="qjT6Tx9rIZnPHISwWAnK-1" value="Context Diagram" style="rounded=0;whiteSpace=wrap;html=1;fontSize=14;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="10" y="10" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
