@@ -86,8 +86,8 @@
                                           <TextField fx:id="myListingsDetailViewModified" layoutY="273.0" prefHeight="25.0" prefWidth="328.0" text="Modified" />
                                           <Button layoutX="45.0" layoutY="479.0" mnemonicParsing="false" onAction="#myListingsHandleEditListing" text="Edit Listing" />
                                           <Button layoutX="130.0" layoutY="479.0" mnemonicParsing="false" text="Make Unavailable" />
-                                          <ImageView fx:id="myListingsDetailImageView" fitHeight="300.0" fitWidth="395.0" layoutX="337.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
                                           <Button layoutX="247.0" layoutY="479.0" mnemonicParsing="false" onAction="#myListingsPopulateTableView" text="Refresh TableView" />
+                                          <ImageView fx:id="myListingsDetailImageView" fitHeight="300.0" fitWidth="395.0" layoutX="337.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </Pane>
                                  </center>
@@ -107,17 +107,17 @@
                            <content>
                               <Pane>
                                  <children>
+                                    <Label layoutX="14.0" layoutY="14.0" text="Listing Title" />
+                                    <TextField fx:id="listAnItemTitle" layoutX="14.0" layoutY="31.0" prefHeight="25.0" prefWidth="300.0" />
+                                    <Label layoutX="14.0" layoutY="56.0" text="Description" />
+                                    <TextArea fx:id="listAnItemDescription" layoutX="14.0" layoutY="73.0" prefHeight="200.0" prefWidth="300.0" />
+                                    <Label layoutX="14.0" layoutY="273.0" text="Price" />
+                                    <TextField fx:id="listAnItemPriceTextField" layoutX="14.0" layoutY="290.0" prefHeight="25.0" prefWidth="46.0" text="00.00" />
                                     <RadioButton fx:id="forSaleButton" layoutX="14.0" layoutY="316.0" mnemonicParsing="false" onAction="#setForSaleButton" text="For Sale">
                                        <toggleGroup>
                                           <ToggleGroup fx:id="saleOrRentToggleGroup" />
                                        </toggleGroup>
                                     </RadioButton>
-                                    <Label layoutX="14.0" layoutY="14.0" text="Listing Title" />
-                                    <TextArea fx:id="listAnItemDescription" layoutX="14.0" layoutY="73.0" prefHeight="200.0" prefWidth="300.0" />
-                                    <Label layoutX="14.0" layoutY="56.0" text="Description" />
-                                    <TextField fx:id="listAnItemTitle" layoutX="14.0" layoutY="31.0" prefHeight="25.0" prefWidth="300.0" />
-                                    <Label layoutX="14.0" layoutY="273.0" text="Price" />
-                                    <TextField fx:id="listAnItemPriceTextField" layoutX="14.0" layoutY="290.0" prefHeight="25.0" prefWidth="46.0" text="00.00" />
                                     <RadioButton fx:id="forRentButton" layoutX="14.0" layoutY="334.0" mnemonicParsing="false" onAction="#setForRentButton" text="For Rent" toggleGroup="$saleOrRentToggleGroup" />
                                     <Label layoutX="127.0" layoutY="273.0" text="Rental Period" />
                                     <TextField fx:id="listAnItemRentalPeriodTextField" alignment="CENTER" layoutX="127.0" layoutY="290.0" prefHeight="25.0" prefWidth="58.0" text="00" />
@@ -127,17 +127,17 @@
                                        </toggleGroup>
                                     </RadioButton>
                                     <RadioButton fx:id="daysButton" layoutX="128.0" layoutY="334.0" mnemonicParsing="false" text="Days" toggleGroup="$rentalPeriodToggleGroup" />
+                                    <Button layoutX="14.0" layoutY="417.0" mnemonicParsing="false" onAction="#addListing" prefHeight="87.0" prefWidth="300.0" text="Add Listing" />
                                     <Label layoutX="414.0" layoutY="14.0" text="Image" />
+                                    <Rectangle fx:id="listAnItemImagePreviewFrame" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="450.0" layoutX="414.0" layoutY="33.0" stroke="BLACK" strokeType="INSIDE" width="525.0" />
+                                    <ImageView fx:id="listAnItemImagePreview" fitHeight="450.0" fitWidth="525.0" layoutX="414.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" />
+                                    <Label fx:id="listAnItemNoImageLabel" layoutX="650.0" layoutY="250.0" text="No Image" />
                                     <TextField fx:id="listAnItemFilePathTextField" layoutX="414.0" layoutY="495.0" prefHeight="25.0" prefWidth="512.0" />
                                     <Button layoutX="414.0" layoutY="528.0" mnemonicParsing="false" onAction="#browseForListingPhoto" prefHeight="25.0" prefWidth="120.0" text="Browse For Image" />
-                                    <Button layoutX="14.0" layoutY="417.0" mnemonicParsing="false" onAction="#addListing" prefHeight="87.0" prefWidth="300.0" text="Add Listing" />
+                                    <Button layoutX="542.0" layoutY="528.0" mnemonicParsing="false" onAction="#listAnItemClearImageFile" prefHeight="25.0" prefWidth="120.0" text="Remove File" />
                                     <Label fx:id="listAnItemFileOpenText" layoutX="670.0" layoutY="532.0" text="File could not be opened." textFill="RED" />
                                     <Label fx:id="listAnItemSuccess" layoutX="103.0" layoutY="507.0" text="Item successfully listed." />
                                     <Button layoutX="15.0" layoutY="528.0" mnemonicParsing="false" onAction="#listAnItemResetTab" prefHeight="25.0" prefWidth="300.0" text="Reset" />
-                                    <Button layoutX="542.0" layoutY="528.0" mnemonicParsing="false" onAction="#listAnItemClearImageFile" prefHeight="25.0" prefWidth="120.0" text="Remove File" />
-                                    <ImageView fx:id="listAnItemImagePreview" fitHeight="450.0" fitWidth="525.0" layoutX="414.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true" />
-                                    <Label fx:id="listAnItemNoImageLabel" layoutX="650.0" layoutY="250.0" text="No Image" />
-                                    <Rectangle fx:id="listAnItemImagePreviewFrame" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="450.0" layoutX="414.0" layoutY="33.0" stroke="BLACK" strokeType="INSIDE" width="525.0" />
                                  </children></Pane>
                            </content>
                         </Tab>
