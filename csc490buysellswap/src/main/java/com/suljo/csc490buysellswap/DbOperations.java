@@ -416,4 +416,18 @@ public class DbOperations {
         return username;
     }
 
+    /**
+     * Sets a listing to not available.
+     * @param listingID The listingID of the listing.
+     * @return True if the listing was successfully updated.
+     * @throws SQLException If there is a database error.
+     */
+    public static boolean makeListingUnavailable(int listingID) throws SQLException {
+        Connection conn = connectToDb();
+        PreparedStatement prepStmt = conn.prepareStatement(DbQueries.makeListingUnavailableQuery);
+        prepStmt.setInt(1, listingID);
+        int rowCount = prepStmt.executeUpdate();
+        conn.close();
+        return rowCount != 0;
+    }
 }

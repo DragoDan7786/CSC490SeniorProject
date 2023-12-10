@@ -84,9 +84,9 @@
                                           <TextField fx:id="myListingsDetailViewAvailable" alignment="CENTER" layoutX="169.0" layoutY="-1.0" prefHeight="25.0" prefWidth="81.0" text="Available" />
                                           <TextField fx:id="myListingsDetailViewAdded" layoutY="248.0" prefHeight="25.0" prefWidth="328.0" text="Added" />
                                           <TextField fx:id="myListingsDetailViewModified" layoutY="273.0" prefHeight="25.0" prefWidth="328.0" text="Modified" />
-                                          <Button layoutX="45.0" layoutY="479.0" mnemonicParsing="false" onAction="#myListingsHandleEditListing" text="Edit Listing" />
-                                          <Button layoutX="130.0" layoutY="479.0" mnemonicParsing="false" text="Make Unavailable" />
-                                          <Button layoutX="247.0" layoutY="479.0" mnemonicParsing="false" onAction="#myListingsPopulateTableView" text="Refresh TableView" />
+                                          <Button layoutY="299.0" mnemonicParsing="false" onAction="#myListingsHandleEditListing" text="Edit Listing" />
+                                          <Button layoutX="94.0" layoutY="299.0" mnemonicParsing="false" onAction="#myListingsHandleMakeUnavailableButton" text="Make Unavailable" />
+                                          <Button layoutX="215.0" layoutY="299.0" mnemonicParsing="false" onAction="#myListingsPopulateTableView" text="Refresh TableView" />
                                           <ImageView fx:id="myListingsDetailImageView" fitHeight="300.0" fitWidth="395.0" layoutX="337.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </Pane>

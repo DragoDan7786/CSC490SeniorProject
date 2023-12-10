@@ -1,7 +1,5 @@
 package com.suljo.csc490buysellswap;
 
-
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -18,7 +16,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -428,8 +425,7 @@ public class UserViewController {
 
     /**
      * Determines and sets the price string to display in the My Listings detailed view.
-     *
-     * @param selection
+     * @param selection The selected listing whose details are to be displayed.
      */
     private void myListingsSetDetailViewPrice(Listing selection) {
         if (!selection.isForRent()) {
@@ -476,6 +472,26 @@ public class UserViewController {
             myListingsShowSelectionDetails(selection);
         }
     }
+
+    /**
+     * Makes the selected listing unavailable.
+     */
+    @FXML
+    private void myListingsHandleMakeUnavailableButton(){
+        try {
+            Listing selectedListing = myListingsTableView.getSelectionModel().getSelectedItem();
+            if (selectedListing != null && DbOperations.makeListingUnavailable(selectedListing.getListingID())){
+                //If the listing was updated, refresh the tableview to keep it in sync with the database.
+                myListingsPopulateTableView();
+            }
+        } catch (SQLException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Database Error");
+            alert.setHeaderText("An error occurred while connecting the database. The listing could not be made unavailable.");
+            alert.setContentText(e.getMessage());
+            e.printStackTrace();
+        }
+    }
     //***********My Listings Methods END**********//
     //***********Account Management Methods BEGIN**********//
 
@@ -504,7 +520,6 @@ public class UserViewController {
 
     /**
      * Generates an alert which gets confirmation from the user that they wish to disable their account.
-     *
      * @return The user's choice.
      */
     private Optional<ButtonType> acctMgmtDisableAccountConfirmationAlert() {

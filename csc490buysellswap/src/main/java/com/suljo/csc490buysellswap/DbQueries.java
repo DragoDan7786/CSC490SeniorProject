@@ -108,4 +108,11 @@ public class DbQueries {
             WHERE userID = ?
             ;
             """;
+
+    public static String makeListingUnavailableQuery = """
+            UPDATE sprint05.listing
+            SET isAvailable = 0, isActive = 0, isVisible = 0
+            WHERE listingID = ?
+            ;
+            """;
 }
