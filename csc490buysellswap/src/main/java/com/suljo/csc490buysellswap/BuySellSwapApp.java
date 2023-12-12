@@ -20,15 +20,19 @@ public class BuySellSwapApp extends Application {
     private static User currentUser;
     private static Properties dbProperties;
     //db.properties filepath on JC's laptop
-    private static final String dbPropertiesFilepathJC = "src/main/java/com/suljo/csc490buysellswap/db.properties";
+    private static final String dbPropertiesFilepathJC = "./src/main/java/com/suljo/csc490buysellswap/db.properties";
     //db.properties filepath on SA's laptop
     private static final String dbPropertiesFilepathSA = "C:\\Users\\sulem\\IdeaProjects\\CSC490SeniorProject\\csc490buysellswap\\src\\main\\java\\com\\suljo\\csc490buysellswap\\db.properties";
+    private static final String dbPropertiesRelativePath = "src/main/java/com/suljo/csc490buysellswap/db.properties";
 
     @Override
     public void start(Stage stage) throws IOException {
         dbProperties = new Properties();
         //Set this filepath string to the one which points to the db.properties file on your own personal machine.
-        dbProperties.load(new FileInputStream(dbPropertiesFilepathSA));
+        //dbProperties.load(new FileInputStream(dbPropertiesFilepathJC));
+        //String relativeFilepath = "src/main/java/com/suljo/csc490buysellswap/db.properties";
+        //dbProperties.load(new FileInputStream(System.getProperty("user.dir") + "\\db.properties"));
+        dbProperties.load(new FileInputStream(System.getProperty("user.dir") + "/" + dbPropertiesRelativePath));
         scene = new Scene(loadFXML("login-view"), 960, 645);
         stage.setTitle("CSC 490 Buy-Sell-Swap");
         stage.setScene(scene);
