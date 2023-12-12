@@ -28,7 +28,7 @@ public class BuySellSwapApp extends Application {
     public void start(Stage stage) throws IOException {
         dbProperties = new Properties();
         //Set this filepath string to the one which points to the db.properties file on your own personal machine.
-        dbProperties.load(new FileInputStream(dbPropertiesFilepathJC));
+        dbProperties.load(new FileInputStream(dbPropertiesFilepathSA));
         scene = new Scene(loadFXML("login-view"), 960, 645);
         stage.setTitle("CSC 490 Buy-Sell-Swap");
         stage.setScene(scene);

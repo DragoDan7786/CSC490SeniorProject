@@ -174,6 +174,7 @@ public class UserViewController {
             if (buyTab.isSelected()) {
                 // Call browseListingInitialize to update the ListView
                 browseListingInitialize();
+                searchBarInitialize();
             }
         });
     }
